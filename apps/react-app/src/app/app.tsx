@@ -1,11 +1,7 @@
-import NxWelcome from './nx-welcome';
+import { SimpleVirtualTableReactPackage } from '@simple-virtual-table/react-package';
 
 export function App() {
-  return (
-    <div>
-      <NxWelcome title="@simple-virtual-table/react-app" />
-    </div>
-  );
+  return <SimpleVirtualTableReactPackage />;
 }
 
 export default App;

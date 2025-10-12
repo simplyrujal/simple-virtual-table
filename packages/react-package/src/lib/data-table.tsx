@@ -1,4 +1,3 @@
-import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import {
   ColumnDef,
   flexRender,
@@ -8,6 +7,7 @@ import {
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useCallback, useMemo, useState } from 'react';
+import useSimpleInfiniteQuery from '../hooks/use-simple-infinite-query';
 
 interface IProps<T> {
   data: T[];
@@ -24,17 +24,7 @@ const DataTable = <T,>({
 }: IProps<T>) => {
   const [columnSizing, setColumnSizing] = useState({});
 
-  const query = useInfiniteQuery({
-    queryKey: [],
-    queryFn: () => {
-      return fetch('https://api.example.com/data').then((res) => res.json());
-    },
-    getNextPageParam: (lastPage, pages) => {
-      return undefined;
-    },
-    initialPageParam: 0,
-    placeholderData: keepPreviousData,
-  });
+  const query = useSimpleInfiniteQuery();
   const table = useReactTable({
     data,
     columns,

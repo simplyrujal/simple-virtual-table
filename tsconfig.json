@@ -5,6 +5,12 @@
   "references": [
     {
       "path": "./packages/react-package"
+    },
+    {
+      "path": "./apps/react-app-e2e"
+    },
+    {
+      "path": "./apps/react-app"
     }
   ]
 }

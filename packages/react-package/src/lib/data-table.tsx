@@ -7,7 +7,7 @@ import {
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useMemo, useState } from 'react';
-import styles from './data-table.module.css';
+import './data-table.css';
 // import useSimpleInfiniteQuery from '../hooks/use-simple-infinite-query';
 
 interface IProps<T> {
@@ -96,15 +96,15 @@ IProps<T>) => {
   //   [fetchMoreOnBottomReached]
   // );
   return (
-    <div ref={ref} className={styles.tableContainer}>
-      <table className={styles.table}>
-        <thead className={styles.thead}>
+    <div ref={ref} className="tableContainer">
+      <table className="table">
+        <thead className="thead">
           {table.getHeaderGroups().map((headergroup) => (
-            <tr key={headergroup.id} className={styles.headerRow}>
+            <tr key={headergroup.id} className="headerRow">
               {virtualPaddingLeft ? (
                 //fake empty column to the left for virtualization scroll padding
                 <th
-                  className={styles.paddingColumn}
+                  className="paddingColumn"
                   style={{ width: virtualPaddingLeft }}
                 />
               ) : null}
@@ -114,7 +114,7 @@ IProps<T>) => {
                 return (
                   <th
                     key={header.id}
-                    className={styles.headerCell}
+                    className="headerCell"
                     style={{
                       width: header.getSize(),
                     }}
@@ -126,7 +126,7 @@ IProps<T>) => {
                     <div
                       onMouseDown={header.getResizeHandler()}
                       onTouchStart={header.getResizeHandler()}
-                      className={styles.resizeHandle}
+                      className="resizeHandle"
                     />
                   </th>
                 );
@@ -135,7 +135,7 @@ IProps<T>) => {
               {virtualPaddingRight ? (
                 //fake empty column to the right for virtualization scroll padding
                 <th
-                  className={styles.paddingColumn}
+                  className="paddingColumn"
                   style={{ width: virtualPaddingRight }}
                 />
               ) : null}
@@ -143,7 +143,7 @@ IProps<T>) => {
           ))}
         </thead>
         <tbody
-          className={styles.tbody}
+          className="tbody"
           style={{
             height: `${rowVirtualizer.getTotalSize()}px`,
           }}
@@ -153,14 +153,14 @@ IProps<T>) => {
             return (
               <tr
                 key={row.id}
-                className={styles.virtualRow}
+                className="virtualRow"
                 style={{
                   transform: `translateY(${virtualRow.start}px)`,
                 }}
               >
                 {virtualPaddingLeft ? (
                   <td
-                    className={styles.paddingColumn}
+                    className="paddingColumn"
                     style={{ width: virtualPaddingLeft }}
                   />
                 ) : null}
@@ -170,7 +170,7 @@ IProps<T>) => {
                   return (
                     <td
                       key={cell.id}
-                      className={styles.cell}
+                      className="cell"
                       style={{
                         width: cell.column.getSize(),
                       }}
@@ -185,7 +185,7 @@ IProps<T>) => {
 
                 {virtualPaddingRight ? (
                   <td
-                    className={styles.paddingColumn}
+                    className="paddingColumn"
                     style={{ width: virtualPaddingRight }}
                   />
                 ) : null}

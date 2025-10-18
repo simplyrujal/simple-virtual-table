@@ -4,14 +4,17 @@ import React from 'react';
 export function App() {
   const ref = React.useRef<HTMLDivElement>(null);
   return (
-    <SimpleVirtualTableReactPackage
-      data={[]}
-      columns={[]}
-      ref={ref}
-      fetchMoreOnBottomReached={(target) => {
-        console.log(target);
-      }}
-    />
+    <>
+      <h1>Hello world</h1>
+      <SimpleVirtualTableReactPackage
+        data={[]}
+        columns={[]}
+        ref={ref}
+        fetchMoreOnBottomReached={(target) => {
+          console.log(target);
+        }}
+      />
+    </>
   );
 }
 

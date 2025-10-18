@@ -12,7 +12,7 @@ import { useMemo, useState } from 'react';
 interface IProps<T> {
   data: T[];
   columns: ColumnDef<T, any>[];
-  ref: React.RefObject<HTMLDivElement> | null;
+  ref: React.RefObject<HTMLDivElement | null>;
   fetchMoreOnBottomReached: (target: HTMLDivElement) => void;
 }
 

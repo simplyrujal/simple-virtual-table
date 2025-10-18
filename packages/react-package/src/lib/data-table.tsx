@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useMemo, useState } from 'react';
+import styles from './data-table.module.css';
 // import useSimpleInfiniteQuery from '../hooks/use-simple-infinite-query';
 
 interface IProps<T> {
@@ -95,21 +96,17 @@ IProps<T>) => {
   //   [fetchMoreOnBottomReached]
   // );
   return (
-    <div
-      ref={ref}
-      style={{
-        height: `500px`,
-        width: `100%`,
-        overflow: 'auto',
-      }}
-    >
-      <table>
-        <thead>
+    <div ref={ref} className={styles.tableContainer}>
+      <table className={styles.table}>
+        <thead className={styles.thead}>
           {table.getHeaderGroups().map((headergroup) => (
-            <tr key={headergroup.id}>
+            <tr key={headergroup.id} className={styles.headerRow}>
               {virtualPaddingLeft ? (
                 //fake empty column to the left for virtualization scroll padding
-                <th style={{ display: 'flex', width: virtualPaddingLeft }} />
+                <th
+                  className={styles.paddingColumn}
+                  style={{ width: virtualPaddingLeft }}
+                />
               ) : null}
 
               {virtualColumns.map((virtualColumn) => {
@@ -117,13 +114,9 @@ IProps<T>) => {
                 return (
                   <th
                     key={header.id}
+                    className={styles.headerCell}
                     style={{
-                      display: 'flex',
-                      flex: '1',
-                      minWidth: header.getSize(),
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
+                      width: header.getSize(),
                     }}
                   >
                     {flexRender(
@@ -133,18 +126,7 @@ IProps<T>) => {
                     <div
                       onMouseDown={header.getResizeHandler()}
                       onTouchStart={header.getResizeHandler()}
-                      style={{
-                        cursor: 'col-resize',
-                        userSelect: 'none',
-                        zIndex: 1,
-                        position: 'absolute',
-                        opacity: 0,
-                        right: '-1px',
-                        top: '6%',
-                        height: '100%',
-                        width: '12px',
-                        background: 'grey',
-                      }}
+                      className={styles.resizeHandle}
                     />
                   </th>
                 );
@@ -152,18 +134,65 @@ IProps<T>) => {
 
               {virtualPaddingRight ? (
                 //fake empty column to the right for virtualization scroll padding
-                <th style={{ display: 'flex', width: virtualPaddingRight }} />
+                <th
+                  className={styles.paddingColumn}
+                  style={{ width: virtualPaddingRight }}
+                />
               ) : null}
             </tr>
           ))}
         </thead>
         <tbody
+          className={styles.tbody}
           style={{
             height: `${rowVirtualizer.getTotalSize()}px`,
-            display: 'grid',
-            position: 'relative',
           }}
-        ></tbody>
+        >
+          {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+            const row = table.getRowModel().rows[virtualRow.index];
+            return (
+              <tr
+                key={row.id}
+                className={styles.virtualRow}
+                style={{
+                  transform: `translateY(${virtualRow.start}px)`,
+                }}
+              >
+                {virtualPaddingLeft ? (
+                  <td
+                    className={styles.paddingColumn}
+                    style={{ width: virtualPaddingLeft }}
+                  />
+                ) : null}
+
+                {virtualColumns.map((virtualColumn) => {
+                  const cell = row.getVisibleCells()[virtualColumn.index];
+                  return (
+                    <td
+                      key={cell.id}
+                      className={styles.cell}
+                      style={{
+                        width: cell.column.getSize(),
+                      }}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
+                  );
+                })}
+
+                {virtualPaddingRight ? (
+                  <td
+                    className={styles.paddingColumn}
+                    style={{ width: virtualPaddingRight }}
+                  />
+                ) : null}
+              </tr>
+            );
+          })}
+        </tbody>
       </table>
     </div>
   );

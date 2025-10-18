@@ -6,13 +6,13 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { useCallback, useMemo, useState } from 'react';
-import useSimpleInfiniteQuery from '../hooks/use-simple-infinite-query';
+import { useMemo, useState } from 'react';
+// import useSimpleInfiniteQuery from '../hooks/use-simple-infinite-query';
 
 interface IProps<T> {
   data: T[];
   columns: ColumnDef<T, any>[];
-  ref: React.RefObject<HTMLDivElement>;
+  ref: React.RefObject<HTMLDivElement> | null;
   fetchMoreOnBottomReached: (target: HTMLDivElement) => void;
 }
 
@@ -20,11 +20,11 @@ const DataTable = <T,>({
   data,
   columns,
   ref,
-  fetchMoreOnBottomReached,
-}: IProps<T>) => {
+}: // fetchMoreOnBottomReached,
+IProps<T>) => {
   const [columnSizing, setColumnSizing] = useState({});
 
-  const query = useSimpleInfiniteQuery();
+  // const query = useSimpleInfiniteQuery();
   const table = useReactTable({
     data,
     columns,
@@ -43,7 +43,7 @@ const DataTable = <T,>({
   const rowVirtualizer = useVirtualizer({
     count: table.getRowCount() || 1,
     estimateSize: () => 40, //estimate row height for accurate scrollbar dragging
-    getScrollElement: () => ref.current,
+    getScrollElement: () => ref?.current ?? null,
     //measure dynamic row height, except in firefox because it measures table border height incorrectly
     measureElement:
       typeof window !== 'undefined' &&
@@ -54,7 +54,7 @@ const DataTable = <T,>({
     overscan: 5,
   });
 
-  const { rows } = table.getRowModel();
+  // const { rows } = table.getRowModel();
 
   const visibleColumns = table.getVisibleLeafColumns();
 
@@ -62,7 +62,7 @@ const DataTable = <T,>({
   const columnVirtualizer = useVirtualizer({
     count: visibleColumns.length,
     estimateSize: (index) => visibleColumns[index].getSize(), //estimate width of each column for accurate scrollbar dragging
-    getScrollElement: () => ref.current,
+    getScrollElement: () => ref?.current ?? null,
     horizontal: true,
     overscan: 3, //how many columns to render on each side off screen each way (adjust this for performance)
   });
@@ -88,12 +88,12 @@ const DataTable = <T,>({
     };
   }, [columnVirtualizer, virtualColumns]);
 
-  const handleScroll = useCallback(
-    (e: React.UIEvent<HTMLDivElement>) => {
-      fetchMoreOnBottomReached(e.currentTarget);
-    },
-    [fetchMoreOnBottomReached]
-  );
+  // const handleScroll = useCallback(
+  //   (e: React.UIEvent<HTMLDivElement>) => {
+  //     fetchMoreOnBottomReached(e.currentTarget);
+  //   },
+  //   [fetchMoreOnBottomReached]
+  // );
   return (
     <div
       ref={ref}

@@ -1,1 +1,1 @@
-export * from './lib/react-package';
+export { default } from './lib/react-package';

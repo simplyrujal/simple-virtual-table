@@ -4,7 +4,7 @@ import DataTable from './data-table';
 interface IProps<T> {
   data: T[];
   columns: ColumnDef<T, any>[];
-  ref: React.RefObject<HTMLDivElement>;
+  ref: React.RefObject<HTMLDivElement> | null;
   fetchMoreOnBottomReached: (target: HTMLDivElement) => void;
 }
 

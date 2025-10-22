@@ -8,7 +8,6 @@ import {
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useCallback, useMemo, useState } from 'react';
-import './data-table.css';
 // import useSimpleInfiniteQuery from '../hooks/use-simple-infinite-query';
 
 interface IProps<T> {

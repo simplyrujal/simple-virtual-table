@@ -43,14 +43,7 @@ export function App() {
   return (
     <>
       <h1>Hello world</h1>
-      <SimpleVirtualTableReactPackage
-        data={data}
-        columns={columns}
-        ref={ref}
-        fetchMoreOnBottomReached={(target) => {
-          console.log(target);
-        }}
-      />
+      <SimpleVirtualTableReactPackage data={data} columns={columns} ref={ref} />
     </>
   );
 }

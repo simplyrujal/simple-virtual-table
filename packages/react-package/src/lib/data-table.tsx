@@ -6,7 +6,8 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import useSimpleInfiniteQuery from '../hooks/use-simple-infinite-query';
 import './data-table.css';
 // import useSimpleInfiniteQuery from '../hooks/use-simple-infinite-query';
 
@@ -14,18 +15,15 @@ interface IProps<T> {
   data: T[];
   columns: ColumnDef<T, any>[];
   ref: React.RefObject<HTMLDivElement | null>;
-  fetchMoreOnBottomReached: (target: HTMLDivElement) => void;
 }
 
-const DataTable = <T,>({
-  data,
-  columns,
-  ref,
-}: // fetchMoreOnBottomReached,
-IProps<T>) => {
+const totalDBRowCount = 1000;
+const totalFetched = 0;
+
+const DataTable = <T,>({ data, columns, ref }: IProps<T>) => {
   const [columnSizing, setColumnSizing] = useState({});
 
-  // const query = useSimpleInfiniteQuery();
+  const { fetchNextPage, isFetching } = useSimpleInfiniteQuery();
   const table = useReactTable({
     data,
     columns,
@@ -89,14 +87,26 @@ IProps<T>) => {
     };
   }, [columnVirtualizer, virtualColumns]);
 
-  // const handleScroll = useCallback(
-  //   (e: React.UIEvent<HTMLDivElement>) => {
-  //     fetchMoreOnBottomReached(e.currentTarget);
-  //   },
-  //   [fetchMoreOnBottomReached]
-  // );
+  const handleScroll = useCallback(
+    (e: React.UIEvent<HTMLDivElement>) => {
+      const containerRefElement = e.currentTarget;
+      if (containerRefElement && data) {
+        const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
+        //once the user has scrolled within 500px of the bottom of the table, fetch more data if we can
+        if (
+          scrollHeight - scrollTop - clientHeight < 500 &&
+          !isFetching &&
+          totalFetched < totalDBRowCount
+        ) {
+          fetchNextPage();
+        }
+      }
+    },
+
+    [fetchNextPage]
+  );
   return (
-    <div ref={ref} className="tableContainer">
+    <div ref={ref} className="tableContainer" onScroll={handleScroll}>
       <table className="table">
         <thead className="thead">
           {table.getHeaderGroups().map((headergroup) => (

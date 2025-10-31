@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:react-app": "pnpm --filter react-app dev",
+    "start:svelte-app": "pnpm --filter svelte-app dev",
+    "start": "pnpm run start:react-app & pnpm run start:svelte-app",
+    "build": "pnpm recursive run build",
+    "test": "pnpm recursive run test"
   },
   "keywords": [],
   "author": "",

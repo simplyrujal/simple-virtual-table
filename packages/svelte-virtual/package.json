@@ -1,5 +1,5 @@
 {
-  "name": "svelte-virtual",
+  "name": "@simple-virtual-table/svelte-virtual",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

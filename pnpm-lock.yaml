@@ -78,6 +78,10 @@ importers:
         specifier: ^7.1.7
         version: 7.1.12(@types/node@24.9.2)
 
+  packages/react-virtual: {}
+
+  packages/svelte-virtual: {}
+
 packages:
 
   '@babel/code-frame@7.27.1':

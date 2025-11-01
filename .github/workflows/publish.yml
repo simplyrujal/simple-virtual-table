@@ -6,6 +6,7 @@ on:
     paths:
       - "packages/react-virtual/**"
       - "packages/svelte-virtual/**"
+
 jobs:
   publish-packages:
     runs-on: ubuntu-latest

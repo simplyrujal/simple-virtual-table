@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { HelloWorld } from "@simple-virtual-table/svelte-virtual";
+  import { VirtualTable } from "@simple-virtual-table/svelte-virtual";
 </script>
 
 <main>
-  <HelloWorld name="Svelte" />
+  <VirtualTable name="Svelte" />
 </main>

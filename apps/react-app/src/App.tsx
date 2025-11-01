@@ -1,8 +1,8 @@
-import { HelloWorld } from "@simple-virtual-table/react-virtual";
+import { VirtualTable } from "@simple-virtual-table/react-virtual";
 import "./App.css";
 
 function App() {
-  return <HelloWorld name="React" />;
+  return <VirtualTable name="React" />;
 }
 
 export default App;

@@ -1,1 +1,1 @@
-export { default as HelloWorld } from "./HelloWorld.svelte";
+export { default as VirtualTable } from "./virtual-table.svelte";

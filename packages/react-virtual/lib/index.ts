@@ -1,2 +1,2 @@
-export { HelloWorld } from "./HelloWorld";
-export type { HelloWorldProps } from "./HelloWorld";
+export { VirtualTable } from "./virtual-table";
+export type { VirtualTableProps } from "./virtual-table";

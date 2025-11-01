@@ -1,10 +1,12 @@
 import React from "react";
 
-export interface HelloWorldProps {
+export interface VirtualTableProps {
   name?: string;
 }
 
-export const HelloWorld: React.FC<HelloWorldProps> = ({ name = "World" }) => {
+export const VirtualTable: React.FC<VirtualTableProps> = ({
+  name = "World",
+}) => {
   return (
     <div
       style={{
@@ -17,7 +19,7 @@ export const HelloWorld: React.FC<HelloWorldProps> = ({ name = "World" }) => {
         color: "#213547",
       }}
     >
-      Hey Hello, {name}! 👋
+      Hey Table, {name}! 👋
     </div>
   );
 };

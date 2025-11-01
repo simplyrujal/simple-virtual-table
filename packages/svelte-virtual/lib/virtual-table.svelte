@@ -33,6 +33,7 @@
   let containerWidth = $state<number | null>(null);
   let scrollElementRef: HTMLDivElement;
   let containerRef: HTMLDivElement;
+  let isUpdatingScroll = false;
 
   // Column widths
   let columnWidths = $derived(columns.map((col: any) => col.width || 100));
@@ -122,17 +123,45 @@
     }
   });
 
-  // Handle scroll - throttle updates to prevent infinite loops
-  let scrollUpdatePending = false;
+  // Handle scroll with aggressive throttling to prevent infinite loops
+  let scrollThrottleTimeout: ReturnType<typeof setTimeout> | null = null;
+  let lastKnownScrollTop = 0;
+
   function handleScroll(event: Event) {
     const target = event.target as HTMLDivElement;
-    if (target === scrollElementRef && !scrollUpdatePending) {
-      scrollUpdatePending = true;
-      requestAnimationFrame(() => {
-        scrollTop = target.scrollTop;
-        scrollUpdatePending = false;
-      });
+    if (target !== scrollElementRef || isUpdatingScroll) return;
+
+    const currentScrollTop = target.scrollTop;
+
+    // Throttle updates to maximum once per frame
+    if (scrollThrottleTimeout !== null) {
+      clearTimeout(scrollThrottleTimeout);
     }
+
+    scrollThrottleTimeout = setTimeout(() => {
+      // Double-check the scroll position hasn't changed during the timeout
+      const finalScrollTop = target.scrollTop;
+
+      // Only update if position changed significantly AND we're not currently updating
+      if (
+        Math.abs(finalScrollTop - lastKnownScrollTop) > 0.5 &&
+        !isUpdatingScroll
+      ) {
+        isUpdatingScroll = true;
+        lastKnownScrollTop = finalScrollTop;
+
+        // Update state
+        scrollTop = finalScrollTop;
+
+        // Use double RAF to ensure DOM has updated before allowing next scroll update
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            isUpdatingScroll = false;
+          });
+        });
+      }
+      scrollThrottleTimeout = null;
+    }, 0); // Use 0ms timeout to batch in next event loop tick
   }
 
   // Get cell value

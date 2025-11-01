@@ -38,12 +38,12 @@ jobs:
 
       - name: Publish react-virtual to npm
         working-directory: packages/react-virtual
-        run: pnpm publish --no-git-checks
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_VIRTUAL_TOKEN }}
 
       - name: Publish svelte-virtual to npm
         working-directory: packages/svelte-virtual
-        run: pnpm publish --no-git-checks
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_VIRTUAL_TOKEN }}

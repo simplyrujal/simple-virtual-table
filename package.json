@@ -4,15 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "pnpm run build:packages && pnpm run build:apps",
+    "start": "pnpm run start:react-app & pnpm run start:svelte-app",
+    "build:recursive": "pnpm recursive run build",
     "start:react-app": "pnpm --filter react-app dev",
     "start:svelte-app": "pnpm --filter svelte-app dev",
-    "start": "pnpm run start:react-app & pnpm run start:svelte-app",
-    "build": "pnpm recursive run build",
     "build:react-virtual": "pnpm --filter @simple-virtual-table/react-virtual build",
     "build:svelte-virtual": "pnpm --filter @simple-virtual-table/svelte-virtual build",
     "build:packages": "pnpm run build:react-virtual && pnpm run build:svelte-virtual",
     "build:apps": "pnpm --filter react-app build && pnpm --filter svelte-app build",
-    "build:all": "pnpm run build:packages && pnpm run build:apps",
     "test": "pnpm recursive run test"
   },
   "keywords": [],

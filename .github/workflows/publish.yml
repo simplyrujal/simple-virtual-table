@@ -36,11 +36,13 @@ jobs:
         run: pnpm run build:svelte-virtual
 
       - name: Publish react-virtual to npm
-        run: pnpm publish --filter @simple-virtual-table/react-virtual --no-git-checks
+        working-directory: packages/react-virtual
+        run: pnpm publish --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_VIRTUAL_TOKEN }}
 
       - name: Publish svelte-virtual to npm
-        run: pnpm publish --filter @simple-virtual-table/svelte-virtual --no-git-checks
+        working-directory: packages/svelte-virtual
+        run: pnpm publish --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_VIRTUAL_TOKEN }}

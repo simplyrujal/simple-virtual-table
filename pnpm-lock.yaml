@@ -10,6 +10,9 @@ importers:
 
   apps/react-app:
     dependencies:
+      '@simple-virtual-table/react-virtual':
+        specifier: workspace:*
+        version: link:../../packages/react-virtual
       react:
         specifier: ^19.1.1
         version: 19.2.0
@@ -55,6 +58,10 @@ importers:
         version: 7.1.12(@types/node@24.9.2)
 
   apps/svelte-app:
+    dependencies:
+      '@simple-virtual-table/svelte-virtual':
+        specifier: workspace:*
+        version: link:../../packages/svelte-virtual
     devDependencies:
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.2.1
@@ -78,9 +85,28 @@ importers:
         specifier: ^7.1.7
         version: 7.1.12(@types/node@24.9.2)
 
-  packages/react-virtual: {}
+  packages/react-virtual:
+    dependencies:
+      react:
+        specifier: ^19.1.1
+        version: 19.2.0
+    devDependencies:
+      '@types/react':
+        specifier: ^19.1.16
+        version: 19.2.2
+      typescript:
+        specifier: ^5.5.3
+        version: 5.9.3
 
-  packages/svelte-virtual: {}
+  packages/svelte-virtual:
+    dependencies:
+      svelte:
+        specifier: ^5.39.6
+        version: 5.43.2
+    devDependencies:
+      typescript:
+        specifier: ^5.5.3
+        version: 5.9.3
 
 packages:
 

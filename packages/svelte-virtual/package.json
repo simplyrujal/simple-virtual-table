@@ -2,15 +2,23 @@
   "name": "@simple-virtual-table/svelte-virtual",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "lib/index.ts",
+  "svelte": "lib/index.ts",
+  "types": "lib/index.ts",
+  "exports": {
+    ".": {
+      "svelte": "./lib/index.ts",
+      "default": "./lib/index.ts"
+    }
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "scripts": {
-    "build": "tsc"
+  "scripts": {},
+  "peerDependencies": {
+    "svelte": "^5.39.6"
   },
-  "dependencies": {
+  "devDependencies": {
     "typescript": "^5.5.3"
   }
 }

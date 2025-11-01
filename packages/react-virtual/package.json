@@ -1,5 +1,5 @@
 {
-  "name": "@simple-virtual-table/react-virtual",
+  "name": "simple-virtual-table-react",
   "version": "1.0.1",
   "description": "",
   "main": "./dist/index.cjs",

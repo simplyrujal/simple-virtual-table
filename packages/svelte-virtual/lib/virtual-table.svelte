@@ -122,11 +122,16 @@
     }
   });
 
-  // Handle scroll
+  // Handle scroll - throttle updates to prevent infinite loops
+  let scrollUpdatePending = false;
   function handleScroll(event: Event) {
     const target = event.target as HTMLDivElement;
-    if (target === scrollElementRef) {
-      scrollTop = target.scrollTop;
+    if (target === scrollElementRef && !scrollUpdatePending) {
+      scrollUpdatePending = true;
+      requestAnimationFrame(() => {
+        scrollTop = target.scrollTop;
+        scrollUpdatePending = false;
+      });
     }
   }
 

@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@simple-virtual-table/react-virtual": "workspace:*",
+    "simple-virtual-table-react": "workspace:*",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },

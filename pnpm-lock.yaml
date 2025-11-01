@@ -10,15 +10,15 @@ importers:
 
   apps/react-app:
     dependencies:
-      '@simple-virtual-table/react-virtual':
-        specifier: workspace:*
-        version: link:../../packages/react-virtual
       react:
         specifier: ^19.1.1
         version: 19.2.0
       react-dom:
         specifier: ^19.1.1
         version: 19.2.0(react@19.2.0)
+      simple-virtual-table-react:
+        specifier: workspace:*
+        version: link:../../packages/react-virtual
     devDependencies:
       '@eslint/js':
         specifier: ^9.36.0
@@ -59,7 +59,7 @@ importers:
 
   apps/svelte-app:
     dependencies:
-      '@simple-virtual-table/svelte-virtual':
+      simple-virtual-table-svelte:
         specifier: workspace:*
         version: link:../../packages/svelte-virtual
     devDependencies:

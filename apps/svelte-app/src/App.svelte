@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { VirtualTable } from "@simple-virtual-table/svelte-virtual";
+  import { VirtualTable } from "simple-virtual-table-svelte";
 </script>
 
 <main>

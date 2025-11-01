@@ -1,4 +1,4 @@
-import { VirtualTable } from "@simple-virtual-table/react-virtual";
+import { VirtualTable } from "simple-virtual-table-react";
 import "./App.css";
 
 function App() {

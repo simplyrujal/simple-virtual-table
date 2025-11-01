@@ -73,17 +73,20 @@ pnpm start
 Both packages can be built using Vite for production-ready libraries with TypeScript declarations:
 
 **Build all packages:**
+
 ```bash
 pnpm run build:packages
 ```
 
 **Build individual packages:**
+
 ```bash
 pnpm run build:react-virtual
 pnpm run build:svelte-virtual
 ```
 
 **Build everything (packages + apps):**
+
 ```bash
 pnpm run build:all
 ```
@@ -103,8 +106,8 @@ The packages are configured to work directly with Vite's bundler. Both React and
 
 Both test applications import and use the `HelloWorld` component from their respective packages:
 
-- **React App**: Displays `HelloWorld` with name="React"
-- **Svelte App**: Displays `HelloWorld` with name="Svelte"
+- **React App**: Displays `Text` with name="React"
+- **Svelte App**: Displays `Text` with name="Svelte"
 
 ## Package Manager
 

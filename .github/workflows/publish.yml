@@ -1,0 +1,46 @@
+name: Publish Simple Virtual Table Packages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "packages/react-virtual/**"
+      - "packages/svelte-virtual/**"
+# jobs:
+#   publish-packages:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#         with:
+#           fetch-depth: 0
+
+#       - name: Setup pnpm
+#         uses: pnpm/action-setup@v4
+#         with:
+#           version: 10.20.0
+
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: "20"
+#           registry-url: "https://registry.npmjs.org"
+#           cache: "pnpm"
+
+#       - name: Install Dependencies
+#         run: pnpm install
+
+#       - name: Build react-virtual
+#         run: pnpm run build:react-virtual
+
+#       - name: Build svelte-virtual
+#         run: pnpm run build:svelte-virtual
+
+#       - name: Publish react-virtual to npm
+#         run: pnpm publish --filter @simple-virtual-table/react-virtual --no-git-checks
+#         env:
+#           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+#       - name: Publish svelte-virtual to npm
+#         run: pnpm publish --filter @simple-virtual-table/svelte-virtual --no-git-checks
+#         env:
+#           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

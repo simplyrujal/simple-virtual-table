@@ -38,9 +38,9 @@ on:
 #       - name: Publish react-virtual to npm
 #         run: pnpm publish --filter @simple-virtual-table/react-virtual --no-git-checks
 #         env:
-#           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+#           NODE_AUTH_TOKEN: ${{ secrets.NPM_VIRTUAL_TOKEN }}
 
 #       - name: Publish svelte-virtual to npm
 #         run: pnpm publish --filter @simple-virtual-table/svelte-virtual --no-git-checks
 #         env:
-#           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+#           NODE_AUTH_TOKEN: ${{ secrets.NPM_VIRTUAL_TOKEN }}

@@ -3,7 +3,7 @@
 </script>
 
 <div class="hello-world">
-  Hello, {name}! 👋
+  Hey Hello, {name}! 👋
 </div>
 
 <style>

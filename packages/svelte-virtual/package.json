@@ -1,24 +1,40 @@
 {
   "name": "@simple-virtual-table/svelte-virtual",
   "version": "1.0.0",
+  "type": "module",
   "description": "",
-  "main": "lib/index.ts",
-  "svelte": "lib/index.ts",
-  "types": "lib/index.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "svelte": "./lib/index.ts",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "svelte": "./lib/index.ts",
-      "default": "./lib/index.ts"
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
     }
   },
+  "files": [
+    "dist",
+    "lib"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "scripts": {},
+  "scripts": {
+    "build": "vite build",
+    "build:watch": "vite build --watch"
+  },
   "peerDependencies": {
     "svelte": "^5.39.6"
   },
   "devDependencies": {
-    "typescript": "^5.5.3"
+    "@sveltejs/vite-plugin-svelte": "^6.2.1",
+    "@tsconfig/svelte": "^5.0.5",
+    "svelte": "^5.39.6",
+    "typescript": "^5.5.3",
+    "vite": "^7.1.7",
+    "vite-plugin-dts": "^4.5.4"
   }
 }

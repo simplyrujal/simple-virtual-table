@@ -68,9 +68,29 @@ pnpm start:svelte-app
 pnpm start
 ```
 
+### Building Packages
+
+Both packages can be built using Vite for production-ready libraries with TypeScript declarations:
+
+**Build all packages:**
+```bash
+pnpm run build:packages
+```
+
+**Build individual packages:**
+```bash
+pnpm run build:react-virtual
+pnpm run build:svelte-virtual
+```
+
+**Build everything (packages + apps):**
+```bash
+pnpm run build:all
+```
+
 ### Development
 
-The packages are configured to work directly with Vite's bundler. Both React and Svelte packages export their TypeScript source files directly, allowing Vite to handle the compilation during development and build.
+The packages are configured to work directly with Vite's bundler. Both React and Svelte packages can be used directly from source during development, and built for production with full TypeScript support.
 
 ## How It Works
 

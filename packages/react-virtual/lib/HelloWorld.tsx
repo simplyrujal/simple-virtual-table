@@ -17,7 +17,7 @@ export const HelloWorld: React.FC<HelloWorldProps> = ({ name = "World" }) => {
         color: "#213547",
       }}
     >
-      Hello, {name}! 👋
+      Hey Hello, {name}! 👋
     </div>
   );
 };

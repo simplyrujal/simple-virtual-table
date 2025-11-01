@@ -1,21 +1,32 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import type { VirtualTableProps } from "./types";
+
   // Props
-  // No generics directly in <script>, so use `any` or define a specific type
-  const {
+  let {
     columns,
     data,
     rowHeight = 40,
     headerHeight = 50,
     height = 600,
-    width = 100,
+    width,
     overscan = 5,
     className = "",
     headerClassName = "",
     rowClassName = "",
     onRowClick,
-  }: VirtualTableProps<any> = $props();
+  }: {
+    columns: any[];
+    data: any[];
+    rowHeight?: number;
+    headerHeight?: number;
+    height?: number;
+    width?: number;
+    overscan?: number;
+    className?: string;
+    headerClassName?: string;
+    rowClassName?: string | ((row: any, index: number) => string);
+    onRowClick?: (row: any, index: number) => void;
+  } = $props();
 
   // State
   let scrollTop = $state(0);
@@ -114,7 +125,9 @@
   // Handle scroll
   function handleScroll(event: Event) {
     const target = event.target as HTMLDivElement;
-    scrollTop = target.scrollTop;
+    if (target === scrollElementRef) {
+      scrollTop = target.scrollTop;
+    }
   }
 
   // Get cell value
@@ -217,15 +230,16 @@
               100}px; max-width: {column.maxWidth}px;"
           >
             {#if column.cell}
-              {@const cellResult = column.cell({
+              {@const cellInfo = {
                 getValue: () => getCellValue(row, column),
                 row,
                 column,
-              })}
-              {#if typeof cellResult === 'string'}
+              }}
+              {@const cellResult = column.cell(cellInfo)}
+              {#if typeof cellResult === "string"}
                 {@html cellResult}
               {:else}
-                {@render cellResult}
+                {@render column.cell(cellInfo)}
               {/if}
             {:else}
               <span>{getCellValue(row, column)?.toString() || ""}</span>
@@ -252,6 +266,7 @@
     border-radius: 4px;
     position: relative;
     box-sizing: border-box;
+    overscroll-behavior: contain;
   }
 
   .virtual-table-header {

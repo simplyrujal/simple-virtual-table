@@ -7,7 +7,7 @@ export interface ColumnDef<T = any> {
     getValue: () => any;
     row: T;
     column: ColumnDef<T>;
-  }) => Snippet;
+  }) => Snippet | string;
   width?: number;
   minWidth?: number;
   maxWidth?: number;

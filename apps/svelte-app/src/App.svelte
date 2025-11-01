@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { ColumnDef, Snippet } from "simple-virtual-table-svelte";
+  import type { ColumnDef } from "simple-virtual-table-svelte";
   import { VirtualTable } from "simple-virtual-table-svelte";
 
   interface User {
@@ -30,9 +30,7 @@
       width: 100,
       cell: ({ getValue }) => {
         const value = getValue() as number;
-        return (() => {
-          return `<strong>${value}</strong>`;
-        }) as unknown as Snippet;
+        return `<strong>${value}</strong>`;
       },
     },
     {
@@ -41,9 +39,7 @@
       width: 100,
       cell: ({ getValue }) => {
         const value = getValue() as string;
-        return (() => {
-          return `<span style="color: #646cff; font-weight: 500;">${value}</span>`;
-        }) as unknown as Snippet;
+        return `<span style="color: #646cff; font-weight: 500;">${value}</span>`;
       },
     },
     {
@@ -58,9 +54,7 @@
       cell: ({ getValue }) => {
         const age = getValue() as number;
         const color = age > 50 ? "#ff6b6b" : "#51cf66";
-        return (() => {
-          return `<span style="color: ${color};">${age}</span>`;
-        }) as unknown as Snippet;
+        return `<span style="color: ${color};">${age}</span>`;
       },
     },
     {
@@ -75,9 +69,7 @@
           Pending: "#74c0fc",
         };
         const color = colors[status] || "#666";
-        return (() => {
-          return `<span style="padding: 4px 8px; border-radius: 4px; background-color: ${color}20; color: ${color}; font-size: 12px; font-weight: 500;">${status}</span>`;
-        }) as unknown as Snippet;
+        return `<span style="padding: 4px 8px; border-radius: 4px; background-color: ${color}20; color: ${color}; font-size: 12px; font-weight: 500;">${status}</span>`;
       },
     },
   ];
@@ -102,3 +94,9 @@
     {onRowClick}
   />
 </main>
+
+<style>
+  main {
+    text-align: left;
+  }
+</style>

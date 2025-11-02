@@ -55,12 +55,14 @@ The root component that provides context to all child components.
 
 **Props:**
 
-| Prop        | Type     | Required | Default | Description                                   |
-| ----------- | -------- | -------- | ------- | --------------------------------------------- | --- |
-| `totalData` | `number` | Yes      | -       | Total number of rows in the dataset           |
-| `height`    | `number` | Yes      | -       | Height of the table container                 |     |
-| `rowHeight` | `number` | No       | `40`    | Height of each row in pixels                  |
-| `overscan`  | `number` | No       | `5`     | Number of rows to render outside visible area |
+| Prop             | Type                  | Required | Default | Description                                   |
+| ---------------- | --------------------- | -------- | ------- | --------------------------------------------- |
+| `totalData`      | `number`              | Yes      | -       | Total number of rows in the dataset           |
+| `height`         | `number`              | No       | -       | Height of the table container                 |
+| `rowHeight`      | `number`              | No       | `40`    | Height of each row in pixels                  |
+| `overscan`       | `number`              | No       | `5`     | Number of rows to render outside visible area |
+| `containerStyle` | `React.CSSProperties` | No       | -       | Custom styles for the table container         |
+| `children`       | `ReactNode`           | Yes      | -       | Child components (Thead, Tbody)               |
 
 ### Thead
 
@@ -68,14 +70,18 @@ Header container component. Must wrap all `Th` components.
 
 **Props:**
 
-| Prop           | Type     | Required | Default | Description              |
-| -------------- | -------- | -------- | ------- | ------------------------ |
-| `headerHeight` | `number` | No       | `50`    | Height of the header row |
+| Prop           | Type                  | Required | Default | Description                                                                       |
+| -------------- | --------------------- | -------- | ------- | --------------------------------------------------------------------------------- |
+| `headerHeight` | `number`              | No       | `50`    | Height of the header row                                                          |
+| `style`        | `React.CSSProperties` | No       | -       | Custom styles for the header container                                            |
+| `...props`     | `HTMLDivElement`      | No       | -       | All standard HTML div attributes (className, onClick, onMouseOver, data-\*, etc.) |
 
 **Note:**
 
 - `Thead` automatically collects column widths from `Th` children and updates the table context.
+- `Thead` automatically injects `colIndex` prop to all `Th` children.
 - The `headerHeight` prop is optional and defaults to 50px. Typically you can omit this prop and use the default.
+- All standard HTML div attributes are accepted and will be applied to the header container element.
 
 ### Th
 
@@ -83,11 +89,16 @@ Header cell component. Must be used inside `Thead`.
 
 **Props:**
 
-| Prop       | Type     | Required | Default | Description                   |
-| ---------- | -------- | -------- | ------- | ----------------------------- |
-| `width`    | `number` | No       | `100`   | Width of the column in pixels |
-| `minWidth` | `number` | No       | -       | Minimum width of the column   |
-| `maxWidth` | `number` | No       | -       | Maximum width of the column   |
+| Prop       | Type                  | Required | Default | Description                                                                       |
+| ---------- | --------------------- | -------- | ------- | --------------------------------------------------------------------------------- |
+| `width`    | `number`              | No       | `100`   | Width of the column in pixels                                                     |
+| `minWidth` | `number`              | No       | `100`   | Minimum width of the column                                                       |
+| `maxWidth` | `number`              | No       | -       | Maximum width of the column                                                       |
+| `colIndex` | `number`              | No       | -       | Automatically injected by `Thead`                                                 |
+| `style`    | `React.CSSProperties` | No       | -       | Custom styles for the header cell                                                 |
+| `...props` | `HTMLDivElement`      | No       | -       | All standard HTML div attributes (className, onClick, onMouseOver, data-\*, etc.) |
+
+**Note:** `colIndex` is automatically injected by `Thead` and should not be manually provided.
 
 ### Tbody
 
@@ -95,15 +106,19 @@ Body container component. Must wrap all `Tr` components.
 
 **Props:**
 
-| Prop           | Type     | Required | Default | Description                                |
-| -------------- | -------- | -------- | ------- | ------------------------------------------ |
-| `offsetHeight` | `number` | No       | `45`    | Height offset for calculating total height |
+| Prop           | Type                  | Required | Default | Description                                                                       |
+| -------------- | --------------------- | -------- | ------- | --------------------------------------------------------------------------------- |
+| `offsetHeight` | `number`              | No       | `45`    | Height offset for calculating total height                                        |
+| `style`        | `React.CSSProperties` | No       | -       | Custom styles for the body container                                              |
+| `...props`     | `HTMLDivElement`      | No       | -       | All standard HTML div attributes (className, onClick, onMouseOver, data-\*, etc.) |
 
 **Note:**
 
 - `Tbody` automatically injects `rowIndex` prop to all `Tr` children. The `rowIndex` will be the absolute index in the data array (accounting for virtualization).
 - `Tbody` automatically calculates `totalHeight` and `totalWidth` from table context.
+- `Tbody` only renders visible rows (plus overscan rows) to optimize performance.
 - The `offsetHeight` prop is optional and used to calculate the total height (defaults to 45px). Typically you can omit this prop and use defaults.
+- All standard HTML div attributes are accepted and will be applied to the body container element.
 
 ### Tr
 
@@ -111,11 +126,17 @@ Row component. Must be used inside `Tbody`.
 
 **Props:**
 
-| Prop       | Type     | Required | Default | Description                       |
-| ---------- | -------- | -------- | ------- | --------------------------------- |
-| `rowIndex` | `number` | No       | -       | Automatically injected by `Tbody` |
+| Prop       | Type                  | Required | Default | Description                                                                       |
+| ---------- | --------------------- | -------- | ------- | --------------------------------------------------------------------------------- |
+| `rowIndex` | `number`              | No       | -       | Automatically injected by `Tbody`                                                 |
+| `style`    | `React.CSSProperties` | No       | -       | Custom styles for the row                                                         |
+| `...props` | `HTMLDivElement`      | No       | -       | All standard HTML div attributes (className, onClick, onMouseOver, data-\*, etc.) |
 
-**Note:** `Tr` automatically injects `colIndex` prop to all `Td` children.
+**Note:**
+
+- `rowIndex` is automatically injected by `Tbody` and should not be manually provided.
+- `Tr` automatically injects `colIndex` prop to all `Td` children.
+- All standard HTML div attributes are accepted and will be applied to the row element.
 
 ### Td
 
@@ -123,9 +144,17 @@ Cell component. Must be used inside `Tr`.
 
 **Props:**
 
-| Prop       | Type     | Required | Default | Description                    |
-| ---------- | -------- | -------- | ------- | ------------------------------ |
-| `colIndex` | `number` | No       | -       | Automatically injected by `Tr` |
+| Prop       | Type                  | Required | Default | Description                                                                       |
+| ---------- | --------------------- | -------- | ------- | --------------------------------------------------------------------------------- |
+| `colIndex` | `number`              | No       | -       | Automatically injected by `Tr`                                                    |
+| `style`    | `React.CSSProperties` | No       | -       | Custom styles for the cell                                                        |
+| `...props` | `HTMLDivElement`      | No       | -       | All standard HTML div attributes (className, onClick, onMouseOver, data-\*, etc.) |
+
+**Note:**
+
+- `colIndex` is automatically injected by `Tr` and should not be manually provided.
+- The cell width automatically matches the corresponding `Th` width from the header.
+- All standard HTML div attributes are accepted and will be applied to the cell element.
 
 ## Complete Example
 
@@ -241,10 +270,14 @@ The table automatically handles row virtualization. Only visible rows (plus over
 
 ## Styling
 
-All components accept standard HTML attributes and can be styled via:
+All components extend standard HTML div attributes and can be styled via:
 
-- Inline `style` prop
-- CSS targeting the component classes
+- Inline `style` prop (available on all components)
+- `containerStyle` prop on `Table` component for container-specific styling
+- Standard HTML attributes (`className`, `onClick`, `onMouseOver`, `data-*` attributes, etc.)
+- CSS targeting the component elements via className
+
+**Note:** Since all components render as `div` elements, you can apply any standard HTML div attributes to them.
 
 ## TypeScript Support
 
@@ -269,3 +302,5 @@ Violating these requirements will throw helpful error messages.
 - Row heights are consistent (controlled by `rowHeight` prop)
 - The table supports horizontal scrolling when content is wider than container
 - Header is sticky and remains visible while scrolling
+- All components accept standard HTML div attributes for maximum flexibility
+- The `height` prop on `Table` is optional, but recommended for proper virtualization behavior

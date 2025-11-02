@@ -22,16 +22,17 @@ const data = [
   { id: 2, name: "Jane", email: "jane@example.com", age: 25 },
   // ... more rows
 ];
+
 function MyTable() {
   return (
     <Table totalData={data.length} height={600} width={900} rowHeight={45}>
-      <Thead headerHeight={50}>
+      <Thead>
         <Th width={100}>ID</Th>
         <Th width={200}>Name</Th>
         <Th width={300}>Email</Th>
         <Th width={100}>Age</Th>
       </Thead>
-      <Tbody totalHeight={data.length * 45} totalWidth={700}>
+      <Tbody>
         {data.map((row) => (
           <Tr key={row.id}>
             <Td>{row.id}</Td>
@@ -56,7 +57,7 @@ The root component that provides context to all child components.
 
 | Prop              | Type                                            | Required | Default  | Description                                   |
 | ----------------- | ----------------------------------------------- | -------- | -------- | --------------------------------------------- |
-| `data`            | `T[]`                                           | Yes      | -        | Array of data objects                         |
+| `totalData`       | `number`                                        | Yes      | -        | Total number of rows in the dataset           |
 | `height`          | `number`                                        | Yes      | -        | Height of the table container                 |
 | `width`           | `number`                                        | No       | `"100%"` | Width of the table container                  |
 | `rowHeight`       | `number`                                        | No       | `40`     | Height of each row in pixels                  |
@@ -64,7 +65,6 @@ The root component that provides context to all child components.
 | `className`       | `string`                                        | No       | `""`     | Additional CSS class for container            |
 | `headerClassName` | `string`                                        | No       | `""`     | Additional CSS class for header               |
 | `rowClassName`    | `string \| ((row: T, index: number) => string)` | No       | `""`     | CSS class(es) for rows                        |
-| `onRowClick`      | `(row: T, index: number) => void`               | No       | -        | Callback when a row is clicked                |
 
 ### Thead
 
@@ -76,7 +76,10 @@ Header container component. Must wrap all `Th` components.
 | -------------- | -------- | -------- | ------- | ------------------------ |
 | `headerHeight` | `number` | No       | `50`    | Height of the header row |
 
-**Note:** `Thead` automatically collects column widths from `Th` children and updates the table context.
+**Note:**
+
+- `Thead` automatically collects column widths from `Th` children and updates the table context.
+- The `headerHeight` prop is optional and defaults to 50px. Typically you can omit this prop and use the default.
 
 ### Th
 
@@ -96,12 +99,15 @@ Body container component. Must wrap all `Tr` components.
 
 **Props:**
 
-| Prop          | Type     | Required | Default | Description                                         |
-| ------------- | -------- | -------- | ------- | --------------------------------------------------- |
-| `totalHeight` | `number` | Yes      | -       | Total height of all rows (data.length \* rowHeight) |
-| `totalWidth`  | `number` | Yes      | -       | Total width of all columns (sum of Th widths)       |
+| Prop           | Type     | Required | Default | Description                                |
+| -------------- | -------- | -------- | ------- | ------------------------------------------ |
+| `offsetHeight` | `number` | No       | `45`    | Height offset for calculating total height |
 
-**Note:** `Tbody` automatically injects `rowIndex` prop to all `Tr` children. The `rowIndex` will be the absolute index in the data array (accounting for virtualization).
+**Note:**
+
+- `Tbody` automatically injects `rowIndex` prop to all `Tr` children. The `rowIndex` will be the absolute index in the data array (accounting for virtualization).
+- `Tbody` automatically calculates `totalHeight` and `totalWidth` from table context.
+- The `offsetHeight` prop is optional and used to calculate the total height (defaults to 45px). Typically you can omit this prop and use defaults.
 
 ### Tr
 
@@ -167,26 +173,15 @@ function UserTable() {
       <p style={{ marginBottom: "20px", color: "#666" }}>
         Showing {data.length.toLocaleString()} rows with virtual scrolling
       </p>
-      <Table
-        totalData={data.length}
-        height={600}
-        width={900}
-        rowHeight={45}
-        onRowClick={(row: User, index: number) => {
-          console.log("Clicked row:", row, "at index:", index);
-        }}
-      >
-        <Thead headerHeight={50}>
+      <Table totalData={data.length} height={600} width={900} rowHeight={45}>
+        <Thead>
           <Th width={100}>ID</Th>
           <Th width={100}>Name</Th>
           <Th width={250}>Email</Th>
           <Th width={100}>Age</Th>
           <Th width={100}>Status</Th>
         </Thead>
-        <Tbody
-          totalHeight={data.length * 45}
-          totalWidth={650} // Sum of all column widths: 100 + 100 + 250 + 100 + 100
-        >
+        <Tbody>
           {data.map((row: User) => {
             const status = row.status;
             return (
@@ -239,11 +234,14 @@ function UserTable() {
 
 The table automatically handles row virtualization. Only visible rows (plus overscan rows) are rendered in the DOM, making it performant even with thousands of rows.
 
-**Important:** When mapping over data in `Tbody`, you should map over the **entire** dataset. The table handles virtualization internally by:
+**Important:**
 
-1. Calculating which rows are visible based on scroll position
-2. Rendering spacers above and below visible rows to maintain correct scroll height
-3. Automatically injecting correct `rowIndex` values to `Tr` components
+- Pass `totalData` (the total number of rows) to the `Table` component
+- When mapping over data in `Tbody`, map over the **entire** dataset. The table handles virtualization internally by:
+  1. Calculating which rows are visible based on scroll position
+  2. Rendering spacers above and below visible rows to maintain correct scroll height
+  3. Automatically injecting correct `rowIndex` values to `Tr` components
+  4. Only rendering visible rows in the DOM
 
 ## Styling
 
@@ -258,7 +256,7 @@ All components accept standard HTML attributes and can be styled via:
 Full TypeScript support is included. The `Table` component is generic and accepts a type parameter:
 
 ```tsx
-<Table<MyDataType> data={myData} ...>
+<Table<MyDataType> totalData={myData.length} ...>
 ```
 
 ## Component Hierarchy Requirements

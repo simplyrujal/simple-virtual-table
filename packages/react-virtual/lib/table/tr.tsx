@@ -9,15 +9,7 @@ interface TrProps extends React.HTMLAttributes<HTMLDivElement> {
 const Tr = ({ children, style, rowIndex, ...props }: TrProps) => {
   // Ensure Tr is used within Tbody context - throws error if not wrapped
   useTbodyContext();
-  const {
-    totalWidth,
-    rowHeight,
-    rowClassName,
-    onRowClick,
-    data,
-    needsFill,
-    spacerWidth,
-  } = useTableContext();
+  const { totalWidth, rowHeight, needsFill, spacerWidth } = useTableContext();
 
   // rowIndex is injected by Tbody component via React.cloneElement as absolute index
   // If it's missing, that's an error condition
@@ -27,14 +19,6 @@ const Tr = ({ children, style, rowIndex, ...props }: TrProps) => {
     );
   }
 
-  const row = data[rowIndex];
-  const getRowClassName = (): string => {
-    if (typeof rowClassName === "function") {
-      return rowClassName(row, rowIndex);
-    }
-    return rowClassName || "";
-  };
-
   return (
     <div
       style={{
@@ -42,14 +26,11 @@ const Tr = ({ children, style, rowIndex, ...props }: TrProps) => {
         height: rowHeight,
         borderBottom: "1px solid #e0e0e0",
         backgroundColor: rowIndex % 2 === 0 ? "#ffffff" : "#fafafa",
-        cursor: onRowClick ? "pointer" : "default",
         transition: "background-color 0.2s",
         width: totalWidth,
         boxSizing: "border-box",
         ...style,
       }}
-      className={getRowClassName()}
-      onClick={() => onRowClick?.(row, rowIndex)}
       {...props}
     >
       {React.Children.map(children, (child, index) => {

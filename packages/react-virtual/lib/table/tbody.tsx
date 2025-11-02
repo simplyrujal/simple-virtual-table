@@ -17,18 +17,14 @@ export const useTbodyContext = (): TbodyContextValue => {
 };
 
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
-  totalHeight: number;
-  totalWidth: number;
+  offsetHeight?: number;
 }
 
-const Tbody = ({
-  children,
-  totalHeight,
-  totalWidth,
-  style,
-  ...props
-}: IProps) => {
-  const { rowHeight, totalData, startIndex, endIndex } = useTableContext();
+const Tbody = ({ children, offsetHeight = 45, style, ...props }: IProps) => {
+  const { rowHeight, totalData, startIndex, endIndex, totalWidth } =
+    useTableContext();
+
+  const totalHeight = totalData * offsetHeight;
 
   const contextValue: TbodyContextValue = {};
 

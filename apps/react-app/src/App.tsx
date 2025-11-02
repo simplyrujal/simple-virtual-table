@@ -35,26 +35,15 @@ function App() {
       <p style={{ marginBottom: "20px", color: "#666" }}>
         Showing {data.length.toLocaleString()} rows with virtual scrolling
       </p>
-      <Table
-        data={data}
-        height={600}
-        width={900}
-        rowHeight={45}
-        onRowClick={(row: User, index: number) => {
-          console.log("Clicked row:", row, "at index:", index);
-        }}
-      >
-        <Thead headerHeight={50}>
+      <Table totalData={data.length} height={600} width={900} rowHeight={45}>
+        <Thead>
           <Th width={100}>ID</Th>
           <Th width={100}>Name</Th>
           <Th width={250}>Email</Th>
           <Th width={100}>Age</Th>
           <Th width={100}>Status</Th>
         </Thead>
-        <Tbody
-          totalHeight={data.length * 45}
-          totalWidth={650} // Sum of all column widths: 100 + 100 + 250 + 100 + 100
-        >
+        <Tbody>
           {data.map((_row: User) => {
             // Pass rowIndex manually since we're mapping ourselves, not letting Tbody map
             // Tr will inject colIndex to Td children automatically

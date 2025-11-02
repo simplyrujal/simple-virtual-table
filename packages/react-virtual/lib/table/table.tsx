@@ -15,7 +15,6 @@ export interface TableContextValue<T = any> {
   className?: string;
   headerClassName?: string;
   rowClassName?: string | ((row: T, index: number) => string);
-  onRowClick?: (row: T, index: number) => void;
   width?: number;
   height?: number;
   scrollTop: number;
@@ -48,7 +47,6 @@ export interface TableProps<T = any> {
   className?: string;
   headerClassName?: string;
   rowClassName?: string | ((row: T, index: number) => string);
-  onRowClick?: (row: T, index: number) => void;
   width?: number;
   height?: number;
   overscan?: number;
@@ -61,7 +59,6 @@ const Table = <T extends Record<string, any> = any>({
   className = "",
   headerClassName = "",
   rowClassName = "",
-  onRowClick,
   children,
   width,
   height,
@@ -167,7 +164,6 @@ const Table = <T extends Record<string, any> = any>({
     containerWidth,
     headerClassName,
     rowClassName,
-    onRowClick,
     scrollTop,
     contentWidth,
     totalWidth,

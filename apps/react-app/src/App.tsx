@@ -1,5 +1,4 @@
-import type { ColumnDef } from "simple-virtual-table-react";
-import { VirtualTable } from "simple-virtual-table-react";
+import { Table, Tbody, Td, Th, Thead, Tr } from "simple-virtual-table-react";
 
 interface User {
   id: number;
@@ -8,6 +7,12 @@ interface User {
   age: number;
   status: string;
 }
+
+const colors: Record<string, string> = {
+  Active: "#51cf66",
+  Inactive: "#ffd43b",
+  Pending: "#74c0fc",
+};
 
 const generateData = (count: number): User[] => {
   return Array.from({ length: count }, (_, i) => ({
@@ -21,96 +26,7 @@ const generateData = (count: number): User[] => {
 
 const data = generateData(10000); // Large dataset to showcase virtualization
 
-// Define columns similar to TanStack Table or AG Grid
-const columns: ColumnDef<User>[] = [
-  {
-    accessorKey: "id",
-    header: "ID",
-    width: 100,
-    cell: ({
-      getValue,
-    }: {
-      getValue: () => unknown;
-      row: User;
-      column: ColumnDef<User>;
-    }) => <strong>{getValue() as number}</strong>,
-  },
-  {
-    accessorKey: "name",
-    header: "Name",
-    width: 100,
-    cell: ({
-      getValue,
-    }: {
-      getValue: () => unknown;
-      row: User;
-      column: ColumnDef<User>;
-    }) => (
-      <span style={{ color: "#646cff", fontWeight: 500 }}>
-        {getValue() as string}
-      </span>
-    ),
-  },
-  {
-    accessorKey: "email",
-    header: "Email",
-    width: 250,
-  },
-  {
-    accessorKey: "age",
-    header: "Age",
-    width: 100,
-    cell: ({
-      getValue,
-    }: {
-      getValue: () => unknown;
-      row: User;
-      column: ColumnDef<User>;
-    }) => {
-      const age = getValue() as number;
-      return (
-        <span style={{ color: age > 50 ? "#ff6b6b" : "#51cf66" }}>{age}</span>
-      );
-    },
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    width: 100,
-    cell: ({
-      getValue,
-    }: {
-      getValue: () => unknown;
-      row: User;
-      column: ColumnDef<User>;
-    }) => {
-      const status = getValue() as string;
-      const colors: Record<string, string> = {
-        Active: "#51cf66",
-        Inactive: "#ffd43b",
-        Pending: "#74c0fc",
-      };
-      return (
-        <span
-          style={{
-            padding: "4px 8px",
-            borderRadius: "4px",
-            backgroundColor: colors[status] + "20",
-            color: colors[status],
-            fontSize: "12px",
-            fontWeight: 500,
-          }}
-        >
-          {status}
-        </span>
-      );
-    },
-  },
-];
-
 function App() {
-  // Generate sample data
-
   return (
     <div style={{ padding: "20px" }}>
       <h1 style={{ marginBottom: "20px", color: "#213547" }}>
@@ -119,17 +35,69 @@ function App() {
       <p style={{ marginBottom: "20px", color: "#666" }}>
         Showing {data.length.toLocaleString()} rows with virtual scrolling
       </p>
-      <VirtualTable
-        columns={columns}
+      <Table
         data={data}
         height={600}
         width={900}
         rowHeight={45}
-        headerHeight={50}
         onRowClick={(row: User, index: number) => {
           console.log("Clicked row:", row, "at index:", index);
         }}
-      />
+      >
+        <Thead headerHeight={50}>
+          <Th width={100}>ID</Th>
+          <Th width={100}>Name</Th>
+          <Th width={250}>Email</Th>
+          <Th width={100}>Age</Th>
+          <Th width={100}>Status</Th>
+        </Thead>
+        <Tbody
+          totalHeight={data.length * 45}
+          totalWidth={650} // Sum of all column widths: 100 + 100 + 250 + 100 + 100
+        >
+          {data.map((_row: User) => {
+            // Pass rowIndex manually since we're mapping ourselves, not letting Tbody map
+            // Tr will inject colIndex to Td children automatically
+            const status = _row.status;
+            return (
+              <Tr key={_row.id}>
+                <Td>
+                  <strong>{_row.id}</strong>
+                </Td>
+                <Td>
+                  <span style={{ color: "#646cff", fontWeight: 500 }}>
+                    {_row.name}
+                  </span>
+                </Td>
+                <Td>{_row.email}</Td>
+                <Td>
+                  <span
+                    style={{
+                      color: _row.age > 50 ? "#ff6b6b" : "#51cf66",
+                    }}
+                  >
+                    {_row.age}
+                  </span>
+                </Td>
+                <Td>
+                  <span
+                    style={{
+                      padding: "4px 8px",
+                      borderRadius: "4px",
+                      backgroundColor: colors[status] + "20",
+                      color: colors[status],
+                      fontSize: "12px",
+                      fontWeight: 500,
+                    }}
+                  >
+                    {status}
+                  </span>
+                </Td>
+              </Tr>
+            );
+          })}
+        </Tbody>
+      </Table>
     </div>
   );
 }

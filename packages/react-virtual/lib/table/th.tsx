@@ -1,7 +1,51 @@
 import React from "react";
+import { useTableContext } from "./table";
+import { useTheadContext } from "./thead";
 
-const Th = () => {
-  return <div>Th</div>;
+interface ThProps extends React.HTMLAttributes<HTMLDivElement> {
+  colIndex?: number; // This prop is automatically injected by Thead via React.cloneElement
+  width?: number; // Column width (default: 100)
+  minWidth?: number;
+  maxWidth?: number;
+}
+
+const Th = ({ children, style, colIndex, width = 100, minWidth, maxWidth, ...props }: ThProps) => {
+  // Ensure Th is used within Thead context - throws error if not wrapped
+  useTheadContext();
+  const { columnCount } = useTableContext();
+
+  // colIndex is injected by Thead component via React.cloneElement
+  const effectiveColIndex = colIndex ?? 0;
+  // Use the width prop directly (default: 100)
+  const effectiveWidth = width;
+
+  return (
+    <div
+      style={{
+        width: effectiveWidth,
+        minWidth: minWidth || 100,
+        maxWidth: maxWidth,
+        borderRight:
+          columnCount > 0 && effectiveColIndex < columnCount - 1
+            ? "1px solid #e0e0e0"
+            : "none",
+        display: "flex",
+        alignItems: "center",
+        userSelect: "none",
+        flexShrink: 0,
+        flexGrow: 0,
+        boxSizing: "border-box",
+        ...style,
+        textAlign: "left",
+        padding: "8px 16px",
+        fontWeight: "600",
+        fontSize: "14px",
+      }}
+      {...props}
+    >
+      {children}
+    </div>
+  );
 };
 
 export default Th;

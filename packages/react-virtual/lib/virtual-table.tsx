@@ -1,5 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
+/**
+ * @deprecated This interface is deprecated. Use the declarative Table component API instead.
+ * See README.md for migration guide.
+ */
 export interface ColumnDef<T = any> {
   accessorKey?: keyof T | string;
   header: string;
@@ -13,6 +17,10 @@ export interface ColumnDef<T = any> {
   maxWidth?: number;
 }
 
+/**
+ * @deprecated This interface is deprecated. Use the declarative Table component API instead.
+ * See README.md for migration guide.
+ */
 export interface VirtualTableProps<T = any> {
   columns: ColumnDef<T>[];
   data: T[];
@@ -27,6 +35,36 @@ export interface VirtualTableProps<T = any> {
   onRowClick?: (row: T, index: number) => void;
 }
 
+/**
+ * @deprecated This component is deprecated and will be removed in a future version.
+ *
+ * Use the new declarative Table component API instead:
+ *
+ * ```tsx
+ * <Table data={data} height={600} rowHeight={45}>
+ *   <Thead>
+ *     <Th width={100}>Column 1</Th>
+ *     <Th width={200}>Column 2</Th>
+ *   </Thead>
+ *   <Tbody totalHeight={data.length * 45} totalWidth={300}>
+ *     {data.map(row => (
+ *       <Tr key={row.id}>
+ *         <Td>{row.col1}</Td>
+ *         <Td>{row.col2}</Td>
+ *       </Tr>
+ *     ))}
+ *   </Tbody>
+ * </Table>
+ * ```
+ *
+ * The new API provides:
+ * - Declarative column definitions via Th components
+ * - Better TypeScript support
+ * - More flexible styling options
+ * - Improved performance
+ *
+ * See README.md for complete documentation and migration examples.
+ */
 export function VirtualTable<T extends Record<string, any> = any>({
   columns,
   data,

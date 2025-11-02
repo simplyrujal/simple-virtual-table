@@ -8,13 +8,10 @@ import React, {
   useRef,
   useState,
 } from "react";
-import type { ColumnDef } from "../virtual-table";
 
 export interface TableContextValue<T = any> {
-  columns: ColumnDef<T>[];
-  data: T[];
+  totalData: number;
   rowHeight?: number;
-  headerHeight?: number;
   className?: string;
   headerClassName?: string;
   rowClassName?: string | ((row: T, index: number) => string);
@@ -25,6 +22,14 @@ export interface TableContextValue<T = any> {
   containerWidth: number | null;
   contentWidth: number;
   totalWidth: number;
+  columnWidths: number[];
+  needsFill: boolean;
+  spacerWidth: number;
+  overscan: number;
+  startIndex: number;
+  endIndex: number;
+  setColumnWidths: (widths: number[]) => void; // Function to update column widths from Thead
+  columnCount: number; // Number of columns (for border calculations)
 }
 
 const TableContext = createContext<TableContextValue | null>(null);
@@ -37,15 +42,22 @@ export const useTableContext = <T = any,>(): TableContextValue<T> => {
   return context as TableContextValue<T>;
 };
 
-export interface TableProps<T = any> extends TableContextValue<T> {
+export interface TableProps<T = any> {
+  totalData: number;
+  rowHeight?: number;
+  className?: string;
+  headerClassName?: string;
+  rowClassName?: string | ((row: T, index: number) => string);
+  onRowClick?: (row: T, index: number) => void;
+  width?: number;
+  height?: number;
+  overscan?: number;
   children: ReactNode;
 }
 
 const Table = <T extends Record<string, any> = any>({
-  columns,
-  data,
+  totalData,
   rowHeight = 40,
-  headerHeight = 50,
   className = "",
   headerClassName = "",
   rowClassName = "",
@@ -53,13 +65,29 @@ const Table = <T extends Record<string, any> = any>({
   children,
   width,
   height,
+  overscan = 5,
 }: TableProps<T>) => {
   const scrollElementRef = useRef<HTMLDivElement>(null);
   const [scrollTop, setScrollTop] = useState(0);
   const [containerWidth, setContainerWidth] = useState<number | null>(null);
+  const [columnWidths, setColumnWidths] = useState<number[]>([]);
 
   const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
     setScrollTop(e.currentTarget.scrollTop);
+  }, []);
+
+  // Stable setter function to prevent unnecessary re-renders
+  const stableSetColumnWidths = useCallback((widths: number[]) => {
+    setColumnWidths((prev) => {
+      // Only update if widths actually changed
+      if (
+        prev.length !== widths.length ||
+        prev.some((w, i) => w !== widths[i])
+      ) {
+        return widths;
+      }
+      return prev;
+    });
   }, []);
 
   // Measure container width when no explicit width is provided
@@ -81,11 +109,6 @@ const Table = <T extends Record<string, any> = any>({
       };
     }
   }, [width]);
-
-  // Column widths
-  const columnWidths = useMemo(() => {
-    return columns.map((col) => col.width || 100);
-  }, [columns]);
 
   // Calculate total content width (sum of all column widths)
   const contentWidth = useMemo(() => {
@@ -128,24 +151,38 @@ const Table = <T extends Record<string, any> = any>({
     return contentWidth;
   }, [contentWidth, needsFill, spacerWidth]);
 
+  const { startIndex, endIndex } = useMemo(() => {
+    const visibleStart = Math.floor(scrollTop / rowHeight);
+    const visibleEnd = Math.ceil((scrollTop + height) / rowHeight);
+    const startIndex = Math.max(0, visibleStart - overscan);
+    const endIndex = Math.min(totalData, visibleEnd + overscan);
+
+    return { startIndex, endIndex };
+  }, [scrollTop, height, rowHeight, totalData, overscan]);
+
   const contextValue: TableContextValue<T> = {
-    columns,
-    data,
+    totalData,
     rowHeight,
-    headerHeight,
     width,
     containerWidth,
-    className,
     headerClassName,
     rowClassName,
     onRowClick,
     scrollTop,
     contentWidth,
     totalWidth,
+    columnWidths,
+    needsFill,
+    spacerWidth,
+    overscan,
+    startIndex,
+    endIndex,
+    setColumnWidths: stableSetColumnWidths,
+    columnCount: columnWidths.length,
   };
 
   return (
-    <TableContext value={contextValue as TableContextValue}>
+    <TableContext.Provider value={contextValue as TableContextValue}>
       <div
         className={`virtual-table-container ${className}`}
         style={{
@@ -164,7 +201,7 @@ const Table = <T extends Record<string, any> = any>({
       >
         {children}
       </div>
-    </TableContext>
+    </TableContext.Provider>
   );
 };
 

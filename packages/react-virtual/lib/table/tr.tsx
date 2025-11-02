@@ -9,7 +9,7 @@ interface TrProps extends React.HTMLAttributes<HTMLDivElement> {
 const Tr = ({ children, style, rowIndex, ...props }: TrProps) => {
   // Ensure Tr is used within Tbody context - throws error if not wrapped
   useTbodyContext();
-  const { totalWidth, rowHeight, needsFill, spacerWidth } = useTableContext();
+  const { totalWidth, rowHeight } = useTableContext();
 
   // rowIndex is injected by Tbody component via React.cloneElement as absolute index
   // If it's missing, that's an error condition
@@ -39,18 +39,6 @@ const Tr = ({ children, style, rowIndex, ...props }: TrProps) => {
         }
         return child;
       })}
-      {/* Spacer to fill remaining space when content is smaller than container */}
-      {needsFill && spacerWidth > 0 && (
-        <div
-          style={{
-            width: spacerWidth,
-            minWidth: spacerWidth,
-            maxWidth: spacerWidth,
-            flexShrink: 0,
-            flexGrow: 0,
-          }}
-        />
-      )}
     </div>
   );
 };

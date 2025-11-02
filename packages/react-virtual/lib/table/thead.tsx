@@ -21,8 +21,7 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Thead = ({ children, style, headerHeight = 50, ...props }: IProps) => {
-  const { totalWidth, needsFill, spacerWidth, setColumnWidths } =
-    useTableContext();
+  const { totalWidth, setColumnWidths } = useTableContext();
 
   // Extract widths from Th children and update table context
   // The setColumnWidths function now handles change detection internally
@@ -66,7 +65,7 @@ const Thead = ({ children, style, headerHeight = 50, ...props }: IProps) => {
           return child;
         })}
         {/* Spacer to fill remaining space when content is smaller than container */}
-        {needsFill && spacerWidth > 0 && (
+        {/* {needsFill && spacerWidth > 0 && (
           <div
             style={{
               width: spacerWidth,
@@ -76,7 +75,7 @@ const Thead = ({ children, style, headerHeight = 50, ...props }: IProps) => {
               flexGrow: 0,
             }}
           />
-        )}
+        )} */}
       </div>
     </TheadContext.Provider>
   );

@@ -25,7 +25,7 @@ const data = [
 
 function MyTable() {
   return (
-    <Table totalData={data.length} height={600} width={900} rowHeight={45}>
+    <Table totalData={data.length} height={600} rowHeight={45}>
       <Thead>
         <Th width={100}>ID</Th>
         <Th width={200}>Name</Th>
@@ -55,15 +55,12 @@ The root component that provides context to all child components.
 
 **Props:**
 
-| Prop              | Type     | Required | Default  | Description                                   |
-| ----------------- | -------- | -------- | -------- | --------------------------------------------- |
-| `totalData`       | `number` | Yes      | -        | Total number of rows in the dataset           |
-| `height`          | `number` | Yes      | -        | Height of the table container                 |
-| `width`           | `number` | No       | `"100%"` | Width of the table container                  |
-| `rowHeight`       | `number` | No       | `40`     | Height of each row in pixels                  |
-| `overscan`        | `number` | No       | `5`      | Number of rows to render outside visible area |
-| `className`       | `string` | No       | `""`     | Additional CSS class for container            |
-| `headerClassName` | `string` | No       | `""`     | Additional CSS class for header               |
+| Prop        | Type     | Required | Default | Description                                   |
+| ----------- | -------- | -------- | ------- | --------------------------------------------- | --- |
+| `totalData` | `number` | Yes      | -       | Total number of rows in the dataset           |
+| `height`    | `number` | Yes      | -       | Height of the table container                 |     |
+| `rowHeight` | `number` | No       | `40`    | Height of each row in pixels                  |
+| `overscan`  | `number` | No       | `5`     | Number of rows to render outside visible area |
 
 ### Thead
 
@@ -172,7 +169,7 @@ function UserTable() {
       <p style={{ marginBottom: "20px", color: "#666" }}>
         Showing {data.length.toLocaleString()} rows with virtual scrolling
       </p>
-      <Table totalData={data.length} height={600} width={900} rowHeight={45}>
+      <Table totalData={data.length} height={600} rowHeight={45}>
         <Thead>
           <Th width={100}>ID</Th>
           <Th width={100}>Name</Th>
@@ -247,7 +244,6 @@ The table automatically handles row virtualization. Only visible rows (plus over
 All components accept standard HTML attributes and can be styled via:
 
 - Inline `style` prop
-- `className` prop (for container, header, and rows)
 - CSS targeting the component classes
 
 ## TypeScript Support

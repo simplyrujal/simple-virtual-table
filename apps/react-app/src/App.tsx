@@ -36,13 +36,21 @@ const smallData = [
     status: "Inactive",
   },
   { id: 3, name: "Jim", email: "jim@example.com", age: 35, status: "Pending" },
-  { id: 4, name: "Jill", email: "jill@example.com", age: 40, status: "Active" },
+  {
+    id: 4,
+    name: "Jill",
+    email: "jill@example.com",
+    age: 40,
+    status: "Active",
+    width: 100,
+  },
   {
     id: 5,
     name: "Jack",
     email: "jack@example.com",
     age: 45,
     status: "Inactive",
+    width: 100,
   },
   {
     id: 6,
@@ -50,14 +58,23 @@ const smallData = [
     email: "jill@example.com",
     age: 50,
     status: "Pending",
+    width: 100,
   },
-  { id: 7, name: "Jack", email: "jack@example.com", age: 55, status: "Active" },
+  {
+    id: 7,
+    name: "Jack",
+    email: "jack@example.com",
+    age: 55,
+    status: "Active",
+    width: 100,
+  },
   {
     id: 8,
     name: "Jill",
     email: "jill@example.com",
     age: 60,
     status: "Inactive",
+    width: 100,
   },
   {
     id: 9,
@@ -65,6 +82,7 @@ const smallData = [
     email: "jack@example.com",
     age: 65,
     status: "Pending",
+    width: 100,
   },
   // ... more rows
 ];
@@ -131,13 +149,14 @@ function App() {
         </Tbody>
       </Table>
 
-      <Table totalData={smallData.length} rowHeight={45} height={200}>
+      <Table totalData={smallData.length} rowHeight={45} height={600}>
         <Thead>
           <Th width={100}>ID</Th>
           <Th width={200}>Name</Th>
           <Th width={300}>Email</Th>
           <Th width={100}>Age</Th>
           <Th width={100}>Status</Th>
+          <Th width={100}>Width</Th>
         </Thead>
         <Tbody>
           {smallData.map((row) => (
@@ -147,6 +166,7 @@ function App() {
               <Td>{row.email}</Td>
               <Td>{row.age}</Td>
               <Td>{row.status}</Td>
+              <Td>{row.width}</Td>
             </Tr>
           ))}
         </Tbody>

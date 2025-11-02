@@ -65,8 +65,6 @@ The root component that provides context to all child components.
 | `className`       | `string` | No       | `""`     | Additional CSS class for container            |
 | `headerClassName` | `string` | No       | `""`     | Additional CSS class for header               |
 
-|
-
 ### Thead
 
 Header container component. Must wrap all `Th` components.

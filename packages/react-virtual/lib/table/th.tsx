@@ -9,20 +9,26 @@ interface ThProps extends React.HTMLAttributes<HTMLDivElement> {
   maxWidth?: number;
 }
 
-const Th = ({ children, style, colIndex, width = 100, minWidth, maxWidth, ...props }: ThProps) => {
+const Th = ({
+  children,
+  style,
+  colIndex,
+  width = 100,
+  minWidth,
+  maxWidth,
+  ...props
+}: ThProps) => {
   // Ensure Th is used within Thead context - throws error if not wrapped
   useTheadContext();
   const { columnCount } = useTableContext();
 
   // colIndex is injected by Thead component via React.cloneElement
   const effectiveColIndex = colIndex ?? 0;
-  // Use the width prop directly (default: 100)
-  const effectiveWidth = width;
 
   return (
     <div
       style={{
-        width: effectiveWidth,
+        width,
         minWidth: minWidth || 100,
         maxWidth: maxWidth,
         borderRight:

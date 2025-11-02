@@ -7,6 +7,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import useCheckOverflow from "../hooks/use-check-overflow";
 
 export interface TableContextValue<T = any> {
   totalData: number;
@@ -46,13 +47,15 @@ const Table = <T extends Record<string, any> = any>({
   totalData,
   rowHeight = 40,
   children,
-  height,
+  height = 100,
   overscan = 5,
   containerStyle,
 }: TableProps<T>) => {
   const scrollElementRef = useRef<HTMLDivElement>(null);
   const [scrollTop, setScrollTop] = useState(0);
   const [columnWidths, setColumnWidths] = useState<number[]>([]);
+
+  const { overflowY } = useCheckOverflow({ ref: scrollElementRef });
 
   const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
     setScrollTop(e.currentTarget.scrollTop);
@@ -100,14 +103,16 @@ const Table = <T extends Record<string, any> = any>({
     totalWidth: contentWidth,
   };
 
-  const widthAdjust = 3.4;
+  const widthAdjust = 3.8;
+  const overflowWidth: number = overflowY ? -3 : -13;
 
   return (
     <TableContext.Provider value={contextValue as TableContextValue}>
       <div
         style={{
           height,
-          width: contentWidth + columnWidths.length * widthAdjust,
+          width:
+            contentWidth + columnWidths.length * widthAdjust + overflowWidth,
           overflow: "auto",
           border: "1px solid",
           borderRadius: "4px",

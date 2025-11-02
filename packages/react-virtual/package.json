@@ -1,6 +1,6 @@
 {
   "name": "simple-virtual-table-react",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -16,9 +16,7 @@
     "dist",
     "lib"
   ],
-  "keywords": [],
   "author": "",
-  "license": "ISC",
   "scripts": {
     "build": "vite build",
     "build:watch": "vite build --watch"
@@ -32,5 +30,21 @@
     "typescript": "^5.5.3",
     "vite": "^7.1.7",
     "vite-plugin-dts": "^4.5.4"
+  },
+  "keywords": [
+    "react",
+    "virtual",
+    "table",
+    "simple",
+    "simple-table",
+    "virtual-table",
+    "virtual-table-react",
+    "virtual-table-react-component",
+    "virtual-table-react-component-library"
+  ],
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/simplyrujal/simple-virtual-table/tree/main/packages/react-virtual"
   }
 }

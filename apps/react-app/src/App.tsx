@@ -26,6 +26,49 @@ const generateData = (count: number): User[] => {
 
 const data = generateData(10000); // Large dataset to showcase virtualization
 
+const smallData = [
+  { id: 1, name: "John", email: "john@example.com", age: 30, status: "Active" },
+  {
+    id: 2,
+    name: "Jane",
+    email: "jane@example.com",
+    age: 25,
+    status: "Inactive",
+  },
+  { id: 3, name: "Jim", email: "jim@example.com", age: 35, status: "Pending" },
+  { id: 4, name: "Jill", email: "jill@example.com", age: 40, status: "Active" },
+  {
+    id: 5,
+    name: "Jack",
+    email: "jack@example.com",
+    age: 45,
+    status: "Inactive",
+  },
+  {
+    id: 6,
+    name: "Jill",
+    email: "jill@example.com",
+    age: 50,
+    status: "Pending",
+  },
+  { id: 7, name: "Jack", email: "jack@example.com", age: 55, status: "Active" },
+  {
+    id: 8,
+    name: "Jill",
+    email: "jill@example.com",
+    age: 60,
+    status: "Inactive",
+  },
+  {
+    id: 9,
+    name: "Jack",
+    email: "jack@example.com",
+    age: 65,
+    status: "Pending",
+  },
+  // ... more rows
+];
+
 function App() {
   return (
     <div style={{ padding: "20px" }}>
@@ -85,6 +128,27 @@ function App() {
               </Tr>
             );
           })}
+        </Tbody>
+      </Table>
+
+      <Table totalData={smallData.length} rowHeight={45} height={200}>
+        <Thead>
+          <Th width={100}>ID</Th>
+          <Th width={200}>Name</Th>
+          <Th width={300}>Email</Th>
+          <Th width={100}>Age</Th>
+          <Th width={100}>Status</Th>
+        </Thead>
+        <Tbody>
+          {smallData.map((row) => (
+            <Tr key={row.id}>
+              <Td>{row.id}</Td>
+              <Td>{row.name}</Td>
+              <Td>{row.email}</Td>
+              <Td>{row.age}</Td>
+              <Td>{row.status}</Td>
+            </Tr>
+          ))}
         </Tbody>
       </Table>
     </div>

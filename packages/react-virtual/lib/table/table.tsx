@@ -14,7 +14,6 @@ export interface TableContextValue<T = any> {
   rowHeight?: number;
   className?: string;
   headerClassName?: string;
-  rowClassName?: string | ((row: T, index: number) => string);
   width?: number;
   height?: number;
   scrollTop: number;
@@ -46,7 +45,6 @@ export interface TableProps<T = any> {
   rowHeight?: number;
   className?: string;
   headerClassName?: string;
-  rowClassName?: string | ((row: T, index: number) => string);
   width?: number;
   height?: number;
   overscan?: number;
@@ -58,7 +56,6 @@ const Table = <T extends Record<string, any> = any>({
   rowHeight = 40,
   className = "",
   headerClassName = "",
-  rowClassName = "",
   children,
   width,
   height,
@@ -163,7 +160,6 @@ const Table = <T extends Record<string, any> = any>({
     width,
     containerWidth,
     headerClassName,
-    rowClassName,
     scrollTop,
     contentWidth,
     totalWidth,

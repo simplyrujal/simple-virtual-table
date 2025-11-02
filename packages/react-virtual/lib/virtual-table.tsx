@@ -43,7 +43,6 @@ export function VirtualTable<T extends Record<string, any> = any>({
   const [scrollTop, setScrollTop] = useState(0);
   const [containerWidth, setContainerWidth] = useState<number | null>(null);
   const scrollElementRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   // Column widths
   const columnWidths = useMemo(() => {
@@ -232,7 +231,6 @@ export function VirtualTable<T extends Record<string, any> = any>({
 
       {/* Virtualized Body */}
       <div
-        ref={containerRef}
         style={{
           position: "relative",
           height: totalHeight,

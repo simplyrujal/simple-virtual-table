@@ -99,6 +99,7 @@ function App() {
       <Table
         totalData={data.length}
         height={600}
+        width={670}
         rowHeight={45}
         containerStyle={{
           overflow: "auto",
@@ -156,7 +157,12 @@ function App() {
         </Tbody>
       </Table>
 
-      <Table totalData={smallData.length} rowHeight={45} height={400}>
+      <Table
+        totalData={smallData.length}
+        rowHeight={45}
+        height={400}
+        width={800}
+      >
         <Thead>
           <Th width={100}>ID</Th>
           <Th width={200}>Name</Th>

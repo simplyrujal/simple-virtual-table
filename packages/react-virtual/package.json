@@ -1,6 +1,6 @@
 {
   "name": "simple-virtual-table-react",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -25,9 +25,9 @@
     "react": "^19.1.1"
   },
   "devDependencies": {
-    "@types/react": "^19.1.16",
-    "@vitejs/plugin-react": "^5.0.4",
-    "typescript": "^5.5.3",
+    "@types/react": "^19.2.2",
+    "@vitejs/plugin-react": "^5.1.0",
+    "typescript": "^5.9.3",
     "vite": "^7.1.7",
     "vite-plugin-dts": "^4.5.4"
   },

@@ -25,7 +25,7 @@ const data = [
 
 function MyTable() {
   return (
-    <Table totalData={data.length} height={600} rowHeight={45}>
+    <Table totalData={data.length} height={600} width={670} rowHeight={45}>
       <Thead>
         <Th width={100}>ID</Th>
         <Th width={200}>Name</Th>
@@ -91,9 +91,8 @@ Header cell component. Must be used inside `Thead`.
 
 | Prop       | Type                  | Required | Default | Description                                                                       |
 | ---------- | --------------------- | -------- | ------- | --------------------------------------------------------------------------------- |
-| `width`    | `number`              | No       | `100`   | Width of the column in pixels                                                     |
-| `minWidth` | `number`              | No       | `100`   | Minimum width of the column                                                       |
-| `maxWidth` | `number`              | No       | -       | Maximum width of the column                                                       |
+| `width`    | `number`              | No       | `600`   | Width of the column in pixels                                                     |
+| `height`   | `number`              | No       | `200`   | Width of the column in pixels                                                     |
 | `colIndex` | `number`              | No       | -       | Automatically injected by `Thead`                                                 |
 | `style`    | `React.CSSProperties` | No       | -       | Custom styles for the header cell                                                 |
 | `...props` | `HTMLDivElement`      | No       | -       | All standard HTML div attributes (className, onClick, onMouseOver, data-\*, etc.) |
@@ -198,7 +197,7 @@ function UserTable() {
       <p style={{ marginBottom: "20px", color: "#666" }}>
         Showing {data.length.toLocaleString()} rows with virtual scrolling
       </p>
-      <Table totalData={data.length} height={600} rowHeight={45}>
+      <Table totalData={data.length} height={400} width={800} rowHeight={45}>
         <Thead>
           <Th width={100}>ID</Th>
           <Th width={100}>Name</Th>

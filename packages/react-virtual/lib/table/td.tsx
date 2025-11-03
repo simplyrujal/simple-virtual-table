@@ -1,11 +1,11 @@
 import React from "react";
 import { useTableContext } from "./table";
 
-interface TdProps extends React.HTMLAttributes<HTMLDivElement> {
+interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   colIndex?: number; // This prop is automatically injected by Tr via React.cloneElement
 }
 
-const Td = ({ children, style, colIndex, ...props }: TdProps) => {
+const Td = ({ children, style, colIndex, ...props }: IProps) => {
   const { columnWidths, columnCount } = useTableContext();
 
   // colIndex is injected by Tr component via React.cloneElement

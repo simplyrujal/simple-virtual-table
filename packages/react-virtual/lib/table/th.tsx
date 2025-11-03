@@ -2,12 +2,12 @@ import React from "react";
 import { useTableContext } from "./table";
 import { useTheadContext } from "./thead";
 
-interface ThProps extends React.HTMLAttributes<HTMLDivElement> {
+interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   colIndex?: number; // This prop is automatically injected by Thead via React.cloneElement
   width?: number; // Column width (default: 100)
 }
 
-const Th = ({ children, style, colIndex, width = 100, ...props }: ThProps) => {
+const Th = ({ children, style, colIndex, width = 100, ...props }: IProps) => {
   // Ensure Th is used within Thead context - throws error if not wrapped
   useTheadContext();
   const { columnCount } = useTableContext();

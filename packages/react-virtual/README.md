@@ -58,7 +58,8 @@ The root component that provides context to all child components.
 | Prop             | Type                  | Required | Default | Description                                   |
 | ---------------- | --------------------- | -------- | ------- | --------------------------------------------- |
 | `totalData`      | `number`              | Yes      | -       | Total number of rows in the dataset           |
-| `height`         | `number`              | No       | -       | Height of the table container                 |
+| `height`         | `number`              | No       | `200`   | Height of the table container                 |
+| `width`          | `number`              | No       | `600`   | Width of the table container                  |
 | `rowHeight`      | `number`              | No       | `40`    | Height of each row in pixels                  |
 | `overscan`       | `number`              | No       | `5`     | Number of rows to render outside visible area |
 | `containerStyle` | `React.CSSProperties` | No       | -       | Custom styles for the table container         |
@@ -91,8 +92,7 @@ Header cell component. Must be used inside `Thead`.
 
 | Prop       | Type                  | Required | Default | Description                                                                       |
 | ---------- | --------------------- | -------- | ------- | --------------------------------------------------------------------------------- |
-| `width`    | `number`              | No       | `600`   | Width of the column in pixels                                                     |
-| `height`   | `number`              | No       | `200`   | Width of the column in pixels                                                     |
+| `width`    | `number`              | No       | `100`   | Width of the column in pixels                                                     |
 | `colIndex` | `number`              | No       | -       | Automatically injected by `Thead`                                                 |
 | `style`    | `React.CSSProperties` | No       | -       | Custom styles for the header cell                                                 |
 | `...props` | `HTMLDivElement`      | No       | -       | All standard HTML div attributes (className, onClick, onMouseOver, data-\*, etc.) |

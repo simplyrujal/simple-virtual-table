@@ -5,19 +5,9 @@ import { useTheadContext } from "./thead";
 interface ThProps extends React.HTMLAttributes<HTMLDivElement> {
   colIndex?: number; // This prop is automatically injected by Thead via React.cloneElement
   width?: number; // Column width (default: 100)
-  minWidth?: number;
-  maxWidth?: number;
 }
 
-const Th = ({
-  children,
-  style,
-  colIndex,
-  width = 100,
-  minWidth,
-  maxWidth,
-  ...props
-}: ThProps) => {
+const Th = ({ children, style, colIndex, width = 100, ...props }: ThProps) => {
   // Ensure Th is used within Thead context - throws error if not wrapped
   useTheadContext();
   const { columnCount } = useTableContext();
@@ -29,8 +19,6 @@ const Th = ({
     <div
       style={{
         width,
-        minWidth: minWidth || 100,
-        maxWidth: maxWidth,
         borderRight:
           columnCount > 0 && effectiveColIndex < columnCount - 1
             ? "1px solid #e0e0e0"

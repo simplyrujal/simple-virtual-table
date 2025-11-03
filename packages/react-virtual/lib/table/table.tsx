@@ -9,7 +9,7 @@ import React, {
 } from "react";
 import useCheckOverflow from "../hooks/use-check-overflow";
 
-export interface TableContextValue<T = any> {
+export interface TableContextValue {
   totalData: number;
   rowHeight?: number;
   height?: number;
@@ -26,15 +26,15 @@ export interface TableContextValue<T = any> {
 
 const TableContext = createContext<TableContextValue | null>(null);
 
-export const useTableContext = <T = any,>(): TableContextValue<T> => {
+export const useTableContext = (): TableContextValue => {
   const context = useContext(TableContext);
   if (!context) {
     throw new Error("Table components must be used within a Table provider");
   }
-  return context as TableContextValue<T>;
+  return context as TableContextValue;
 };
 
-export interface TableProps<T = any> {
+export interface TableProps {
   totalData: number;
   rowHeight?: number;
   height?: number;
@@ -50,7 +50,7 @@ const Table = <T extends Record<string, any> = any>({
   height = 100,
   overscan = 5,
   containerStyle,
-}: TableProps<T>) => {
+}: TableProps) => {
   const scrollElementRef = useRef<HTMLDivElement>(null);
   const [scrollTop, setScrollTop] = useState(0);
   const [columnWidths, setColumnWidths] = useState<number[]>([]);
@@ -89,7 +89,7 @@ const Table = <T extends Record<string, any> = any>({
     return { startIndex, endIndex };
   }, [scrollTop, height, rowHeight, totalData, overscan]);
 
-  const contextValue: TableContextValue<T> = {
+  const contextValue: TableContextValue = {
     totalData,
     rowHeight,
     scrollTop,

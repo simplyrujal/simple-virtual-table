@@ -96,7 +96,14 @@ function App() {
       <p style={{ marginBottom: "20px", color: "#666" }}>
         Showing {data.length.toLocaleString()} rows with virtual scrolling
       </p>
-      <Table totalData={data.length} height={600} rowHeight={45}>
+      <Table
+        totalData={data.length}
+        height={600}
+        rowHeight={45}
+        containerStyle={{
+          overflow: "auto",
+        }}
+      >
         <Thead>
           <Th width={100}>ID</Th>
           <Th width={100}>Name</Th>
@@ -149,7 +156,7 @@ function App() {
         </Tbody>
       </Table>
 
-      <Table totalData={smallData.length} rowHeight={45} height={600}>
+      <Table totalData={smallData.length} rowHeight={45} height={400}>
         <Thead>
           <Th width={100}>ID</Th>
           <Th width={200}>Name</Th>
@@ -157,6 +164,10 @@ function App() {
           <Th width={100}>Age</Th>
           <Th width={100}>Status</Th>
           <Th width={100}>Width</Th>
+          <Th width={100}>RRR</Th>
+          <Th width={100}>RRR</Th>
+          <Th width={100}>RRR</Th>
+          <Th width={100}>RRR</Th>
         </Thead>
         <Tbody>
           {smallData.map((row) => (
@@ -166,6 +177,10 @@ function App() {
               <Td>{row.email}</Td>
               <Td>{row.age}</Td>
               <Td>{row.status}</Td>
+              <Td>{row.width}</Td>
+              <Td>{row.width}</Td>
+              <Td>{row.width}</Td>
+              <Td>{row.width}</Td>
               <Td>{row.width}</Td>
             </Tr>
           ))}

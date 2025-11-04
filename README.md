@@ -81,8 +81,8 @@ pnpm run build:packages
 **Build individual packages:**
 
 ```bash
-pnpm run build:react-virtual
-pnpm run build:svelte-virtual
+pnpm run build:react
+pnpm run build:svelte
 ```
 
 **Build everything (packages + apps):**

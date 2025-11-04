@@ -25,7 +25,7 @@ const data = [
 
 function MyTable() {
   return (
-    <Table totalData={data.length} height={600} width={670} rowHeight={45}>
+    <Table totalData={data.length} height={600} rowHeight={45}>
       <Thead>
         <Th width={100}>ID</Th>
         <Th width={200}>Name</Th>
@@ -56,10 +56,9 @@ The root component that provides context to all child components.
 **Props:**
 
 | Prop             | Type                  | Required | Default | Description                                   |
-| ---------------- | --------------------- | -------- | ------- | --------------------------------------------- |
+| ---------------- | --------------------- | -------- | ------- | --------------------------------------------- | --- |
 | `totalData`      | `number`              | Yes      | -       | Total number of rows in the dataset           |
-| `height`         | `number`              | No       | `200`   | Height of the table container                 |
-| `width`          | `number`              | No       | `600`   | Width of the table container                  |
+| `height`         | `number`              | No       | `200`   | Height of the table container                 |     |
 | `rowHeight`      | `number`              | No       | `40`    | Height of each row in pixels                  |
 | `overscan`       | `number`              | No       | `5`     | Number of rows to render outside visible area |
 | `containerStyle` | `React.CSSProperties` | No       | -       | Custom styles for the table container         |
@@ -197,7 +196,7 @@ function UserTable() {
       <p style={{ marginBottom: "20px", color: "#666" }}>
         Showing {data.length.toLocaleString()} rows with virtual scrolling
       </p>
-      <Table totalData={data.length} height={400} width={800} rowHeight={45}>
+      <Table totalData={data.length} height={400} rowHeight={45}>
         <Thead>
           <Th width={100}>ID</Th>
           <Th width={100}>Name</Th>

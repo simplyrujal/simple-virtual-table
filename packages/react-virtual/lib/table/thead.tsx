@@ -21,7 +21,7 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Thead = ({ children, style, headerHeight = 50, ...props }: IProps) => {
-  const { totalWidth, setColumnWidths } = useTableContext();
+  const { contentWidth, setColumnWidths } = useTableContext();
 
   // Extract widths from Th children and update table context
   // The setColumnWidths function now handles change detection internally
@@ -50,7 +50,7 @@ const Thead = ({ children, style, headerHeight = 50, ...props }: IProps) => {
           zIndex: 10,
           display: "flex",
           height: headerHeight,
-          width: totalWidth,
+          width: contentWidth,
           boxSizing: "border-box",
           ...style,
           backgroundColor: "#f5f5f5",

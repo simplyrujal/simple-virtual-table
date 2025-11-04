@@ -15,7 +15,6 @@ export interface TableContextValue {
   height?: number;
   scrollTop: number;
   contentWidth: number;
-  totalWidth: number;
   columnWidths: number[];
   overscan: number;
   startIndex: number;
@@ -133,7 +132,6 @@ const Table = ({
     endIndex,
     setColumnWidths: stableSetColumnWidths,
     columnCount: columnWidths.length,
-    totalWidth: contentWidth,
   };
 
   return (

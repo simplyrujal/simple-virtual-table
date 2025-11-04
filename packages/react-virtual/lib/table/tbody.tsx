@@ -21,7 +21,7 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Tbody = ({ children, offsetHeight = 45, style, ...props }: IProps) => {
-  const { rowHeight, totalData, startIndex, endIndex, totalWidth } =
+  const { rowHeight, totalData, startIndex, endIndex, contentWidth } =
     useTableContext();
 
   const totalHeight = totalData * offsetHeight;
@@ -34,7 +34,7 @@ const Tbody = ({ children, offsetHeight = 45, style, ...props }: IProps) => {
         style={{
           position: "relative",
           height: totalHeight,
-          width: totalWidth,
+          width: contentWidth,
           boxSizing: "border-box",
           ...style,
         }}

@@ -9,7 +9,7 @@ interface TrProps extends React.HTMLAttributes<HTMLDivElement> {
 const Tr = ({ children, style, rowIndex, ...props }: TrProps) => {
   // Ensure Tr is used within Tbody context - throws error if not wrapped
   useTbodyContext();
-  const { totalWidth, rowHeight } = useTableContext();
+  const { contentWidth, rowHeight } = useTableContext();
 
   // rowIndex is injected by Tbody component via React.cloneElement as absolute index
   // If it's missing, that's an error condition
@@ -27,7 +27,7 @@ const Tr = ({ children, style, rowIndex, ...props }: TrProps) => {
         borderBottom: "1px solid #e0e0e0",
         backgroundColor: rowIndex % 2 === 0 ? "#ffffff" : "#fafafa",
         transition: "background-color 0.2s",
-        width: totalWidth,
+        width: contentWidth,
         boxSizing: "border-box",
         ...style,
       }}

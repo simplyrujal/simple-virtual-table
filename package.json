@@ -1,17 +1,17 @@
 {
   "name": "simple-virtual-table",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "build": "pnpm run build:packages && pnpm run build:apps",
-    "start": "pnpm run start:react-app & pnpm run start:svelte-app",
+    "start": "pnpm run start:react & pnpm run start:svelte",
     "build:recursive": "pnpm recursive run build",
     "start:react": "pnpm --filter react-app dev",
     "start:svelte": "pnpm --filter svelte-app dev",
     "build:react": "pnpm --filter simple-virtual-table-react build",
     "build:svelte": "pnpm --filter simple-virtual-table-svelte build",
-    "build:packages": "pnpm run build:react-virtual && pnpm run build:svelte-virtual",
+    "build:packages": "pnpm run build:react && pnpm run build:svelte",
     "build:apps": "pnpm --filter react-app build && pnpm --filter svelte-app build",
     "test": "pnpm recursive run test"
   },

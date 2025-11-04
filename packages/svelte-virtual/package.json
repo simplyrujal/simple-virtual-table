@@ -1,6 +1,6 @@
 {
   "name": "simple-virtual-table-svelte",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "type": "module",
   "description": "",
   "main": "./dist/index.cjs",

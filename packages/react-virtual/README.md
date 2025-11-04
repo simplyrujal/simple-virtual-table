@@ -2,7 +2,7 @@
 
 A declarative, high-performance virtual table component for React with automatic row virtualization.
 
-![Virtual Table Example](../../assets/image.png)
+![Virtual Table Example](./assets/image.png)
 
 ## Installation
 

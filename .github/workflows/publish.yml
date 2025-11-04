@@ -31,10 +31,10 @@ jobs:
         run: pnpm install
 
       - name: Build react-virtual
-        run: pnpm run build:react-virtual
+        run: pnpm run build:react
 
-      - name: Build svelte-virtual
-        run: pnpm run build:svelte-virtual
+      - name: Build svelte
+        run: pnpm run build:svelte
 
       - name: Publish react-virtual to npm
         working-directory: packages/react-virtual

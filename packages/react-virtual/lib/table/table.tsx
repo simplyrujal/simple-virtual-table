@@ -38,7 +38,10 @@ export interface TableProps {
   totalData: number;
   rowHeight?: number;
   height?: number;
-  containerStyle?: React.CSSProperties;
+  containerStyle?: Omit<
+    React.CSSProperties,
+    "width" | "height" | "position" | "overflow"
+  >;
   overscan?: number;
   children: ReactNode;
 }
@@ -140,10 +143,10 @@ const Table = ({
           height,
           width: "100%",
           overflow: "auto",
-          border: "1px solid",
-          borderRadius: "4px",
           position: "relative",
           ...containerStyle,
+          border: "1px solid",
+          borderRadius: "4px",
         }}
         ref={scrollElementRef}
         onScroll={handleScroll}

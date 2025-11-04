@@ -96,14 +96,7 @@ function App() {
       <p style={{ marginBottom: "20px", color: "#666" }}>
         Showing {data.length.toLocaleString()} rows with virtual scrolling
       </p>
-      <Table
-        totalData={data.length}
-        height={600}
-        rowHeight={45}
-        containerStyle={{
-          overflow: "auto",
-        }}
-      >
+      <Table totalData={data.length} height={600} rowHeight={45}>
         <Thead>
           <Th width={100}>ID</Th>
           <Th width={100}>Name</Th>

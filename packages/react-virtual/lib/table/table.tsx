@@ -3,6 +3,7 @@ import React, {
   ReactNode,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -37,7 +38,6 @@ export interface TableProps {
   totalData: number;
   rowHeight?: number;
   height?: number;
-  width?: number;
   containerStyle?: React.CSSProperties;
   overscan?: number;
   children: ReactNode;
@@ -48,7 +48,6 @@ const Table = ({
   rowHeight = 40,
   children,
   height = 200,
-  width = 600,
   overscan = 5,
   containerStyle,
 }: TableProps) => {
@@ -88,6 +87,38 @@ const Table = ({
     return { startIndex, endIndex };
   }, [scrollTop, height, rowHeight, totalData, overscan]);
 
+  // Update container width based on content width comparison
+  useEffect(() => {
+    const updateWidth = () => {
+      if (scrollElementRef.current && contentWidth > 0) {
+        // Get the container's current width (which is 100% initially)
+        // We need to get the parent's width or the actual rendered width
+        const container = scrollElementRef.current;
+        // Temporarily ensure width is 100% to get accurate measurement
+        container.style.width = "100%";
+        // Use requestAnimationFrame to ensure layout has updated
+        requestAnimationFrame(() => {
+          if (scrollElementRef.current) {
+            const containerWidth = scrollElementRef.current.clientWidth;
+            if (contentWidth > containerWidth) {
+              scrollElementRef.current.style.width = "100%";
+            } else {
+              scrollElementRef.current.style.width = "fit-content";
+            }
+          }
+        });
+      }
+    };
+
+    updateWidth();
+
+    // Handle window resize
+    window.addEventListener("resize", updateWidth);
+    return () => {
+      window.removeEventListener("resize", updateWidth);
+    };
+  }, [contentWidth]);
+
   const contextValue: TableContextValue = {
     totalData,
     rowHeight,
@@ -107,7 +138,7 @@ const Table = ({
       <div
         style={{
           height,
-          width,
+          width: "100%",
           overflow: "auto",
           border: "1px solid",
           borderRadius: "4px",

@@ -4,6 +4,8 @@ import { useTableContext } from "./table";
 interface TbodyContextValue {
   contentWidth: number;
   rowHeight: number;
+  columnWidths: number[];
+  columnCount: number;
   // Context exists to ensure Tr is wrapped in Tbody
   // The rowIndex is injected via props by React.cloneElement
 }
@@ -23,14 +25,23 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Tbody = ({ children, offsetHeight = 45, style, ...props }: IProps) => {
-  const { rowHeight, totalData, startIndex, endIndex, contentWidth } =
-    useTableContext();
+  const {
+    rowHeight,
+    totalData,
+    startIndex,
+    endIndex,
+    contentWidth,
+    columnWidths,
+    columnCount,
+  } = useTableContext();
 
   const totalHeight = totalData * offsetHeight;
 
   const contextValue: TbodyContextValue = {
     contentWidth,
     rowHeight,
+    columnWidths,
+    columnCount,
   };
 
   return (

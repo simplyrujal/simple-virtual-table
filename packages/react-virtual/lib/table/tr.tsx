@@ -23,13 +23,13 @@ const Tr = ({ children, style, rowIndex, ...props }: TrProps) => {
     <div
       style={{
         display: "flex",
+        width: contentWidth,
         height: rowHeight,
+        ...style,
         borderBottom: "1px solid #e0e0e0",
         backgroundColor: rowIndex % 2 === 0 ? "#ffffff" : "#fafafa",
         transition: "background-color 0.2s",
-        width: contentWidth,
         boxSizing: "border-box",
-        ...style,
       }}
       {...props}
     >

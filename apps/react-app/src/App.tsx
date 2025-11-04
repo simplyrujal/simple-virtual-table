@@ -148,7 +148,7 @@ function App() {
           })}
         </Tbody>
       </Table>
-
+      <br />
       <Table totalData={smallData.length} rowHeight={45} height={400}>
         <Thead>
           <Th width={100}>ID</Th>

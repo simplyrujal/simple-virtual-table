@@ -16,7 +16,7 @@
     "dist",
     "lib"
   ],
-  "author": "",
+  "author": "SimplyRujal",
   "scripts": {
     "build": "vite build",
     "build:watch": "vite build --watch"

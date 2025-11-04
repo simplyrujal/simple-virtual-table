@@ -20,7 +20,7 @@
     "lib"
   ],
   "keywords": [],
-  "author": "",
+  "author": "SimplyRujal",
   "license": "ISC",
   "scripts": {
     "build": "vite build",

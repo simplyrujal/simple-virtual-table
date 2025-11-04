@@ -213,14 +213,15 @@ The root component that provides context to all child components.
 
 **Props:**
 
-| Prop             | Type                  | Required | Default | Description                                   |
-| ---------------- | --------------------- | -------- | ------- | --------------------------------------------- | --- |
-| `totalData`      | `number`              | Yes      | -       | Total number of rows in the dataset           |
-| `height`         | `number`              | No       | `200`   | Height of the table container                 |     |
-| `rowHeight`      | `number`              | No       | `40`    | Height of each row in pixels                  |
-| `overscan`       | `number`              | No       | `5`     | Number of rows to render outside visible area |
-| `containerStyle` | `React.CSSProperties` | No       | -       | Custom styles for the table container         |
-| `children`       | `ReactNode`           | Yes      | -       | Child components (Thead, Tbody)               |
+| Prop                 | Type                  | Required | Default | Description                                   |
+| -------------------- | --------------------- | -------- | ------- | --------------------------------------------- | --- |
+| `totalData`          | `number`              | Yes      | -       | Total number of rows in the dataset           |
+| `height`             | `number`              | No       | `200`   | Height of the table container                 |     |
+| `rowHeight`          | `number`              | No       | `40`    | Height of each row in pixels                  |
+| `overscan`           | `number`              | No       | `5`     | Number of rows to render outside visible area |
+| `containerStyle`     | `React.CSSProperties` | No       | -       | Custom styles for the table container         |
+| `containerClassName` | `string`              | No       | -       | CSS classname                                 |
+| `children`           | `ReactNode`           | Yes      | -       | Child components (Thead, Tbody)               |
 
 ### Thead
 

@@ -43,6 +43,7 @@ export interface TableProps {
   >;
   overscan?: number;
   children: ReactNode;
+  containerClassName?: string;
 }
 
 const Table = ({
@@ -52,6 +53,7 @@ const Table = ({
   height = 200,
   overscan = 5,
   containerStyle,
+  containerClassName,
 }: TableProps) => {
   const scrollElementRef = useRef<HTMLDivElement>(null);
   const [scrollTop, setScrollTop] = useState(0);
@@ -146,6 +148,7 @@ const Table = ({
           border: "1px solid",
           borderRadius: "4px",
         }}
+        {...(containerClassName && { className: containerClassName })}
         ref={scrollElementRef}
         onScroll={handleScroll}
       >

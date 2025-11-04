@@ -1,5 +1,4 @@
 import React from "react";
-import { useTableContext } from "./table";
 import { useTheadContext } from "./thead";
 
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -9,8 +8,7 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const Th = ({ children, style, colIndex, width = 100, ...props }: IProps) => {
   // Ensure Th is used within Thead context - throws error if not wrapped
-  useTheadContext();
-  const { columnCount } = useTableContext();
+  const { columnCount } = useTheadContext();
 
   // colIndex is injected by Thead component via React.cloneElement
   const effectiveColIndex = colIndex ?? 0;

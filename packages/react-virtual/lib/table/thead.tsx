@@ -2,6 +2,7 @@ import React, { createContext, useContext, useLayoutEffect } from "react";
 import { useTableContext } from "./table";
 
 interface TheadContextValue {
+  columnCount: number;
   // Context exists to ensure Th is wrapped in Thead
   // The colIndex is injected via props by React.cloneElement
 }
@@ -21,7 +22,7 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Thead = ({ children, style, headerHeight = 50, ...props }: IProps) => {
-  const { contentWidth, setColumnWidths } = useTableContext();
+  const { contentWidth, setColumnWidths, columnCount } = useTableContext();
 
   // Extract widths from Th children and update table context
   // The setColumnWidths function now handles change detection internally
@@ -39,7 +40,9 @@ const Thead = ({ children, style, headerHeight = 50, ...props }: IProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [children, setColumnWidths]);
 
-  const contextValue: TheadContextValue = {};
+  const contextValue: TheadContextValue = {
+    columnCount,
+  };
 
   return (
     <TheadContext.Provider value={contextValue}>

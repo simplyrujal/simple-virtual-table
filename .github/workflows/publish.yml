@@ -1,4 +1,4 @@
-name: Publish Simple Virtual Table Package
+name: Publish Simple Virtual Table Packages
 
 on:
   push:

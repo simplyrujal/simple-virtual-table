@@ -2,6 +2,8 @@ import React, { createContext, useContext } from "react";
 import { useTableContext } from "./table";
 
 interface TbodyContextValue {
+  contentWidth: number;
+  rowHeight: number;
   // Context exists to ensure Tr is wrapped in Tbody
   // The rowIndex is injected via props by React.cloneElement
 }
@@ -26,7 +28,10 @@ const Tbody = ({ children, offsetHeight = 45, style, ...props }: IProps) => {
 
   const totalHeight = totalData * offsetHeight;
 
-  const contextValue: TbodyContextValue = {};
+  const contextValue: TbodyContextValue = {
+    contentWidth,
+    rowHeight,
+  };
 
   return (
     <TbodyContext value={contextValue}>

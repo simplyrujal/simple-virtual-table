@@ -1,5 +1,4 @@
 import React from "react";
-import { useTableContext } from "./table";
 import { useTbodyContext } from "./tbody";
 
 interface TrProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -8,8 +7,7 @@ interface TrProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const Tr = ({ children, style, rowIndex, ...props }: TrProps) => {
   // Ensure Tr is used within Tbody context - throws error if not wrapped
-  useTbodyContext();
-  const { contentWidth, rowHeight } = useTableContext();
+  const { contentWidth, rowHeight } = useTbodyContext();
 
   // rowIndex is injected by Tbody component via React.cloneElement as absolute index
   // If it's missing, that's an error condition

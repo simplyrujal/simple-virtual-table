@@ -1,6 +1,6 @@
 {
   "name": "simple-virtual-table-react",
-  "version": "1.2.31",
+  "version": "1.2.32",
   "description": "",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",

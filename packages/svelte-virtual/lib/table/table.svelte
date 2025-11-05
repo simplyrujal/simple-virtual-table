@@ -109,7 +109,7 @@
 <div
   bind:this={scrollElementRef}
   class={containerClassName}
-  style={`height: ${height}px !important; position: relative !important; width: 100%; border: 1px solid; border-radius: 4px !important; ${containerStyle}`}
+  style={`height: ${height}px !important; position: relative !important; width: 100%; overflow: auto; border: 1px solid; border-radius: 4px !important; ${containerStyle}`}
   onscroll={handleScroll}
 >
   {@render children()}

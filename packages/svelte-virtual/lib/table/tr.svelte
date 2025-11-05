@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getContext, setContext, tick } from "svelte";
+  import { getContext, setContext } from "svelte";
   import { tbodyContextKey, trContextKey } from "./context";
 
   let { children, rowIndex, ...restProps } = $props();
@@ -11,28 +11,27 @@
     throw new Error("Tr component must be used inside Tbody component");
   }
 
-  const { contentWidth, rowHeight, columnCount, columnWidths } =
-    tbodyContext as any;
+  const {
+    contentWidth,
+    rowHeight,
+    columnCount,
+    columnWidths,
+    getNextRowIndex,
+  } = tbodyContext as any;
 
-  // rowIndex is injected by Tbody component via DOM manipulation (similar to React.cloneElement)
-  // If it's missing, that's an error condition
-  let effectiveRowIndex = $state(rowIndex ?? -1);
+  // Track current column index for children - reset on each render
+  let colCounter = $state(0);
+
+  // Get rowIndex from prop, or from context if not provided
+  // Initialize rowIndex when component mounts
+  let effectiveRowIndex = $state(rowIndex !== undefined ? rowIndex : -1);
 
   $effect(() => {
-    tick().then(() => {
-      if (rowIndex !== undefined) {
-        effectiveRowIndex = rowIndex;
-      } else if (elementRef) {
-        const dataIndex = elementRef.getAttribute("data-row-index");
-        if (dataIndex !== null) {
-          effectiveRowIndex = Number(dataIndex);
-        } else {
-          throw new Error(
-            "Tr component must receive rowIndex prop. Make sure it's used inside Tbody component."
-          );
-        }
-      }
-    });
+    if (rowIndex === undefined && effectiveRowIndex === -1) {
+      effectiveRowIndex = getNextRowIndex();
+    } else if (rowIndex !== undefined) {
+      effectiveRowIndex = rowIndex;
+    }
   });
 
   // Provide TrContext (similar to TrContext.Provider in React)
@@ -43,27 +42,17 @@
     get columnWidths() {
       return columnWidths;
     },
+    // Function to get and increment column index
+    getNextColIndex() {
+      const index = colCounter;
+      colCounter++;
+      return index;
+    },
   });
 
-  let trContainerRef: HTMLDivElement | null = null;
-
-  // Inject colIndex on Td elements (similar to React.cloneElement)
+  // Reset column counter when component initializes
   $effect(() => {
-    tick().then(() => {
-      if (!trContainerRef) return;
-
-      const tdElements = trContainerRef.querySelectorAll("[data-td-element]");
-      tdElements.forEach((el, index) => {
-        el.setAttribute("data-col-index", String(index));
-      });
-    });
-  });
-
-  // Mark this element so Tbody can find it
-  $effect(() => {
-    if (elementRef) {
-      elementRef.setAttribute("data-tr-element", "true");
-    }
+    colCounter = 0;
   });
 </script>
 
@@ -76,7 +65,5 @@
     : '#fafafa'}; transition: background-color 0.2s; box-sizing: border-box;"
   {...restProps}
 >
-  <div bind:this={trContainerRef} style="display: contents;">
-    {@render children()}
-  </div>
+  {@render children()}
 </div>

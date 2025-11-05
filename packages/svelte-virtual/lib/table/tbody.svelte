@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getContext, setContext, tick } from "svelte";
+  import { getContext, setContext } from "svelte";
   import { tableContextKey, tbodyContextKey } from "./context";
 
   let { children, offsetHeight = 45, ...props } = $props();
@@ -19,7 +19,20 @@
 
   const totalHeight = totalData * offsetHeight;
 
-  let containerRef: HTMLDivElement | null = null;
+  // Track current row index for children
+  // We need to track the index in the user's data array, not the virtualized index
+  // Since the user iterates with {#each data as row}, each Tr represents a row
+  // We'll use a counter that increments for each Tr that gets rendered
+  let rowCounter = $state(0);
+
+  // Reset counter at the start of each render cycle
+  // Using a derived value that resets the counter when dependencies change
+  $effect(() => {
+    // Reset when startIndex or endIndex changes (which happens on scroll)
+    startIndex;
+    endIndex;
+    rowCounter = 0;
+  });
 
   // Provide TbodyContext (similar to TbodyContext.Provider in React)
   setContext(tbodyContextKey, {
@@ -35,33 +48,29 @@
     get columnCount() {
       return columnCount;
     },
-  });
-
-  // Inject rowIndex on Tr elements (similar to React.cloneElement)
-  $effect(() => {
-    tick().then(() => {
-      if (!containerRef) return;
-
-      const trElements = containerRef.querySelectorAll("[data-tr-element]");
-      trElements.forEach((el, index) => {
-        // Inject rowIndex as absolute index (startIndex + relative index in children)
-        el.setAttribute("data-row-index", String(startIndex + index));
-      });
-    });
+    get startIndex() {
+      return startIndex;
+    },
+    // Function to get and increment row index
+    // This returns the index in the user's data array (0, 1, 2, ...)
+    getNextRowIndex() {
+      const index = rowCounter;
+      rowCounter++;
+      return index;
+    },
   });
 </script>
 
 <div
-  bind:this={containerRef}
   style="position: relative; height: {totalHeight}px; width: {contentWidth}px; box-sizing: border-box;"
   {...props}
 >
   <!-- Spacer for rows before visible range -->
-  <div style="height: {startIndex * rowHeight}px;" />
+  <div style="height: {startIndex * rowHeight}px;"></div>
 
-  <!-- Render visible rows (children are rendered here, but we need to inject rowIndex) -->
+  <!-- Render visible rows -->
   {@render children()}
 
   <!-- Spacer for rows after visible range -->
-  <div style="height: {(totalData - endIndex) * rowHeight}px;" />
+  <div style="height: {(totalData - endIndex) * rowHeight}px;"></div>
 </div>

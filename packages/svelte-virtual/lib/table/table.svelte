@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { setContext } from "svelte";
+  import { onMount, setContext } from "svelte";
   import { tableContextKey } from "./context";
 
   // ✅ Get props reactively
@@ -15,12 +15,24 @@
 
   // ✅ Define internal state (for scroll, etc.)
   let scrollTop = $state(0);
-  let contentWidth = $state(800);
-  let columnWidths = $state([150, 150, 150]);
-  let startIndex = $state(0);
-  let endIndex = $state(totalData);
+  let columnWidths = $state([]);
 
-  const setColumnWidths = (newWidths) => (columnWidths = newWidths);
+  const visibleStart = $derived(Math.floor(scrollTop / rowHeight));
+  const visibleEnd = $derived(Math.ceil((scrollTop + height) / rowHeight));
+  const startIndex = $derived(Math.max(0, visibleStart - overscan));
+  const endIndex = $derived(Math.min(totalData, visibleEnd + overscan));
+
+  const contentWidth = $derived(columnWidths.reduce((sum, w) => sum + w, 0));
+
+  const setColumnWidths = (newWidths: number[]) => {
+    // Only update if widths actually changed
+    if (
+      columnWidths.length !== newWidths.length ||
+      columnWidths.some((w, i) => w !== newWidths[i])
+    ) {
+      columnWidths = newWidths;
+    }
+  };
 
   // ✅ Provide all context values
   setContext(tableContextKey, {
@@ -56,8 +68,49 @@
     },
     setColumnWidths,
   });
+
+  let scrollElementRef: HTMLDivElement | null = null;
+
+  onMount(() => {
+    const updateWidth = () => {
+      if (scrollElementRef && contentWidth > 0) {
+        // Get the container's current width (which is 100% initially)
+        // We need to get the parent's width or the actual rendered width
+        const container = scrollElementRef;
+        // Temporarily ensure width is 100% to get accurate measurement
+        container.style.width = "100%";
+        // Use requestAnimationFrame to ensure layout has updated
+        requestAnimationFrame(() => {
+          if (scrollElementRef) {
+            const containerWidth = scrollElementRef.clientWidth;
+            if (contentWidth > containerWidth) {
+              scrollElementRef.style.width = "100%";
+            } else {
+              scrollElementRef.style.width = "fit-content";
+            }
+          }
+        });
+      }
+    };
+    updateWidth();
+
+    // Handle window resize
+    window.addEventListener("resize", updateWidth);
+    return () => {
+      window.removeEventListener("resize", updateWidth);
+    };
+  });
+
+  const handleScroll = (event: Event) => {
+    scrollTop = (event.target as HTMLDivElement).scrollTop;
+  };
 </script>
 
-<div>
+<div
+  bind:this={scrollElementRef}
+  class={containerClassName}
+  style={`height: ${height}px !important; position: relative !important; width: 100%; border: 1px solid; border-radius: 4px !important; ${containerStyle}`}
+  onscroll={handleScroll}
+>
   {@render children()}
 </div>

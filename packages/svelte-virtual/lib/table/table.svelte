@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount, setContext } from "svelte";
+  import { setContext } from "svelte";
   import { tableContextKey } from "./context";
 
   // ✅ Get props reactively
@@ -71,7 +71,7 @@
 
   let scrollElementRef: HTMLDivElement | null = null;
 
-  onMount(() => {
+  $effect(() => {
     const updateWidth = () => {
       if (scrollElementRef && contentWidth > 0) {
         // Get the container's current width (which is 100% initially)

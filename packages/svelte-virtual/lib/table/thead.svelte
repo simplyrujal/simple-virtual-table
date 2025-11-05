@@ -45,7 +45,7 @@
 <div
   bind:this={containerRef}
   data-thead-container
-  style="position: sticky; top: 0; z-index: 10; display: flex; height: {headerHeight}px; width: {contentWidth}px; box-sizing: border-box; background-color: #f5f5f5; border-bottom: 2px solid #ddd;"
+  style="position: sticky; top: 0; z-index: 10; display: flex; height: {headerHeight}px; box-sizing: border-box; background-color: #f5f5f5; border-bottom: 2px solid #ddd;"
   {...props}
 >
   {@render children()}

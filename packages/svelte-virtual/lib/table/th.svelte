@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { getContext, onMount, setContext } from "svelte";
+    import { getContext, onMount, setContext, tick } from "svelte";
     import { theadContextKey } from "./context";
 
     let { children, colIndex, width = 100, ...restProps } = $props();
@@ -11,11 +11,12 @@
     }
     const { columnCount, setColumnWidths } = theadContext as any;
 
-    if (setColumnWidths)
-        $effect(() => {
+    $effect(() => {
+        tick().then(() => {
             console.log({ colIndex, width });
             setColumnWidths(colIndex, width);
         });
+    });
 </script>
 
 <div

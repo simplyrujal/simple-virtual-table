@@ -263,15 +263,15 @@
         <Thead>
             <Th colIndex={0} width={100}>ID</Th>
             <Th colIndex{1} width={200}>Name</Th>
-            <Th width={300}>Email</Th>
-            <Th width={100}>Age</Th>
-            <Th width={100}>Status</Th>
-            <Th width={150}>Phone</Th>
-            <Th width={150}>Department</Th>
-            <Th width={120}>Salary</Th>
-            <Th width={150}>Location</Th>
-            <Th width={120}>Join Date</Th>
-            <Th width={180}>Manager</Th>
+            <Th colIndex{2} width={300}>Email</Th>
+            <Th colIndex{3} width={100}>Age</Th>
+            <Th colIndex{4} width={100}>Status</Th>
+            <Th colIndex{5} width={150}>Phone</Th>
+            <Th colIndex{6} width={150}>Department</Th>
+            <Th colIndex{7} width={120}>Salary</Th>
+            <Th colIndex{8} width={150}>Location</Th>
+            <Th colIndex{9} width={120}>Join Date</Th>
+            <Th colIndex{10} width={180}>Manager</Th>
         </Thead>
         <Tbody>
             {#each smallData as row (row.id)}

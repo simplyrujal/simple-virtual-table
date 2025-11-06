@@ -19,7 +19,17 @@
     "dist",
     "lib"
   ],
-  "keywords": [],
+  "keywords": [
+    "svelte",
+    "virtual",
+    "table",
+    "simple",
+    "simple-table",
+    "virtual-table",
+    "virtual-table-svelte",
+    "virtual-table-svelte-component",
+    "virtual-table-svelte-component-library"
+  ],
   "author": "SimplyRujal",
   "license": "ISC",
   "scripts": {

@@ -13,7 +13,6 @@
 
   $effect(() => {
     tick().then(() => {
-      console.log({ colIndex, width });
       setColumnWidths(colIndex, width);
     });
   });

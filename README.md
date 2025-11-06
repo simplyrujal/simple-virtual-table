@@ -18,23 +18,33 @@ A pnpm workspace monorepo containing separate packages for React and Svelte with
 
 ### @simple-virtual-table/react-virtual
 
-A React package containing reusable components.
+A React package containing virtual table components.
 
 **Location:** `packages/react-virtual/`
 
 **Components:**
 
-- `HelloWorld` - A simple greeting component
+- `Table` - Main table container component
+- `Thead` - Table header component
+- `Tbody` - Table body component
+- `Tr` - Table row component
+- `Th` - Table header cell component
+- `Td` - Table data cell component
 
 ### @simple-virtual-table/svelte-virtual
 
-A Svelte package containing reusable components.
+A Svelte package containing virtual table components.
 
 **Location:** `packages/svelte-virtual/`
 
 **Components:**
 
-- `HelloWorld` - A simple greeting component
+- `Table` - Main table container component
+- `Thead` - Table header component
+- `Tbody` - Table body component
+- `Tr` - Table row component
+- `Th` - Table header cell component
+- `Td` - Table data cell component
 
 ## Getting Started
 
@@ -104,10 +114,7 @@ The packages are configured to work directly with Vite's bundler. Both React and
 
 ## Testing the Packages
 
-Both test applications import and use the `HelloWorld` component from their respective packages:
-
-- **React App**: Displays `Text` with name="React"
-- **Svelte App**: Displays `Text` with name="Svelte"
+Both test applications import and use the virtual table components from their respective packages to create performant, virtualized tables.
 
 ## Package Manager
 

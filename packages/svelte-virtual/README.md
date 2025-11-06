@@ -239,34 +239,38 @@ pnpm add simple-virtual-table-svelte
       <Th colIndex={4} width={100}>Status</Th>
     </Thead>
     <Tbody>
-      {#each data as row (row.id)}
-        {@const status = row.status}
-        <Tr>
-          <Td colIndex={0}>
-            <strong>{row.id}</strong>
-          </Td>
-          <Td colIndex={1}>
-            <span style="color: #646cff; font-weight: 500;">
-              {row.name}
-            </span>
-          </Td>
-          <Td colIndex={2}>{row.email}</Td>
-          <Td colIndex={3}>
-            <span style="color: {row.age > 50 ? '#ff6b6b' : '#51cf66'};">
-              {row.age}
-            </span>
-          </Td>
-          <Td colIndex={4}>
-            <span
-              style="padding: 4px 8px; border-radius: 4px; background-color: {colors[
-                status
-              ]}20; color: {colors[status]}; font-size: 12px; font-weight: 500;"
-            >
-              {status}
-            </span>
-          </Td>
-        </Tr>
-      {/each}
+      {#snippet children(startIndex: number, endIndex: number)}
+        {#each data.slice(startIndex, endIndex) as row, index (row.id)}
+          {@const status = row.status}
+          <Tr rowIndex={startIndex + index}>
+            <Td colIndex={0}>
+              <strong>{row.id}</strong>
+            </Td>
+            <Td colIndex={1}>
+              <span style="color: #646cff; font-weight: 500;">
+                {row.name}
+              </span>
+            </Td>
+            <Td colIndex={2}>{row.email}</Td>
+            <Td colIndex={3}>
+              <span style="color: {row.age > 50 ? '#ff6b6b' : '#51cf66'};">
+                {row.age}
+              </span>
+            </Td>
+            <Td colIndex={4}>
+              <span
+                style="padding: 4px 8px; border-radius: 4px; background-color: {colors[
+                  status
+                ]}20; color: {colors[
+                  status
+                ]}; font-size: 12px; font-weight: 500;"
+              >
+                {status}
+              </span>
+            </Td>
+          </Tr>
+        {/each}
+      {/snippet}
     </Tbody>
   </Table>
   <br />
@@ -285,23 +289,25 @@ pnpm add simple-virtual-table-svelte
       <Th colIndex={10} width={180}>Manager</Th>
     </Thead>
     <Tbody>
-      {#each smallData as row (row.id)}
-        <Tr>
-          <Td colIndex={0}>{row.id}</Td>
-          <Td colIndex={1}>{row.name}</Td>
-          <Td colIndex={2}>{row.email}</Td>
-          <Td colIndex={3}>{row.age}</Td>
-          <Td colIndex={4}>{row.status}</Td>
-          <Td colIndex={5}>{row.phone || "-"}</Td>
-          <Td colIndex={6}>{row.department || "-"}</Td>
-          <Td colIndex={7}
-            >{row.salary ? `$${row.salary.toLocaleString()}` : "-"}</Td
-          >
-          <Td colIndex={8}>{row.location || "-"}</Td>
-          <Td colIndex={9}>{row.joinDate || "-"}</Td>
-          <Td colIndex={10}>{row.manager || "-"}</Td>
-        </Tr>
-      {/each}
+      {#snippet children(startIndex: number, endIndex: number)}
+        {#each smallData.slice(startIndex, endIndex) as row, index (row.id)}
+          <Tr rowIndex={startIndex + index}>
+            <Td colIndex={0}>{row.id}</Td>
+            <Td colIndex={1}>{row.name}</Td>
+            <Td colIndex={2}>{row.email}</Td>
+            <Td colIndex={3}>{row.age}</Td>
+            <Td colIndex={4}>{row.status}</Td>
+            <Td colIndex={5}>{row.phone || "-"}</Td>
+            <Td colIndex={6}>{row.department || "-"}</Td>
+            <Td colIndex={7}
+              >{row.salary ? `$${row.salary.toLocaleString()}` : "-"}</Td
+            >
+            <Td colIndex={8}>{row.location || "-"}</Td>
+            <Td colIndex={9}>{row.joinDate || "-"}</Td>
+            <Td colIndex={10}>{row.manager || "-"}</Td>
+          </Tr>
+        {/each}
+      {/snippet}
     </Tbody>
   </Table>
 </main>
@@ -375,14 +381,15 @@ Body container component. Must wrap all `Tr` components.
 | -------------- | ---------------- | -------- | ------- | ----------------------------------------------------------------------------- |
 | `offsetHeight` | `number`         | No       | `45`    | Height offset for calculating total height                                    |
 | `style`        | `string`         | No       | -       | Custom styles for the body container                                          |
-| `children`     | `Snippet`        | Yes      | -       | Child components (Tr)                                                         |
+| `children`     | `Snippet`        | Yes      | -       | Child snippet that accepts `(startIndex: number, endIndex: number)`           |
 | `...props`     | `HTMLDivElement` | No       | -       | All standard HTML div attributes (class, onclick, onmouseover, data-\*, etc.) |
 
 **Note:**
 
 - `Tbody` automatically calculates `totalHeight` and `totalWidth` from table context.
 - `Tbody` only renders visible rows (plus overscan rows) to optimize performance.
-- When using `{#each}` to iterate over data, make sure to iterate over the **entire** dataset. The table handles virtualization internally.
+- **The `children` prop must be a snippet that accepts `startIndex` and `endIndex` parameters.** Use `{#snippet children(startIndex: number, endIndex: number)}` to define the snippet.
+- Inside the snippet, slice your data array using `data.slice(startIndex, endIndex)` and iterate over the sliced data with `{#each}`.
 - The `offsetHeight` prop is optional and used to calculate the total height (defaults to 45px). Typically you can omit this prop and use defaults.
 - All standard HTML div attributes are accepted and will be applied to the body container element.
 
@@ -394,14 +401,14 @@ Row component. Must be used inside `Tbody`.
 
 | Prop       | Type             | Required | Default | Description                                                                   |
 | ---------- | ---------------- | -------- | ------- | ----------------------------------------------------------------------------- |
-| `rowIndex` | `number`         | No       | -       | Optional row index (automatically handled when using `{#each}`)               |
+| `rowIndex` | `number`         | **Yes**  | -       | The absolute row index in the dataset (must be `startIndex + index` from the snippet) |
 | `style`    | `string`         | No       | -       | Custom styles for the row                                                     |
 | `children` | `Snippet`        | Yes      | -       | Child components (Td)                                                         |
 | `...props` | `HTMLDivElement` | No       | -       | All standard HTML div attributes (class, onclick, onmouseover, data-\*, etc.) |
 
 **Note:**
 
-- When using `{#each}` to iterate over data, `rowIndex` is automatically handled and you don't need to provide it.
+- **You must provide `rowIndex` explicitly.** When using `{#each data.slice(startIndex, endIndex) as row, index}`, set `rowIndex={startIndex + index}` to ensure the row index is correct.
 - All standard HTML div attributes are accepted and will be applied to the row element.
 
 ### Td
@@ -433,11 +440,25 @@ The table automatically handles row virtualization. Only visible rows (plus over
 **Important:**
 
 - Pass `totalData` (the total number of rows) to the `Table` component
-- When mapping over data in `Tbody`, use `{#each}` to iterate over the **entire** dataset. The table handles virtualization internally by:
+- In `Tbody`, you **must** use a snippet pattern with `startIndex` and `endIndex` parameters:
+  ```svelte
+  <Tbody>
+    {#snippet children(startIndex: number, endIndex: number)}
+      {#each data.slice(startIndex, endIndex) as row, index (row.id)}
+        <Tr rowIndex={startIndex + index}>
+          <!-- Td components -->
+        </Tr>
+      {/each}
+    {/snippet}
+  </Tbody>
+  ```
+- The table handles virtualization internally by:
   1. Calculating which rows are visible based on scroll position
-  2. Rendering spacers above and below visible rows to maintain correct scroll height
-  3. Only rendering visible rows in the DOM
+  2. Passing `startIndex` and `endIndex` to your snippet
+  3. Rendering spacers above and below visible rows to maintain correct scroll height
+  4. Only rendering visible rows in the DOM
 - **You must explicitly provide `colIndex` to both `Th` and `Td` components** (starting from 0 and incrementing for each column)
+- **You must explicitly provide `rowIndex` to `Tr` components** using `rowIndex={startIndex + index}`
 
 ## Styling
 
@@ -467,11 +488,15 @@ Violating these requirements will throw helpful error messages.
 
 1. **`colIndex` is required**: In the Svelte version, you must explicitly provide `colIndex` to both `Th` and `Td` components. This is not automatically injected.
 
-2. **Svelte 5 Runes**: This package uses Svelte 5's runes syntax (`$props()`, `$state()`, `$derived()`, `$effect()`). Make sure you're using Svelte 5.39.6 or higher.
+2. **`rowIndex` is required**: In the Svelte version, you must explicitly provide `rowIndex` to `Tr` components using `rowIndex={startIndex + index}`.
 
-3. **Slot Rendering**: Uses Svelte's `{@render children()}` syntax for rendering child components.
+3. **Snippet Pattern**: The `Tbody` component requires a snippet that accepts `startIndex` and `endIndex` parameters. You must slice your data array and iterate over the sliced portion.
 
-4. **Iteration**: Use Svelte's `{#each}` syntax for iterating over data arrays.
+4. **Svelte 5 Runes**: This package uses Svelte 5's runes syntax (`$props()`, `$state()`, `$derived()`, `$effect()`). Make sure you're using Svelte 5.39.6 or higher.
+
+5. **Slot Rendering**: Uses Svelte's `{@render children()}` syntax for rendering child components.
+
+6. **Iteration**: Use Svelte's `{#each}` syntax for iterating over the sliced data array within the snippet.
 
 ## Notes
 
@@ -482,3 +507,5 @@ Violating these requirements will throw helpful error messages.
 - All components accept standard HTML div attributes for maximum flexibility
 - The `height` prop on `Table` is optional, but recommended for proper virtualization behavior
 - Remember to provide `colIndex` starting from 0 for each column in both `Th` and `Td` components
+- Remember to use the snippet pattern in `Tbody` with `startIndex` and `endIndex` parameters
+- Remember to provide `rowIndex={startIndex + index}` to each `Tr` component

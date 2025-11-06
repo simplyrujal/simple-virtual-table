@@ -4,20 +4,11 @@
 
   let { children, offsetHeight = 45, ...props } = $props();
 
-  const tableContext = getContext(tableContextKey);
+  const tableContext = getContext(tableContextKey) as any;
   if (!tableContext) throw new Error("<Tbody> must be used inside <Table>");
 
-  const {
-    rowHeight,
-    totalData,
-    startIndex,
-    endIndex,
-    contentWidth,
-    columnWidths,
-    columnCount,
-  } = tableContext as any;
-
-  const totalHeight = totalData * offsetHeight;
+  // Access startIndex, endIndex, and totalData reactively from context (not destructured)
+  const totalHeight = $derived(tableContext.totalData * offsetHeight);
 
   // Track current row index for children
   // We need to track the index in the user's data array, not the virtualized index
@@ -25,31 +16,22 @@
   // We'll use a counter that increments for each Tr that gets rendered
   let rowCounter = $state(0);
 
-  // Reset counter at the start of each render cycle
-  // Using a derived value that resets the counter when dependencies change
-  $effect(() => {
-    // Reset when startIndex or endIndex changes (which happens on scroll)
-    startIndex;
-    endIndex;
-    rowCounter = 0;
-  });
-
   // Provide TbodyContext (similar to TbodyContext.Provider in React)
   setContext(tbodyContextKey, {
     get contentWidth() {
-      return contentWidth;
+      return tableContext.contentWidth;
     },
     get rowHeight() {
-      return rowHeight;
+      return tableContext.rowHeight;
     },
     get columnWidths() {
-      return columnWidths;
+      return tableContext.columnWidths;
     },
     get columnCount() {
-      return columnCount;
+      return tableContext.columnCount;
     },
     get startIndex() {
-      return startIndex;
+      return tableContext.startIndex;
     },
     // Function to get and increment row index
     // This returns the index in the user's data array (0, 1, 2, ...)
@@ -62,15 +44,20 @@
 </script>
 
 <div
-  style="position: relative; height: {totalHeight}px; width: {contentWidth}px; box-sizing: border-box;"
+  style="position: relative; height: {totalHeight}px; width: {tableContext.contentWidth}px; box-sizing: border-box;"
   {...props}
 >
   <!-- Spacer for rows before visible range -->
-  <div style="height: {startIndex * rowHeight}px;"></div>
+  <div
+    style="height: {tableContext.startIndex * tableContext.rowHeight}px;"
+  ></div>
 
   <!-- Render visible rows -->
-  {@render children(startIndex, endIndex)}
+  {@render children(tableContext.startIndex, tableContext.endIndex)}
 
   <!-- Spacer for rows after visible range -->
-  <div style="height: {(totalData - endIndex) * rowHeight}px;"></div>
+  <div
+    style="height: {(tableContext.totalData - tableContext.endIndex) *
+      tableContext.rowHeight}px;"
+  ></div>
 </div>

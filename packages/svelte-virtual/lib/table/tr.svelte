@@ -6,18 +6,10 @@
   let elementRef: HTMLDivElement | null = null;
 
   // Ensure Tr is used within Tbody context - throws error if not wrapped
-  const tbodyContext = getContext(tbodyContextKey);
+  const tbodyContext = getContext(tbodyContextKey) as any;
   if (!tbodyContext) {
     throw new Error("Tr component must be used inside Tbody component");
   }
-
-  const {
-    contentWidth,
-    rowHeight,
-    columnCount,
-    columnWidths,
-    getNextRowIndex,
-  } = tbodyContext as any;
 
   // Track current column index for children - reset on each render
   let colCounter = $state(0);
@@ -28,7 +20,7 @@
 
   $effect(() => {
     if (rowIndex === undefined && effectiveRowIndex === -1) {
-      effectiveRowIndex = getNextRowIndex();
+      effectiveRowIndex = tbodyContext.getNextRowIndex();
     } else if (rowIndex !== undefined) {
       effectiveRowIndex = rowIndex;
     }
@@ -37,10 +29,10 @@
   // Provide TrContext (similar to TrContext.Provider in React)
   setContext(trContextKey, {
     get columnCount() {
-      return columnCount;
+      return tbodyContext.columnCount;
     },
     get columnWidths() {
-      return columnWidths;
+      return tbodyContext.columnWidths;
     },
     // Function to get and increment column index
     getNextColIndex() {
@@ -58,7 +50,7 @@
 
 <div
   bind:this={elementRef}
-  style="display: flex; width: {contentWidth}px; height: {rowHeight}px; border-bottom: 1px solid #e0e0e0; background-color: {effectiveRowIndex %
+  style="display: flex; width: {tbodyContext.contentWidth}px; height: {tbodyContext.rowHeight}px; border-bottom: 1px solid #e0e0e0; background-color: {effectiveRowIndex %
     2 ===
   0
     ? '#ffffff'

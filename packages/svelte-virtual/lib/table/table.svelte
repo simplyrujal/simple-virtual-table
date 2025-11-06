@@ -33,6 +33,12 @@
     get totalData() {
       return totalData;
     },
+    get startIndex() {
+      return startIndex;
+    },
+    get endIndex() {
+      return endIndex;
+    },
     get rowHeight() {
       return rowHeight;
     },
@@ -48,18 +54,8 @@
     get contentWidth() {
       return contentWidth;
     },
-    get columnWidths() {
-      return columnWidths;
-    },
-    get startIndex() {
-      return startIndex;
-    },
-    get endIndex() {
-      return endIndex;
-    },
-    get columnCount() {
-      return columnWidths.length;
-    },
+    columnWidths,
+    columnCount: columnWidths.length,
     setColumnWidths,
   });
 

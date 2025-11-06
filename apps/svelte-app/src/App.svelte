@@ -16,24 +16,23 @@
     manager?: string;
   }
 
-  // const colors: Record<string, string> = {
-  //     Active: "#51cf66",
-  //     Inactive: "#ffd43b",
-  //     Pending: "#74c0fc",
-  // };
+  const colors: Record<string, string> = {
+    Active: "#51cf66",
+    Inactive: "#ffd43b",
+    Pending: "#74c0fc",
+  };
 
-  // const generateData = (count: number): User[] => {
-  //     return Array.from({ length: count }, (_, i) => ({
-  //         id: i + 1,
-  //         name: `User ${i + 1}`,
-  //         email: `user${i + 1}@example.com`,
-  //         age: 20 + (i % 50),
-  //         status:
-  //             i % 3 === 0 ? "Active" : i % 3 === 1 ? "Inactive" : "Pending",
-  //     }));
-  // };
+  const generateData = (count: number): User[] => {
+    return Array.from({ length: count }, (_, i) => ({
+      id: i + 1,
+      name: `User ${i + 1}`,
+      email: `user${i + 1}@example.com`,
+      age: 20 + (i % 50),
+      status: i % 3 === 0 ? "Active" : i % 3 === 1 ? "Inactive" : "Pending",
+    }));
+  };
 
-  // const data = generateData(10000); // Large dataset to showcase virtualization
+  const data = generateData(10000); // Large dataset to showcase virtualization
 
   const smallData: User[] = [
     {
@@ -210,35 +209,35 @@
 <main style="padding: 20px;">
   <h1 style="margin-bottom: 20px; color: #213547;">Virtual Table Example</h1>
   <p style="margin-bottom: 20px; color: #666;">
-    <!-- Showing {data.length.toLocaleString()} rows with virtual scrolling -->
+    Showing {data.length.toLocaleString()} rows with virtual scrolling
   </p>
-  <!-- <Table totalData={data.length} height={600} rowHeight={45}>
+  <Table totalData={data.length} height={600} rowHeight={45}>
     <Thead>
-      <Th width={100}>ID</Th>
-      <Th width={100}>Name</Th>
-      <Th width={250}>Email</Th>
-      <Th width={100}>Age</Th>
-      <Th width={100}>Status</Th>
+      <Th colIndex={0} width={100}>ID</Th>
+      <Th colIndex={1} width={100}>Name</Th>
+      <Th colIndex={2} width={250}>Email</Th>
+      <Th colIndex={3} width={100}>Age</Th>
+      <Th colIndex={4} width={100}>Status</Th>
     </Thead>
     <Tbody>
       {#each data as row (row.id)}
         {@const status = row.status}
         <Tr>
-          <Td>
+          <Td colIndex={0}>
             <strong>{row.id}</strong>
           </Td>
-          <Td>
+          <Td colIndex={1}>
             <span style="color: #646cff; font-weight: 500;">
               {row.name}
             </span>
           </Td>
-          <Td>{row.email}</Td>
-          <Td>
+          <Td colIndex={2}>{row.email}</Td>
+          <Td colIndex={3}>
             <span style="color: {row.age > 50 ? '#ff6b6b' : '#51cf66'};">
               {row.age}
             </span>
           </Td>
-          <Td>
+          <Td colIndex={4}>
             <span
               style="padding: 4px 8px; border-radius: 4px; background-color: {colors[
                 status
@@ -250,12 +249,12 @@
         </Tr>
       {/each}
     </Tbody>
-  </Table> -->
+  </Table>
   <br />
   <Table totalData={smallData.length} rowHeight={45} height={400}>
     <Thead>
       <Th colIndex={0} width={100}>ID</Th>
-      <Th colIndex={1} width={500}>Name</Th>
+      <Th colIndex={1} width={200}>Name</Th>
       <Th colIndex={2} width={300}>Email</Th>
       <Th colIndex={3} width={100}>Age</Th>
       <Th colIndex={4} width={100}>Status</Th>

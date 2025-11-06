@@ -220,34 +220,38 @@
       <Th colIndex={4} width={100}>Status</Th>
     </Thead>
     <Tbody>
-      {#each data as row (row.id)}
-        {@const status = row.status}
-        <Tr>
-          <Td colIndex={0}>
-            <strong>{row.id}</strong>
-          </Td>
-          <Td colIndex={1}>
-            <span style="color: #646cff; font-weight: 500;">
-              {row.name}
-            </span>
-          </Td>
-          <Td colIndex={2}>{row.email}</Td>
-          <Td colIndex={3}>
-            <span style="color: {row.age > 50 ? '#ff6b6b' : '#51cf66'};">
-              {row.age}
-            </span>
-          </Td>
-          <Td colIndex={4}>
-            <span
-              style="padding: 4px 8px; border-radius: 4px; background-color: {colors[
-                status
-              ]}20; color: {colors[status]}; font-size: 12px; font-weight: 500;"
-            >
-              {status}
-            </span>
-          </Td>
-        </Tr>
-      {/each}
+      {#snippet children(startIndex: number, endIndex: number)}
+        {#each data.slice(startIndex, endIndex) as row, index (row.id)}
+          {@const status = row.status}
+          <Tr rowIndex={startIndex + index}>
+            <Td colIndex={0}>
+              <strong>{row.id}</strong>
+            </Td>
+            <Td colIndex={1}>
+              <span style="color: #646cff; font-weight: 500;">
+                {row.name}
+              </span>
+            </Td>
+            <Td colIndex={2}>{row.email}</Td>
+            <Td colIndex={3}>
+              <span style="color: {row.age > 50 ? '#ff6b6b' : '#51cf66'};">
+                {row.age}
+              </span>
+            </Td>
+            <Td colIndex={4}>
+              <span
+                style="padding: 4px 8px; border-radius: 4px; background-color: {colors[
+                  status
+                ]}20; color: {colors[
+                  status
+                ]}; font-size: 12px; font-weight: 500;"
+              >
+                {status}
+              </span>
+            </Td>
+          </Tr>
+        {/each}
+      {/snippet}
     </Tbody>
   </Table>
   <br />
@@ -266,23 +270,25 @@
       <Th colIndex={10} width={180}>Manager</Th>
     </Thead>
     <Tbody>
-      {#each smallData as row (row.id)}
-        <Tr>
-          <Td colIndex={0}>{row.id}</Td>
-          <Td colIndex={1}>{row.name}</Td>
-          <Td colIndex={2}>{row.email}</Td>
-          <Td colIndex={3}>{row.age}</Td>
-          <Td colIndex={4}>{row.status}</Td>
-          <Td colIndex={5}>{row.phone || "-"}</Td>
-          <Td colIndex={6}>{row.department || "-"}</Td>
-          <Td colIndex={7}
-            >{row.salary ? `$${row.salary.toLocaleString()}` : "-"}</Td
-          >
-          <Td colIndex={8}>{row.location || "-"}</Td>
-          <Td colIndex={9}>{row.joinDate || "-"}</Td>
-          <Td colIndex={10}>{row.manager || "-"}</Td>
-        </Tr>
-      {/each}
+      {#snippet children(startIndex: number, endIndex: number)}
+        {#each smallData.slice(startIndex, endIndex) as row, index (row.id)}
+          <Tr rowIndex={startIndex + index}>
+            <Td colIndex={0}>{row.id}</Td>
+            <Td colIndex={1}>{row.name}</Td>
+            <Td colIndex={2}>{row.email}</Td>
+            <Td colIndex={3}>{row.age}</Td>
+            <Td colIndex={4}>{row.status}</Td>
+            <Td colIndex={5}>{row.phone || "-"}</Td>
+            <Td colIndex={6}>{row.department || "-"}</Td>
+            <Td colIndex={7}
+              >{row.salary ? `$${row.salary.toLocaleString()}` : "-"}</Td
+            >
+            <Td colIndex={8}>{row.location || "-"}</Td>
+            <Td colIndex={9}>{row.joinDate || "-"}</Td>
+            <Td colIndex={10}>{row.manager || "-"}</Td>
+          </Tr>
+        {/each}
+      {/snippet}
     </Tbody>
   </Table>
 </main>

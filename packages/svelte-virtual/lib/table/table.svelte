@@ -98,10 +98,6 @@
   const handleScroll = (event: Event) => {
     scrollTop = (event.target as HTMLDivElement).scrollTop;
   };
-
-  $effect(() => {
-    console.log({ columnWidths: columnWidths[0], b: columnWidths[1] });
-  });
 </script>
 
 <div

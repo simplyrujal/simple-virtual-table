@@ -69,7 +69,7 @@
   <div style="height: {startIndex * rowHeight}px;"></div>
 
   <!-- Render visible rows -->
-  {@render children()}
+  {@render children(startIndex, endIndex)}
 
   <!-- Spacer for rows after visible range -->
   <div style="height: {(totalData - endIndex) * rowHeight}px;"></div>

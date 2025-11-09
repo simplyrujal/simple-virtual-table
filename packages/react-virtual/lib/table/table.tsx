@@ -63,20 +63,6 @@ const Table = ({
     setScrollTop(e.currentTarget.scrollTop);
   }, []);
 
-  // Stable setter function to prevent unnecessary re-renders
-  const stableSetColumnWidths = useCallback((widths: number[]) => {
-    setColumnWidths((prev) => {
-      // Only update if widths actually changed
-      if (
-        prev.length !== widths.length ||
-        prev.some((w, i) => w !== widths[i])
-      ) {
-        return widths;
-      }
-      return prev;
-    });
-  }, []);
-
   // Calculate total content width (sum of all column widths)
   const contentWidth = useMemo(() => {
     return columnWidths.reduce((sum, w) => sum + w, 0);
@@ -132,7 +118,7 @@ const Table = ({
     overscan,
     startIndex,
     endIndex,
-    setColumnWidths: stableSetColumnWidths,
+    setColumnWidths,
     columnCount: columnWidths.length,
   };
 

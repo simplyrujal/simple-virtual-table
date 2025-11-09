@@ -3,6 +3,7 @@ import { useTableContext } from "./table";
 
 interface TheadContextValue {
   columnCount: number;
+  columnWidths: number[];
   // Context exists to ensure Th is wrapped in Thead
   // The colIndex is injected via props by React.cloneElement
 }
@@ -22,7 +23,8 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Thead = ({ children, style, headerHeight = 50, ...props }: IProps) => {
-  const { contentWidth, setColumnWidths, columnCount } = useTableContext();
+  const { contentWidth, setColumnWidths, columnCount, columnWidths } =
+    useTableContext();
 
   // Extract widths from Th children and update table context
   // The setColumnWidths function now handles change detection internally
@@ -42,6 +44,7 @@ const Thead = ({ children, style, headerHeight = 50, ...props }: IProps) => {
 
   const contextValue: TheadContextValue = {
     columnCount,
+    columnWidths,
   };
 
   return (

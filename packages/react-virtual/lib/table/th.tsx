@@ -8,7 +8,7 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const Th = ({ children, style, colIndex, width = 100, ...props }: IProps) => {
   // Ensure Th is used within Thead context - throws error if not wrapped
-  const { columnCount } = useTheadContext();
+  const { columnCount, columnWidths } = useTheadContext();
 
   // colIndex is injected by Thead component via React.cloneElement
   const effectiveColIndex = colIndex ?? 0;
@@ -16,7 +16,7 @@ const Th = ({ children, style, colIndex, width = 100, ...props }: IProps) => {
   return (
     <div
       style={{
-        width,
+        width: columnWidths[effectiveColIndex],
         borderRight:
           columnCount > 0 && effectiveColIndex < columnCount - 1
             ? "1px solid #e0e0e0"

@@ -10,10 +10,10 @@ interface TrContextValue {
 
 const TrContext = createContext<TrContextValue | null>(null);
 
-export const useTheadContext = (): TrContextValue => {
+export const useTrContext = (): TrContextValue => {
   const context = useContext(TrContext);
   if (!context) {
-    throw new Error("Th component must be used inside Thead component");
+    throw new Error("Tr component must be used inside Tbody component");
   }
   return context;
 };

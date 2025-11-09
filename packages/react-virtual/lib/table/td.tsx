@@ -1,27 +1,19 @@
 import React from "react";
-import { useTableContext } from "./table";
+import { useTrContext } from "./tr";
 
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   colIndex?: number; // This prop is automatically injected by Tr via React.cloneElement
 }
 
 const Td = ({ children, style, colIndex, ...props }: IProps) => {
-  const { columnWidths, columnCount } = useTableContext();
-
-  // colIndex is injected by Tr component via React.cloneElement
-  // If it's missing, that's an error condition
-  if (colIndex === undefined) {
-    throw new Error(
-      "Td component must receive colIndex prop. Make sure it's used inside Tr component."
-    );
-  }
+  const { columnWidths, columnCount } = useTrContext();
 
   const width = columnWidths[colIndex] ?? 100;
 
   return (
     <div
       style={{
-        width: width,
+        width,
         minWidth: 100,
         padding: "8px 16px",
         fontSize: "14px",

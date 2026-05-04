@@ -298,6 +298,134 @@ function App() {
           ))}
         </Tbody>
       </Table>
+      <br />
+      <h2 style={{ marginBottom: "20px", color: "#213547" }}>
+        Advanced Spanning Example
+      </h2>
+      <div style={{ marginBottom: "10px", fontSize: "14px", color: "#666" }}>
+        Demonstrating complex grid layouts with column and row spanning.
+      </div>
+      <Table totalData={8} rowHeight={60} height={500}>
+        <Thead>
+          <Th width={100}>ID</Th>
+          <Th width={300} colSpan={3} style={{ backgroundColor: "#e7f5ff" }}>
+            Merged Header (Spans 3 Columns)
+          </Th>
+          <Th width={150}>Actions</Th>
+        </Thead>
+        <Tbody>
+          <Tr>
+            <Td>#101</Td>
+            <Td
+              rowSpan={2}
+              style={{ backgroundColor: "#fff4e6", fontWeight: "bold" }}
+            >
+              Category A<br />
+              (RowSpan 2)
+            </Td>
+            <Td>Sub-item 1.1</Td>
+            <Td>Details 1.1</Td>
+            <Td>
+              <button style={{ padding: "4px 8px", cursor: "pointer" }}>
+                Edit
+              </button>
+            </Td>
+          </Tr>
+          <Tr>
+            <Td>#102</Td>
+            {/* The first Td here is automatically offset because Category A spans into this row */}
+            <Td>Sub-item 1.2</Td>
+            <Td>Details 1.2</Td>
+            <Td>
+              <button style={{ padding: "4px 8px", cursor: "pointer" }}>
+                Edit
+              </button>
+            </Td>
+          </Tr>
+          <Tr>
+            <Td>#103</Td>
+            <Td
+              colSpan={2}
+              style={{ backgroundColor: "#f3f0ff", textAlign: "center" }}
+            >
+              Featured Item (ColSpan 2)
+            </Td>
+            <Td>Details 1.3</Td>
+            <Td>
+              <button style={{ padding: "4px 8px", cursor: "pointer" }}>
+                Edit
+              </button>
+            </Td>
+          </Tr>
+          <Tr>
+            <Td>#104</Td>
+            <Td>Standard</Td>
+            <Td>Normal</Td>
+            <Td>Regular</Td>
+            <Td>
+              <button style={{ padding: "4px 8px", cursor: "pointer" }}>
+                Edit
+              </button>
+            </Td>
+          </Tr>
+          <Tr>
+            <Td>#105</Td>
+            <Td
+              rowSpan={3}
+              style={{ backgroundColor: "#ebfbee", verticalAlign: "top" }}
+            >
+              Project Omega
+              <br />
+              (RowSpan 3)
+            </Td>
+            <Td>Phase 1</Td>
+            <Td>Completed</Td>
+            <Td>
+              <button style={{ padding: "4px 8px", cursor: "pointer" }}>
+                View
+              </button>
+            </Td>
+          </Tr>
+          <Tr>
+            <Td>#106</Td>
+            <Td>Phase 2</Td>
+            <Td>In Progress</Td>
+            <Td>
+              <button style={{ padding: "4px 8px", cursor: "pointer" }}>
+                View
+              </button>
+            </Td>
+          </Tr>
+          <Tr>
+            <Td>#107</Td>
+            <Td>Phase 3</Td>
+            <Td>Planned</Td>
+            <Td>
+              <button style={{ padding: "4px 8px", cursor: "pointer" }}>
+                View
+              </button>
+            </Td>
+          </Tr>
+          <Tr>
+            <Td>#108</Td>
+            <Td
+              colSpan={3}
+              style={{
+                backgroundColor: "#fff5f5",
+                color: "#fa5252",
+                fontWeight: "600",
+              }}
+            >
+              Warning: System Maintenance Scheduled (ColSpan 3)
+            </Td>
+            <Td>
+              <button style={{ padding: "4px 8px", cursor: "pointer" }}>
+                Dismiss
+              </button>
+            </Td>
+          </Tr>
+        </Tbody>
+      </Table>
     </div>
   );
 }

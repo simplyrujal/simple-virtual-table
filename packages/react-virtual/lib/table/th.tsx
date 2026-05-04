@@ -4,9 +4,17 @@ import { useTheadContext } from "./thead";
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   colIndex?: number; // This prop is automatically injected by Thead via React.cloneElement
   width?: number; // Column width (default: 100)
+  colSpan?: number;
 }
 
-const Th = ({ children, style, colIndex, width = 100, ...props }: IProps) => {
+const Th = ({
+  children,
+  style,
+  colIndex,
+  width = 100,
+  colSpan = 1,
+  ...props
+}: IProps) => {
   // Ensure Th is used within Thead context - throws error if not wrapped
   const { columnCount, columnWidths } = useTheadContext();
 
@@ -16,13 +24,18 @@ const Th = ({ children, style, colIndex, width = 100, ...props }: IProps) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const showRightBorder =
-    columnCount > 0 && effectiveColIndex < columnCount - 1;
+    columnCount > 0 && effectiveColIndex + colSpan - 1 < columnCount - 1;
+
+  // Calculate width based on colSpan
+  const effectiveWidth = columnWidths
+    .slice(effectiveColIndex, effectiveColIndex + colSpan)
+    .reduce((sum, w) => sum + w, 0);
 
   return (
     <div
       ref={ref}
       style={{
-        width: columnWidths[effectiveColIndex],
+        width: effectiveWidth,
         borderRight: showRightBorder ? `1px solid #e0e0e0` : "none",
         display: "flex",
         alignItems: "center",

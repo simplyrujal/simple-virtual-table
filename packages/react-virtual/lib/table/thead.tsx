@@ -21,7 +21,6 @@ export const useTheadContext = (): TheadContextValue => {
 interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   headerHeight?: number;
 }
-
 const Thead = ({ children, style, headerHeight = 50, ...props }: IProps) => {
   const { contentWidth, setColumnWidths, columnCount, columnWidths } =
     useTableContext();
@@ -32,8 +31,14 @@ const Thead = ({ children, style, headerHeight = 50, ...props }: IProps) => {
     const widths: number[] = [];
     React.Children.forEach(children, (child) => {
       if (React.isValidElement(child)) {
-        const thProps = child.props as { width?: number };
-        widths.push(thProps.width ?? 100);
+        const thProps = child.props as { width?: number; colSpan?: number };
+        const colSpan = thProps.colSpan || 1;
+        const totalWidth = thProps.width ?? 100;
+        const widthPerCol = totalWidth / colSpan;
+
+        for (let i = 0; i < colSpan; i++) {
+          widths.push(widthPerCol);
+        }
       }
     });
     if (widths.length > 0) {
@@ -46,6 +51,8 @@ const Thead = ({ children, style, headerHeight = 50, ...props }: IProps) => {
     columnCount,
     columnWidths,
   };
+
+  let currentColIndex = 0;
 
   return (
     <TheadContext.Provider value={contextValue}>
@@ -64,13 +71,17 @@ const Thead = ({ children, style, headerHeight = 50, ...props }: IProps) => {
         }}
         {...props}
       >
-        {React.Children.map(children, (child, index) => {
+        {React.Children.map(children, (child) => {
           if (React.isValidElement(child)) {
+            const colSpan = (child.props as any).colSpan || 1;
+            const index = currentColIndex;
+            currentColIndex += colSpan;
             return React.cloneElement(child, { colIndex: index } as any);
           }
           return child;
         })}
         {/* Spacer to fill remaining space when content is smaller than container */}
+...
         {/* {needsFill && spacerWidth > 0 && (
           <div
             style={{

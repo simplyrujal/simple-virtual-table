@@ -4,6 +4,7 @@ import { useTbodyContext } from "./tbody";
 interface TrContextValue {
   columnCount: number;
   columnWidths: number[];
+  rowHeight: number;
   // Context exists to ensure Th is wrapped in Thead
   // The colIndex is injected via props by React.cloneElement
 }
@@ -38,7 +39,10 @@ const Tr = ({ children, style, rowIndex, ...props }: TrProps) => {
   const contextValue: TrContextValue = {
     columnCount,
     columnWidths,
+    rowHeight,
   };
+
+  let currentColIndex = 0;
 
   return (
     <TrContext.Provider value={contextValue}>
@@ -52,11 +56,15 @@ const Tr = ({ children, style, rowIndex, ...props }: TrProps) => {
           backgroundColor: rowIndex % 2 === 0 ? "#ffffff" : "#fafafa",
           transition: "background-color 0.2s",
           boxSizing: "border-box",
+          position: "relative",
         }}
         {...props}
       >
-        {React.Children.map(children, (child, index) => {
+        {React.Children.map(children, (child) => {
           if (React.isValidElement(child)) {
+            const colSpan = (child.props as any).colSpan || 1;
+            const index = currentColIndex;
+            currentColIndex += colSpan;
             return React.cloneElement(child, { colIndex: index } as any);
           }
           return child;

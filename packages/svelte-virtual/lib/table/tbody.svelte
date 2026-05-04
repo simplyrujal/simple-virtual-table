@@ -7,16 +7,11 @@
   const tableContext = getContext(tableContextKey) as any;
   if (!tableContext) throw new Error("<Tbody> must be used inside <Table>");
 
-  // Access startIndex, endIndex, and totalData reactively from context (not destructured)
   const totalHeight = $derived(tableContext.totalData * offsetHeight);
 
-  // Track current row index for children
-  // We need to track the index in the user's data array, not the virtualized index
-  // Since the user iterates with {#each data as row}, each Tr represents a row
-  // We'll use a counter that increments for each Tr that gets rendered
-  let rowCounter = $state(0);
+  // Spanning map to track occupied cells: row index -> Set of occupied column indices
+  let spanningMap = $state<Record<number, Set<number>>>({});
 
-  // Provide TbodyContext (similar to TbodyContext.Provider in React)
   setContext(tbodyContextKey, {
     get contentWidth() {
       return tableContext.contentWidth;
@@ -33,13 +28,29 @@
     get startIndex() {
       return tableContext.startIndex;
     },
-    // Function to get and increment row index
-    // This returns the index in the user's data array (0, 1, 2, ...)
-    getNextRowIndex() {
-      const index = rowCounter;
-      rowCounter++;
-      return index;
+    registerSpan(row: number, col: number, rowSpan: number, colSpan: number) {
+      if (rowSpan <= 1 && colSpan <= 1) return;
+      
+      for (let r = row; r < row + rowSpan; r++) {
+        if (!spanningMap[r]) spanningMap[r] = new Set();
+        for (let c = col; c < col + colSpan; c++) {
+          // Don't mark the origin cell as occupied for itself
+          if (r === row && c === col) continue;
+          spanningMap[r].add(c);
+        }
+      }
     },
+    isOccupied(row: number, col: number) {
+      return spanningMap[row]?.has(col) || false;
+    }
+  });
+
+  // Reset spanning map when data or virtualization changes significantly 
+  // though for simple tables, keeping it might be okay. 
+  // Let's reset it periodically or if totalData changes.
+  $effect(() => {
+    const _ = tableContext.totalData;
+    spanningMap = {};
   });
 </script>
 
@@ -47,17 +58,9 @@
   style="position: relative; height: {totalHeight}px; width: {tableContext.contentWidth}px; box-sizing: border-box;"
   {...props}
 >
-  <!-- Spacer for rows before visible range -->
-  <div
-    style="height: {tableContext.startIndex * tableContext.rowHeight}px;"
-  ></div>
+  <div style="height: {tableContext.startIndex * tableContext.rowHeight}px;"></div>
 
-  <!-- Render visible rows -->
   {@render children(tableContext.startIndex, tableContext.endIndex)}
 
-  <!-- Spacer for rows after visible range -->
-  <div
-    style="height: {(tableContext.totalData - tableContext.endIndex) *
-      tableContext.rowHeight}px;"
-  ></div>
+  <div style="height: {(tableContext.totalData - tableContext.endIndex) * tableContext.rowHeight}px;"></div>
 </div>

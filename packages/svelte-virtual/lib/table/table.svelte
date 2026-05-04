@@ -24,8 +24,11 @@
 
   const contentWidth = $derived(columnWidths.reduce((sum, w) => sum + w, 0));
 
-  const setColumnWidths = (index: number, width: number) => {
-    columnWidths[index] = width;
+  const setColumnWidths = (index: number, width: number, colSpan = 1) => {
+    const widthPerCol = width / colSpan;
+    for (let i = 0; i < colSpan; i++) {
+      columnWidths[index + i] = widthPerCol;
+    }
   };
 
   // ✅ Provide all context values
@@ -54,8 +57,12 @@
     get contentWidth() {
       return contentWidth;
     },
-    columnWidths,
-    columnCount: columnWidths.length,
+    get columnWidths() {
+      return columnWidths;
+    },
+    get columnCount() {
+      return columnWidths.length;
+    },
     setColumnWidths,
   });
 

@@ -2,31 +2,16 @@
   import { getContext, setContext } from "svelte";
   import { tbodyContextKey, trContextKey } from "./context";
 
-  let { children, rowIndex, ...restProps } = $props();
+  let { children, rowIndex, style = "", ...restProps } = $props();
   let elementRef: HTMLDivElement | null = null;
 
-  // Ensure Tr is used within Tbody context - throws error if not wrapped
   const tbodyContext = getContext(tbodyContextKey) as any;
   if (!tbodyContext) {
     throw new Error("Tr component must be used inside Tbody component");
   }
 
-  // Track current column index for children - reset on each render
   let colCounter = $state(0);
 
-  // Get rowIndex from prop, or from context if not provided
-  // Initialize rowIndex when component mounts
-  let effectiveRowIndex = $state(rowIndex !== undefined ? rowIndex : -1);
-
-  $effect(() => {
-    if (rowIndex === undefined && effectiveRowIndex === -1) {
-      effectiveRowIndex = tbodyContext.getNextRowIndex();
-    } else if (rowIndex !== undefined) {
-      effectiveRowIndex = rowIndex;
-    }
-  });
-
-  // Provide TrContext (similar to TrContext.Provider in React)
   setContext(trContextKey, {
     get columnCount() {
       return tbodyContext.columnCount;
@@ -34,27 +19,31 @@
     get columnWidths() {
       return tbodyContext.columnWidths;
     },
-    // Function to get and increment column index
-    getNextColIndex() {
+    get rowHeight() {
+      return tbodyContext.rowHeight;
+    },
+    getNextColIndex(colSpan = 1, rowSpan = 1) {
+      // Skip cells that are occupied by rowSpans from above
+      while (tbodyContext.isOccupied(rowIndex, colCounter)) {
+        colCounter++;
+      }
+      
       const index = colCounter;
-      colCounter++;
+      
+      // Register this cell's span so subsequent rows/cells know about it
+      tbodyContext.registerSpan(rowIndex, index, rowSpan, colSpan);
+      
+      colCounter += colSpan;
       return index;
     },
   });
-
-  // Reset column counter when component initializes
-  $effect(() => {
-    colCounter = 0;
-  });
 </script>
 
+<!-- svelte-ignore state_referenced_locally -->
+{(colCounter = 0), ""}
 <div
   bind:this={elementRef}
-  style="display: flex; width: {tbodyContext.contentWidth}px; height: {tbodyContext.rowHeight}px; border-bottom: 1px solid #e0e0e0; background-color: {effectiveRowIndex %
-    2 ===
-  0
-    ? '#ffffff'
-    : '#fafafa'}; transition: background-color 0.2s; box-sizing: border-box;"
+  style="position: relative; display: flex; width: {tbodyContext.contentWidth}px; height: {tbodyContext.rowHeight}px; border-bottom: 1px solid #e0e0e0; background-color: {rowIndex % 2 === 0 ? '#ffffff' : '#fafafa'}; transition: background-color 0.2s; box-sizing: border-box; {style}"
   {...restProps}
 >
   {@render children()}

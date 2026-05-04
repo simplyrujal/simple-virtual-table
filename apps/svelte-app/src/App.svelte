@@ -291,6 +291,109 @@
       {/snippet}
     </Tbody>
   </Table>
+  <br />
+  <h2 style="margin-bottom: 20px; color: #213547;">Advanced Spanning Example</h2>
+  <div style="margin-bottom: 10px; font-size: 14px; color: #666;">
+    Demonstrating complex grid layouts with column and row spanning.
+  </div>
+  <Table totalData={8} rowHeight={60} height={500}>
+    <Thead>
+      <Th width={100}>ID</Th>
+      <Th width={300} colSpan={3} style="background-color: #e7f5ff;">
+        Merged Header (Spans 3 Columns)
+      </Th>
+      <Th width={150}>Actions</Th>
+    </Thead>
+    <Tbody>
+      {#snippet children(startIndex: number, endIndex: number)}
+        <!-- Row 1 -->
+        {#if startIndex <= 0 && endIndex > 0}
+          <Tr rowIndex={0}>
+            <Td>#101</Td>
+            <Td rowSpan={2} style="background-color: #fff4e6; font-weight: bold;">
+              Category A<br />(RowSpan 2)
+            </Td>
+            <Td>Sub-item 1.1</Td>
+            <Td>Details 1.1</Td>
+            <Td><button style="padding: 4px 8px; cursor: pointer;">Edit</button></Td>
+          </Tr>
+        {/if}
+        <!-- Row 2 -->
+        {#if startIndex <= 1 && endIndex > 1}
+          <Tr rowIndex={1}>
+            <Td>#102</Td>
+            <!-- Col 1 is occupied by Category A, so we skip it -->
+            <Td colIndex={2}>Sub-item 1.2</Td>
+            <Td>Details 1.2</Td>
+            <Td><button style="padding: 4px 8px; cursor: pointer;">Edit</button></Td>
+          </Tr>
+        {/if}
+        <!-- Row 3 -->
+        {#if startIndex <= 2 && endIndex > 2}
+          <Tr rowIndex={2}>
+            <Td>#103</Td>
+            <Td colSpan={2} style="background-color: #f3f0ff; text-align: center;">
+              Featured Item (ColSpan 2)
+            </Td>
+            <Td>Details 1.3</Td>
+            <Td><button style="padding: 4px 8px; cursor: pointer;">Edit</button></Td>
+          </Tr>
+        {/if}
+        <!-- Row 4 -->
+        {#if startIndex <= 3 && endIndex > 3}
+          <Tr rowIndex={3}>
+            <Td>#104</Td>
+            <Td>Standard</Td>
+            <Td>Normal</Td>
+            <Td>Regular</Td>
+            <Td><button style="padding: 4px 8px; cursor: pointer;">Edit</button></Td>
+          </Tr>
+        {/if}
+        <!-- Row 5 -->
+        {#if startIndex <= 4 && endIndex > 4}
+          <Tr rowIndex={4}>
+            <Td>#105</Td>
+            <Td rowSpan={3} style="background-color: #ebfbee; vertical-align: top;">
+              Project Omega<br />(RowSpan 3)
+            </Td>
+            <Td>Phase 1</Td>
+            <Td>Completed</Td>
+            <Td><button style="padding: 4px 8px; cursor: pointer;">View</button></Td>
+          </Tr>
+        {/if}
+        <!-- Row 6 -->
+        {#if startIndex <= 5 && endIndex > 5}
+          <Tr rowIndex={5}>
+            <Td>#106</Td>
+            <!-- Col 1 is occupied by Project Omega -->
+            <Td colIndex={2}>Phase 2</Td>
+            <Td>In Progress</Td>
+            <Td><button style="padding: 4px 8px; cursor: pointer;">View</button></Td>
+          </Tr>
+        {/if}
+        <!-- Row 7 -->
+        {#if startIndex <= 6 && endIndex > 6}
+          <Tr rowIndex={6}>
+            <Td>#107</Td>
+            <!-- Col 1 is occupied by Project Omega -->
+            <Td colIndex={2}>Phase 3</Td>
+            <Td>Planned</Td>
+            <Td><button style="padding: 4px 8px; cursor: pointer;">View</button></Td>
+          </Tr>
+        {/if}
+        <!-- Row 8 -->
+        {#if startIndex <= 7 && endIndex > 7}
+          <Tr rowIndex={7}>
+            <Td>#108</Td>
+            <Td colSpan={3} style="background-color: #fff5f5; color: #fa5252; font-weight: 600;">
+              Warning: System Maintenance Scheduled (ColSpan 3)
+            </Td>
+            <Td><button style="padding: 4px 8px; cursor: pointer;">Dismiss</button></Td>
+          </Tr>
+        {/if}
+      {/snippet}
+    </Tbody>
+  </Table>
 </main>
 
 <style>

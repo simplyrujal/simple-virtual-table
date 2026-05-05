@@ -365,6 +365,7 @@ Header cell component. Must be used inside `Thead`.
 | ---------- | ---------------- | -------- | ------- | ----------------------------------------------------------------------------- |
 | `width`    | `number`         | No       | `100`   | Width of the column in pixels                                                 |
 | `colIndex` | `number`         | **Yes**  | -       | Zero-based index of the column (must be explicitly provided)                  |
+| `colSpan`  | `number`         | No       | `1`     | Number of columns the header cell should span                                 |
 | `style`    | `string`         | No       | -       | Custom styles for the header cell                                             |
 | `children` | `Snippet`        | Yes      | -       | Content of the header cell                                                    |
 | `...props` | `HTMLDivElement` | No       | -       | All standard HTML div attributes (class, onclick, onmouseover, data-\*, etc.) |
@@ -419,12 +420,16 @@ Cell component. Must be used inside `Tr`.
 
 | Prop       | Type             | Required | Default | Description                                                                   |
 | ---------- | ---------------- | -------- | ------- | ----------------------------------------------------------------------------- |
-| `colIndex` | `number`         | **Yes**  | -       | Zero-based index of the column (must be explicitly provided)                  |
+| `colIndex` | `number`         | No       | -       | Zero-based index of the column (automatically calculated if omitted)          |
+| `colSpan`  | `number`         | No       | `1`     | Number of columns the cell should span                                        |
+| `rowSpan`  | `number`         | No       | `1`     | Number of rows the cell should span                                           |
 | `style`    | `string`         | No       | -       | Custom styles for the cell                                                    |
 | `children` | `Snippet`        | Yes      | -       | Content of the cell                                                           |
 | `...props` | `HTMLDivElement` | No       | -       | All standard HTML div attributes (class, onclick, onmouseover, data-\*, etc.) |
 
-**Important:** Unlike the React version, `colIndex` **must be explicitly provided** to each `Td` component. This ensures the cell width matches the corresponding `Th` width from the header.
+**Note:** `colIndex` is automatically calculated based on previous cells and spanning.
+
+**Important:** The cell width automatically matches the corresponding `Th` width from the header.
 
 **Note:**
 
@@ -486,7 +491,7 @@ Violating these requirements will throw helpful error messages.
 
 ## Key Differences from React Version
 
-1. **`colIndex` is required**: In the Svelte version, you must explicitly provide `colIndex` to both `Th` and `Td` components. This is not automatically injected.
+1. **`colIndex` is optional**: Similar to the React version, `colIndex` is now automatically calculated for both `Th` and `Td` components.
 
 2. **`rowIndex` is required**: In the Svelte version, you must explicitly provide `rowIndex` to `Tr` components using `rowIndex={startIndex + index}`.
 
@@ -508,4 +513,6 @@ Violating these requirements will throw helpful error messages.
 - The `height` prop on `Table` is optional, but recommended for proper virtualization behavior
 - Remember to provide `colIndex` starting from 0 for each column in both `Th` and `Td` components
 - Remember to use the snippet pattern in `Tbody` with `startIndex` and `endIndex` parameters
+- Remember to provide `rowIndex={startIndex + index}` to each `Tr` component
+rn in `Tbody` with `startIndex` and `endIndex` parameters
 - Remember to provide `rowIndex={startIndex + index}` to each `Tr` component

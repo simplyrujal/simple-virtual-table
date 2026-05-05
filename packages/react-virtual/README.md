@@ -423,6 +423,8 @@ Cell component. Must be used inside `Tr`.
 | Prop       | Type                  | Required | Default | Description                                                                       |
 | ---------- | --------------------- | -------- | ------- | --------------------------------------------------------------------------------- |
 | `colIndex` | `number`              | No       | -       | Automatically injected by `Tr`                                                    |
+| `colSpan`  | `number`              | No       | `1`     | Number of columns the cell should span                                            |
+| `rowSpan`  | `number`              | No       | `1`     | Number of rows the cell should span                                               |
 | `style`    | `React.CSSProperties` | No       | -       | Custom styles for the cell                                                        |
 | `...props` | `HTMLDivElement`      | No       | -       | All standard HTML div attributes (className, onClick, onMouseOver, data-\*, etc.) |
 

@@ -1,14 +1,22 @@
 <script lang="ts">
   import { getContext, setContext } from "svelte";
-  import { tbodyContextKey, trContextKey } from "./context";
+  import { tableContextKey, tbodyContextKey, trContextKey } from "./context";
 
-  let { children, rowIndex, style = "", ...restProps } = $props();
-  let elementRef: HTMLDivElement | null = null;
+  let { children, rowIndex: propRowIndex, style = "", ...restProps } = $props();
+  let elementRef = $state<HTMLDivElement | null>(null);
 
+  const tableContext = getContext(tableContextKey) as any;
   const tbodyContext = getContext(tbodyContextKey) as any;
   if (!tbodyContext) {
     throw new Error("Tr component must be used inside Tbody component");
   }
+
+  // svelte-ignore state_referenced_locally
+  const rowIndex = propRowIndex !== undefined ? propRowIndex : tbodyContext.getNextRowIndex();
+
+  const isVisible = $derived(
+    rowIndex >= tableContext.startIndex && rowIndex < tableContext.endIndex
+  );
 
   let colCounter = $state(0);
 
@@ -39,12 +47,14 @@
   });
 </script>
 
-<!-- svelte-ignore state_referenced_locally -->
-{(colCounter = 0), ""}
-<div
-  bind:this={elementRef}
-  style="position: relative; display: flex; width: {tbodyContext.contentWidth}px; height: {tbodyContext.rowHeight}px; border-bottom: 1px solid #e0e0e0; background-color: {rowIndex % 2 === 0 ? '#ffffff' : '#fafafa'}; transition: background-color 0.2s; box-sizing: border-box; {style}"
-  {...restProps}
->
-  {@render children()}
-</div>
+{#if isVisible}
+  <!-- svelte-ignore state_referenced_locally -->
+  {(colCounter = 0), ""}
+  <div
+    bind:this={elementRef}
+    style="position: relative; display: flex; width: {tbodyContext.contentWidth}px; height: {tbodyContext.rowHeight}px; border-bottom: 1px solid #e0e0e0; background-color: {rowIndex % 2 === 0 ? '#ffffff' : '#fafafa'}; transition: background-color 0.2s; box-sizing: border-box; {style}"
+    {...restProps}
+  >
+    {@render children()}
+  </div>
+{/if}

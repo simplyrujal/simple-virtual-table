@@ -213,32 +213,32 @@
   </p>
   <Table totalData={data.length} height={600} rowHeight={45}>
     <Thead>
-      <Th colIndex={0} width={100}>ID</Th>
-      <Th colIndex={1} width={100}>Name</Th>
-      <Th colIndex={2} width={250}>Email</Th>
-      <Th colIndex={3} width={100}>Age</Th>
-      <Th colIndex={4} width={100}>Status</Th>
+      <Th width={100}>ID</Th>
+      <Th width={100}>Name</Th>
+      <Th width={250}>Email</Th>
+      <Th width={100}>Age</Th>
+      <Th width={100}>Status</Th>
     </Thead>
     <Tbody>
       {#snippet children(startIndex: number, endIndex: number)}
         {#each data.slice(startIndex, endIndex) as row, index (row.id)}
           {@const status = row.status}
           <Tr rowIndex={startIndex + index}>
-            <Td colIndex={0}>
+            <Td>
               <strong>{row.id}</strong>
             </Td>
-            <Td colIndex={1}>
+            <Td>
               <span style="color: #646cff; font-weight: 500;">
                 {row.name}
               </span>
             </Td>
-            <Td colIndex={2}>{row.email}</Td>
-            <Td colIndex={3}>
+            <Td>{row.email}</Td>
+            <Td>
               <span style="color: {row.age > 50 ? '#ff6b6b' : '#51cf66'};">
                 {row.age}
               </span>
             </Td>
-            <Td colIndex={4}>
+            <Td>
               <span
                 style="padding: 4px 8px; border-radius: 4px; background-color: {colors[
                   status
@@ -257,35 +257,35 @@
   <br />
   <Table totalData={smallData.length} rowHeight={45} height={400}>
     <Thead>
-      <Th colIndex={0} width={100}>ID</Th>
-      <Th colIndex={1} width={200}>Name</Th>
-      <Th colIndex={2} width={300}>Email</Th>
-      <Th colIndex={3} width={100}>Age</Th>
-      <Th colIndex={4} width={100}>Status</Th>
-      <Th colIndex={5} width={150}>Phone</Th>
-      <Th colIndex={6} width={150}>Department</Th>
-      <Th colIndex={7} width={120}>Salary</Th>
-      <Th colIndex={8} width={150}>Location</Th>
-      <Th colIndex={9} width={120}>Join Date</Th>
-      <Th colIndex={10} width={180}>Manager</Th>
+      <Th width={100}>ID</Th>
+      <Th width={200}>Name</Th>
+      <Th width={300}>Email</Th>
+      <Th width={100}>Age</Th>
+      <Th width={100}>Status</Th>
+      <Th width={150}>Phone</Th>
+      <Th width={150}>Department</Th>
+      <Th width={120}>Salary</Th>
+      <Th width={150}>Location</Th>
+      <Th width={120}>Join Date</Th>
+      <Th width={180}>Manager</Th>
     </Thead>
     <Tbody>
       {#snippet children(startIndex: number, endIndex: number)}
         {#each smallData.slice(startIndex, endIndex) as row, index (row.id)}
           <Tr rowIndex={startIndex + index}>
-            <Td colIndex={0}>{row.id}</Td>
-            <Td colIndex={1}>{row.name}</Td>
-            <Td colIndex={2}>{row.email}</Td>
-            <Td colIndex={3}>{row.age}</Td>
-            <Td colIndex={4}>{row.status}</Td>
-            <Td colIndex={5}>{row.phone || "-"}</Td>
-            <Td colIndex={6}>{row.department || "-"}</Td>
-            <Td colIndex={7}
+            <Td>{row.id}</Td>
+            <Td>{row.name}</Td>
+            <Td>{row.email}</Td>
+            <Td>{row.age}</Td>
+            <Td>{row.status}</Td>
+            <Td>{row.phone || "-"}</Td>
+            <Td>{row.department || "-"}</Td>
+            <Td
               >{row.salary ? `$${row.salary.toLocaleString()}` : "-"}</Td
             >
-            <Td colIndex={8}>{row.location || "-"}</Td>
-            <Td colIndex={9}>{row.joinDate || "-"}</Td>
-            <Td colIndex={10}>{row.manager || "-"}</Td>
+            <Td>{row.location || "-"}</Td>
+            <Td>{row.joinDate || "-"}</Td>
+            <Td>{row.manager || "-"}</Td>
           </Tr>
         {/each}
       {/snippet}
@@ -305,92 +305,68 @@
       <Th width={150}>Actions</Th>
     </Thead>
     <Tbody>
-      {#snippet children(startIndex: number, endIndex: number)}
-        <!-- Row 1 -->
-        {#if startIndex <= 0 && endIndex > 0}
-          <Tr rowIndex={0}>
-            <Td>#101</Td>
-            <Td rowSpan={2} style="background-color: #fff4e6; font-weight: bold;">
-              Category A<br />(RowSpan 2)
-            </Td>
-            <Td>Sub-item 1.1</Td>
-            <Td>Details 1.1</Td>
-            <Td><button style="padding: 4px 8px; cursor: pointer;">Edit</button></Td>
-          </Tr>
-        {/if}
-        <!-- Row 2 -->
-        {#if startIndex <= 1 && endIndex > 1}
-          <Tr rowIndex={1}>
-            <Td>#102</Td>
-            <!-- Col 1 is occupied by Category A, so we skip it -->
-            <Td colIndex={2}>Sub-item 1.2</Td>
-            <Td>Details 1.2</Td>
-            <Td><button style="padding: 4px 8px; cursor: pointer;">Edit</button></Td>
-          </Tr>
-        {/if}
-        <!-- Row 3 -->
-        {#if startIndex <= 2 && endIndex > 2}
-          <Tr rowIndex={2}>
-            <Td>#103</Td>
-            <Td colSpan={2} style="background-color: #f3f0ff; text-align: center;">
-              Featured Item (ColSpan 2)
-            </Td>
-            <Td>Details 1.3</Td>
-            <Td><button style="padding: 4px 8px; cursor: pointer;">Edit</button></Td>
-          </Tr>
-        {/if}
-        <!-- Row 4 -->
-        {#if startIndex <= 3 && endIndex > 3}
-          <Tr rowIndex={3}>
-            <Td>#104</Td>
-            <Td>Standard</Td>
-            <Td>Normal</Td>
-            <Td>Regular</Td>
-            <Td><button style="padding: 4px 8px; cursor: pointer;">Edit</button></Td>
-          </Tr>
-        {/if}
-        <!-- Row 5 -->
-        {#if startIndex <= 4 && endIndex > 4}
-          <Tr rowIndex={4}>
-            <Td>#105</Td>
-            <Td rowSpan={3} style="background-color: #ebfbee; vertical-align: top;">
-              Project Omega<br />(RowSpan 3)
-            </Td>
-            <Td>Phase 1</Td>
-            <Td>Completed</Td>
-            <Td><button style="padding: 4px 8px; cursor: pointer;">View</button></Td>
-          </Tr>
-        {/if}
-        <!-- Row 6 -->
-        {#if startIndex <= 5 && endIndex > 5}
-          <Tr rowIndex={5}>
-            <Td>#106</Td>
-            <!-- Col 1 is occupied by Project Omega -->
-            <Td colIndex={2}>Phase 2</Td>
-            <Td>In Progress</Td>
-            <Td><button style="padding: 4px 8px; cursor: pointer;">View</button></Td>
-          </Tr>
-        {/if}
-        <!-- Row 7 -->
-        {#if startIndex <= 6 && endIndex > 6}
-          <Tr rowIndex={6}>
-            <Td>#107</Td>
-            <!-- Col 1 is occupied by Project Omega -->
-            <Td colIndex={2}>Phase 3</Td>
-            <Td>Planned</Td>
-            <Td><button style="padding: 4px 8px; cursor: pointer;">View</button></Td>
-          </Tr>
-        {/if}
-        <!-- Row 8 -->
-        {#if startIndex <= 7 && endIndex > 7}
-          <Tr rowIndex={7}>
-            <Td>#108</Td>
-            <Td colSpan={3} style="background-color: #fff5f5; color: #fa5252; font-weight: 600;">
-              Warning: System Maintenance Scheduled (ColSpan 3)
-            </Td>
-            <Td><button style="padding: 4px 8px; cursor: pointer;">Dismiss</button></Td>
-          </Tr>
-        {/if}
+      {#snippet children()}
+        <Tr>
+          <Td>#101</Td>
+          <Td rowSpan={2} style="background-color: #fff4e6; font-weight: bold;">
+            Category A<br />(RowSpan 2)
+          </Td>
+          <Td>Sub-item 1.1</Td>
+          <Td>Details 1.1</Td>
+          <Td><button style="padding: 4px 8px; cursor: pointer;">Edit</button></Td>
+        </Tr>
+        <Tr>
+          <Td>#102</Td>
+          <!-- Col 1 is occupied by Category A, so we skip it automatically -->
+          <Td>Sub-item 1.2</Td>
+          <Td>Details 1.2</Td>
+          <Td><button style="padding: 4px 8px; cursor: pointer;">Edit</button></Td>
+        </Tr>
+        <Tr>
+          <Td>#103</Td>
+          <Td colSpan={2} style="background-color: #f3f0ff; text-align: center;">
+            Featured Item (ColSpan 2)
+          </Td>
+          <Td>Details 1.3</Td>
+          <Td><button style="padding: 4px 8px; cursor: pointer;">Edit</button></Td>
+        </Tr>
+        <Tr>
+          <Td>#104</Td>
+          <Td>Standard</Td>
+          <Td>Normal</Td>
+          <Td>Regular</Td>
+          <Td><button style="padding: 4px 8px; cursor: pointer;">Edit</button></Td>
+        </Tr>
+        <Tr>
+          <Td>#105</Td>
+          <Td rowSpan={3} style="background-color: #ebfbee; vertical-align: top;">
+            Project Omega<br />(RowSpan 3)
+          </Td>
+          <Td>Phase 1</Td>
+          <Td>Completed</Td>
+          <Td><button style="padding: 4px 8px; cursor: pointer;">View</button></Td>
+        </Tr>
+        <Tr>
+          <Td>#106</Td>
+          <!-- Col 1 is occupied by Project Omega -->
+          <Td>Phase 2</Td>
+          <Td>In Progress</Td>
+          <Td><button style="padding: 4px 8px; cursor: pointer;">View</button></Td>
+        </Tr>
+        <Tr>
+          <Td>#107</Td>
+          <!-- Col 1 is occupied by Project Omega -->
+          <Td>Phase 3</Td>
+          <Td>Planned</Td>
+          <Td><button style="padding: 4px 8px; cursor: pointer;">View</button></Td>
+        </Tr>
+        <Tr>
+          <Td>#108</Td>
+          <Td colSpan={3} style="background-color: #fff5f5; color: #fa5252; font-weight: 600;">
+            Warning: System Maintenance Scheduled (ColSpan 3)
+          </Td>
+          <Td><button style="padding: 4px 8px; cursor: pointer;">Dismiss</button></Td>
+        </Tr>
       {/snippet}
     </Tbody>
   </Table>

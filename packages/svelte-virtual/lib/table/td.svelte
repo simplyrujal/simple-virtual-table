@@ -21,8 +21,9 @@
     throw new Error("<Td> must be used inside <Tr>");
   }
 
+  // svelte-ignore state_referenced_locally
   const colIndex =
-    propColIndex !== undefined ? propColIndex : trContext.getNextColIndex(colSpan);
+    propColIndex !== undefined ? propColIndex : trContext.getNextColIndex(colSpan, rowSpan);
 
   const effectiveWidth = $derived(
     trContext.columnWidths && trContext.columnWidths.length > 0

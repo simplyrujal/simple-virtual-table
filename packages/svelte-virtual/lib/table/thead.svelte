@@ -36,7 +36,7 @@
 { (colCounter = 0, "") }
 <div
   data-thead-container
-  style="position: sticky; top: 0; z-index: 10; display: flex; height: {headerHeight}px; width: {tableContext.contentWidth}px; box-sizing: border-box; {style}"
+  style="position: sticky; top: 0; z-index: 10; display: flex; height: {headerHeight}px; width: {tableContext.contentWidth}px; box-sizing: border-box; background-color: #f5f5f5; border-bottom: 2px solid #ddd; {style}"
   {...props}
 >
   {@render children()}

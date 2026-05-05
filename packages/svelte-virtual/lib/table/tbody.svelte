@@ -10,7 +10,9 @@
   const totalHeight = $derived(tableContext.totalData * offsetHeight);
 
   // Spanning map to track occupied cells: row index -> Set of occupied column indices
-  let spanningMap = $state<Record<number, Set<number>>>({});
+  let spanningMap: Record<number, Set<number>> = {};
+
+  let rowCounter = 0;
 
   setContext(tbodyContextKey, {
     get contentWidth() {
@@ -42,15 +44,10 @@
     },
     isOccupied(row: number, col: number) {
       return spanningMap[row]?.has(col) || false;
+    },
+    getNextRowIndex() {
+      return rowCounter++;
     }
-  });
-
-  // Reset spanning map when data or virtualization changes significantly 
-  // though for simple tables, keeping it might be okay. 
-  // Let's reset it periodically or if totalData changes.
-  $effect(() => {
-    const _ = tableContext.totalData;
-    spanningMap = {};
   });
 </script>
 
@@ -60,6 +57,9 @@
 >
   <div style="height: {tableContext.startIndex * tableContext.rowHeight}px;"></div>
 
+  <!-- Reset counters at the start of every render -->
+  <!-- svelte-ignore state_referenced_locally -->
+  { (rowCounter = 0, spanningMap = {}, "") }
   {@render children(tableContext.startIndex, tableContext.endIndex)}
 
   <div style="height: {(tableContext.totalData - tableContext.endIndex) * tableContext.rowHeight}px;"></div>

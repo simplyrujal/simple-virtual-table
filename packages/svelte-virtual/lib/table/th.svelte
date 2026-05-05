@@ -19,6 +19,7 @@
   const { columnCount, columnWidths, setColumnWidths, getNextColIndex } =
     theadContext;
 
+  // svelte-ignore state_referenced_locally
   const colIndex =
     propColIndex !== undefined ? propColIndex : getNextColIndex(colSpan);
 
@@ -44,7 +45,7 @@
 </script>
 
 <div
-  style="position: absolute; left: {leftOffset}px; width: {effectiveWidth}px; box-sizing: border-box; background-color: #f5f5f5; border-bottom: 2px solid #ddd; border-right: {columnCount >
+  style="position: absolute; left: {leftOffset}px; width: {effectiveWidth}px; height: 100%; box-sizing: border-box; border-right: {columnCount >
     0 && colIndex + colSpan - 1 < columnCount - 1
     ? '1px solid #e0e0e0'
     : 'none'}; display: flex; align-items: center; user-select: none; flex-shrink: 0; flex-grow: 0; box-sizing: border-box; text-align: left; padding: 8px 16px; font-weight: 600; font-size: 14px; {style}"

@@ -23,20 +23,24 @@
 
   // svelte-ignore state_referenced_locally
   const colIndex =
-    propColIndex !== undefined ? propColIndex : trContext.getNextColIndex(colSpan, rowSpan);
+    propColIndex !== undefined
+      ? propColIndex
+      : trContext.getNextColIndex(colSpan, rowSpan);
 
   const effectiveWidth = $derived(
     trContext.columnWidths && trContext.columnWidths.length > 0
       ? trContext.columnWidths
           .slice(colIndex, colIndex + colSpan)
           .reduce((sum: number, w: number) => sum + w, 0)
-      : 100
+      : 100,
   );
 
   const leftOffset = $derived(
     trContext.columnWidths && trContext.columnWidths.length > 0
-      ? trContext.columnWidths.slice(0, colIndex).reduce((sum: number, w: number) => sum + w, 0)
-      : 0
+      ? trContext.columnWidths
+          .slice(0, colIndex)
+          .reduce((sum: number, w: number) => sum + w, 0)
+      : 0,
   );
 
   const height = $derived(trContext.rowHeight * rowSpan);
@@ -46,7 +50,7 @@
   style="position: absolute; left: {leftOffset}px; width: {effectiveWidth}px; height: {height}px; min-width: 100px; padding: 8px 16px; font-size: 14px; border-right: {trContext.columnCount >
     0 && colIndex + colSpan - 1 < trContext.columnCount - 1
     ? '1px solid #e0e0e0'
-    : 'none'}; display: flex; align-items: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex-shrink: 0; flex-grow: 0; box-sizing: border-box; background-color: inherit; z-index: {rowSpan >
+    : 'none'}; display: flex; align-items: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-wrap: auto; flex-shrink: 0; flex-grow: 0; box-sizing: border-box; background-color: inherit; z-index: {rowSpan >
   1
     ? 1
     : 'auto'}; {style}"

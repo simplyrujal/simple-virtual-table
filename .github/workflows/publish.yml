@@ -38,12 +38,24 @@ jobs:
 
       - name: Publish react-virtual to npm
         working-directory: packages/react-virtual
-        run: npm publish --access public
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if npm view simple-virtual-table-react@$VERSION > /dev/null 2>&1; then
+            echo "Version $VERSION already exists on npm. Skipping publish."
+          else
+            pnpm publish --no-git-checks --access public
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_VIRTUAL_TOKEN }}
 
       - name: Publish svelte-virtual to npm
         working-directory: packages/svelte-virtual
-        run: npm publish --access public
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if npm view simple-virtual-table-svelte@$VERSION > /dev/null 2>&1; then
+            echo "Version $VERSION already exists on npm. Skipping publish."
+          else
+            pnpm publish --no-git-checks --access public
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_VIRTUAL_TOKEN }}

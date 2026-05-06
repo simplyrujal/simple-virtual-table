@@ -106,8 +106,16 @@
 <div
   bind:this={scrollElementRef}
   class={containerClassName}
-  style={`height: ${height}px !important; position: relative !important; width: 100%; overflow: auto; border: 1px solid; border-radius: 4px !important; ${containerStyle}`}
   onscroll={handleScroll}
+  style:height="{height}px"
+  style:width="100%"
+  style:overflow="auto"
+  style:position="relative"
+  style:border="1px solid"
+  style:border-radius="4px"
+  style={Object.entries(containerStyle)
+    .map(([k, v]) => `${k}:${v}`)
+    .join(";")}
 >
   {@render children()}
 </div>

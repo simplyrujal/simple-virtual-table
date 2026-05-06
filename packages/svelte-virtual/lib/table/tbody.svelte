@@ -2,17 +2,17 @@
   import { getContext, setContext } from "svelte";
   import { tableContextKey, tbodyContextKey } from "./context";
 
-  let { children, offsetHeight = 45, ...props } = $props();
+  let { children, ...props } = $props();
 
   const tableContext = getContext(tableContextKey) as any;
   if (!tableContext) throw new Error("<Tbody> must be used inside <Table>");
 
-  const totalHeight = $derived(tableContext.totalData * offsetHeight);
+  const totalHeight = $derived(tableContext.totalData * tableContext.rowHeight);
 
   // Spanning map to track occupied cells: row index -> Set of occupied column indices
-  let spanningMap: Record<number, Set<number>> = {};
+  let spanningMap = $state<Record<number, Set<number>>>({});
 
-  let rowCounter = 0;
+  let rowCounter = $state(0);
 
   setContext(tbodyContextKey, {
     get contentWidth() {

@@ -6,31 +6,58 @@ import React, {
   useEffect,
   useMemo,
   useRef,
-  useState,
+  useSyncExternalStore,
 } from "react";
 
-export interface TableContextValue {
+export interface TableState {
   totalData: number;
-  rowHeight?: number;
-  height?: number;
+  rowHeight: number;
+  height: number;
   scrollTop: number;
   contentWidth: number;
   columnWidths: number[];
   overscan: number;
   startIndex: number;
   endIndex: number;
-  setColumnWidths: (widths: number[]) => void; // Function to update column widths from Thead
-  columnCount: number; // Number of columns (for border calculations)
+  columnCount: number;
 }
 
-const TableContext = createContext<TableContextValue | null>(null);
+export interface TableStore {
+  subscribe: (listener: () => void) => () => void;
+  getSnapshot: () => TableState;
+  setState: (
+    patch: Partial<TableState> | ((state: TableState) => Partial<TableState>)
+  ) => void;
+  setColumnWidths: (widths: number[]) => void;
+}
 
-export const useTableContext = (): TableContextValue => {
-  const context = useContext(TableContext);
-  if (!context) {
+const TableContext = createContext<TableStore | null>(null);
+
+export const useTableStore = <T,>(selector: (state: TableState) => T): T => {
+  const store = useContext(TableContext);
+  if (!store) {
     throw new Error("Table components must be used within a Table provider");
   }
-  return context as TableContextValue;
+  return useSyncExternalStore(store.subscribe, () => selector(store.getSnapshot()));
+};
+
+export const useTableActions = (): Pick<TableStore, "setColumnWidths"> => {
+  const store = useContext(TableContext);
+  if (!store) {
+    throw new Error("Table components must be used within a Table provider");
+  }
+  return { setColumnWidths: store.setColumnWidths };
+};
+
+// Deprecated: Use useTableStore for better performance
+export const useTableContext = (): TableState & {
+  setColumnWidths: (widths: number[]) => void;
+} => {
+  const store = useContext(TableContext);
+  if (!store) {
+    throw new Error("Table components must be used within a Table provider");
+  }
+  return { ...store.getSnapshot(), setColumnWidths: store.setColumnWidths };
 };
 
 export interface TableProps {
@@ -56,37 +83,104 @@ const Table = ({
   containerClassName,
 }: TableProps) => {
   const scrollElementRef = useRef<HTMLDivElement>(null);
-  const [scrollTop, setScrollTop] = useState(0);
-  const [columnWidths, setColumnWidths] = useState<number[]>([]);
 
-  const handleScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
-    setScrollTop(e.currentTarget.scrollTop);
-  }, []);
+  // Initialize store in a ref to keep it stable
+  const storeRef = useRef<TableStore | null>(null);
 
-  // Calculate total content width (sum of all column widths)
-  const contentWidth = useMemo(() => {
-    return columnWidths.reduce((sum, w) => sum + w, 0);
-  }, [columnWidths]);
+  if (!storeRef.current) {
+    let state: TableState = {
+      totalData,
+      rowHeight,
+      height,
+      overscan,
+      scrollTop: 0,
+      contentWidth: 0,
+      columnWidths: [],
+      startIndex: 0,
+      endIndex: 0,
+      columnCount: 0,
+    };
 
-  const { startIndex, endIndex } = useMemo(() => {
-    const visibleStart = Math.floor(scrollTop / rowHeight);
-    const visibleEnd = Math.ceil((scrollTop + height) / rowHeight);
-    const startIndex = Math.max(0, visibleStart - overscan);
-    const endIndex = Math.min(totalData, visibleEnd + overscan);
+    const listeners = new Set<() => void>();
 
-    return { startIndex, endIndex };
-  }, [scrollTop, height, rowHeight, totalData, overscan]);
+    const calculateIndices = (s: TableState) => {
+      const visibleStart = Math.floor(s.scrollTop / s.rowHeight);
+      const visibleEnd = Math.ceil((s.scrollTop + s.height) / s.rowHeight);
+      const startIndex = Math.max(0, visibleStart - s.overscan);
+      const endIndex = Math.min(s.totalData, visibleEnd + s.overscan);
+      return { startIndex, endIndex };
+    };
+
+    const { startIndex, endIndex } = calculateIndices(state);
+    state = { ...state, startIndex, endIndex };
+
+    storeRef.current = {
+      subscribe: (l) => {
+        listeners.add(l);
+        return () => listeners.delete(l);
+      },
+      getSnapshot: () => state,
+      setState: (patch) => {
+        const nextPartial = typeof patch === "function" ? patch(state) : patch;
+        const nextState = { ...state, ...nextPartial };
+
+        // Recalculate derived values if necessary
+        if (
+          nextPartial.scrollTop !== undefined ||
+          nextPartial.height !== undefined ||
+          nextPartial.rowHeight !== undefined ||
+          nextPartial.totalData !== undefined ||
+          nextPartial.overscan !== undefined
+        ) {
+          const { startIndex, endIndex } = calculateIndices(nextState);
+          nextState.startIndex = startIndex;
+          nextState.endIndex = endIndex;
+        }
+
+        if (nextPartial.columnWidths !== undefined) {
+          nextState.contentWidth = nextState.columnWidths.reduce(
+            (sum, w) => sum + w,
+            0
+          );
+          nextState.columnCount = nextState.columnWidths.length;
+        }
+
+        if (JSON.stringify(state) !== JSON.stringify(nextState)) {
+          state = nextState;
+          listeners.forEach((l) => l());
+        }
+      },
+      setColumnWidths: (widths) => {
+        storeRef.current?.setState({ columnWidths: widths });
+      },
+    };
+  }
+
+  const store = storeRef.current!;
+
+  // Keep props in sync with store
+  useEffect(() => {
+    store.setState({ totalData, rowHeight, height, overscan });
+  }, [totalData, rowHeight, height, overscan, store]);
+
+  const handleScroll = useCallback(
+    (e: React.UIEvent<HTMLDivElement>) => {
+      store.setState({ scrollTop: e.currentTarget.scrollTop });
+    },
+    [store]
+  );
+
+  const contentWidth = useSyncExternalStore(
+    store.subscribe,
+    () => store.getSnapshot().contentWidth
+  );
 
   // Update container width based on content width comparison
   useEffect(() => {
     const updateWidth = () => {
       if (scrollElementRef.current && contentWidth > 0) {
-        // Get the container's current width (which is 100% initially)
-        // We need to get the parent's width or the actual rendered width
         const container = scrollElementRef.current;
-        // Temporarily ensure width is 100% to get accurate measurement
         container.style.width = "100%";
-        // Use requestAnimationFrame to ensure layout has updated
         requestAnimationFrame(() => {
           if (scrollElementRef.current) {
             const containerWidth = scrollElementRef.current.clientWidth;
@@ -101,29 +195,12 @@ const Table = ({
     };
 
     updateWidth();
-
-    // Handle window resize
     window.addEventListener("resize", updateWidth);
-    return () => {
-      window.removeEventListener("resize", updateWidth);
-    };
+    return () => window.removeEventListener("resize", updateWidth);
   }, [contentWidth]);
 
-  const contextValue: TableContextValue = {
-    totalData,
-    rowHeight,
-    scrollTop,
-    contentWidth,
-    columnWidths,
-    overscan,
-    startIndex,
-    endIndex,
-    setColumnWidths,
-    columnCount: columnWidths.length,
-  };
-
   return (
-    <TableContext.Provider value={contextValue as TableContextValue}>
+    <TableContext.Provider value={store}>
       <div
         style={{
           height,

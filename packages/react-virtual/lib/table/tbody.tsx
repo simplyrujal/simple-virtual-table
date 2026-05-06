@@ -1,5 +1,5 @@
-import React, { createContext, useContext } from "react";
-import { useTableContext } from "./table";
+import React, { createContext, useContext, useMemo } from "react";
+import { useTableStore } from "./table";
 
 interface TbodyContextValue {
   contentWidth: number;
@@ -24,25 +24,36 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   offsetHeight?: number;
 }
 
-const Tbody = ({ children, offsetHeight = 45, style, ...props }: IProps) => {
-  const {
-    rowHeight,
-    totalData,
-    startIndex,
-    endIndex,
-    contentWidth,
-    columnWidths,
-    columnCount,
-  } = useTableContext();
+const Tbody = ({ children, style, ...props }: IProps) => {
+  const rowHeight = useTableStore((s) => s.rowHeight);
+  const totalData = useTableStore((s) => s.totalData);
+  const startIndex = useTableStore((s) => s.startIndex);
+  const endIndex = useTableStore((s) => s.endIndex);
+  const contentWidth = useTableStore((s) => s.contentWidth);
+  const columnWidths = useTableStore((s) => s.columnWidths);
+  const columnCount = useTableStore((s) => s.columnCount);
 
-  const totalHeight = totalData * offsetHeight;
+  const totalHeight = totalData * rowHeight;
 
-  const contextValue: TbodyContextValue = {
-    contentWidth,
-    rowHeight,
-    columnWidths,
-    columnCount,
-  };
+  const contextValue: TbodyContextValue = useMemo(
+    () => ({
+      contentWidth,
+      rowHeight,
+      columnWidths,
+      columnCount,
+    }),
+    [contentWidth, rowHeight, columnWidths, columnCount]
+  );
+
+  const childrenArray = useMemo(
+    () => React.Children.toArray(children),
+    [children]
+  );
+
+  const visibleChildren = useMemo(
+    () => childrenArray.slice(startIndex, endIndex),
+    [childrenArray, startIndex, endIndex]
+  );
 
   return (
     <TbodyContext value={contextValue}>
@@ -58,15 +69,15 @@ const Tbody = ({ children, offsetHeight = 45, style, ...props }: IProps) => {
       >
         <div style={{ height: startIndex * rowHeight }} />
 
-        {React.Children.map(children, (child, index) => {
+        {visibleChildren.map((child, index) => {
           if (React.isValidElement(child)) {
-            // Inject rowIndex as absolute index (startIndex + relative index in children)
+            // Inject rowIndex as absolute index (startIndex + relative index in visibleChildren)
             return React.cloneElement(child, {
               rowIndex: startIndex + index,
             } as any);
           }
           return child;
-        }).slice(startIndex, endIndex)}
+        })}
 
         <div style={{ height: (totalData - endIndex) * rowHeight }} />
       </div>

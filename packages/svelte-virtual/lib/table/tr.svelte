@@ -52,7 +52,15 @@
   {(colCounter = 0), ""}
   <div
     bind:this={elementRef}
-    style="position: relative; display: flex; width: {tbodyContext.contentWidth}px; height: {tbodyContext.rowHeight}px; border-bottom: 1px solid #e0e0e0; background-color: {rowIndex % 2 === 0 ? '#ffffff' : '#fafafa'}; transition: background-color 0.2s; box-sizing: border-box; {style}"
+    style:position="relative"
+    style:display="flex"
+    style:width="{tbodyContext.contentWidth}px"
+    style:height="{tbodyContext.rowHeight}px"
+    style:border-bottom="1px solid #e0e0e0"
+    style:background-color={rowIndex % 2 === 0 ? "#ffffff" : "#fafafa"}
+    style:transition="background-color 0.2s"
+    style:box-sizing="border-box"
+    style={style}
     {...restProps}
   >
     {@render children()}

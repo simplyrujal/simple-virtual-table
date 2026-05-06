@@ -45,10 +45,24 @@
 </script>
 
 <div
-  style="position: absolute; left: {leftOffset}px; width: {effectiveWidth}px; height: 100%; box-sizing: border-box; border-right: {columnCount >
-    0 && colIndex + colSpan - 1 < columnCount - 1
-    ? '1px solid #e0e0e0'
-    : 'none'}; display: flex; align-items: center; user-select: none; flex-shrink: 0; flex-grow: 0; box-sizing: border-box; text-align: left; padding: 8px 16px; font-weight: 600; font-size: 14px; {style}"
+  style:position="absolute"
+  style:left="{leftOffset}px"
+  style:width="{effectiveWidth}px"
+  style:height="100%"
+  style:box-sizing="border-box"
+  style:border-right={columnCount > 0 && colIndex + colSpan - 1 < columnCount - 1
+    ? "1px solid #e0e0e0"
+    : "none"}
+  style:display="flex"
+  style:align-items="center"
+  style:user-select="none"
+  style:flex-shrink="0"
+  style:flex-grow="0"
+  style:text-align="left"
+  style:padding="8px 16px"
+  style:font-weight="600"
+  style:font-size="14px"
+  style={style}
   {...restProps}
 >
   {@render children()}

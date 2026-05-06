@@ -47,13 +47,29 @@
 </script>
 
 <div
-  style="position: absolute; left: {leftOffset}px; width: {effectiveWidth}px; height: {height}px; min-width: 100px; padding: 8px 16px; font-size: 14px; border-right: {trContext.columnCount >
-    0 && colIndex + colSpan - 1 < trContext.columnCount - 1
-    ? '1px solid #e0e0e0'
-    : 'none'}; display: flex; align-items: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-wrap: auto; flex-shrink: 0; flex-grow: 0; box-sizing: border-box; background-color: inherit; z-index: {rowSpan >
-  1
-    ? 1
-    : 'auto'}; {style}"
+  style:position="absolute"
+  style:left="{leftOffset}px"
+  style:width="{effectiveWidth}px"
+  style:height="{height}px"
+  style:min-width="100px"
+  style:padding="8px 16px"
+  style:font-size="14px"
+  style:border-right={trContext.columnCount > 0 &&
+  colIndex + colSpan - 1 < trContext.columnCount - 1
+    ? "1px solid #e0e0e0"
+    : "none"}
+  style:display="flex"
+  style:align-items="center"
+  style:overflow="hidden"
+  style:text-overflow="ellipsis"
+  style:white-space="nowrap"
+  style:text-wrap="auto"
+  style:flex-shrink="0"
+  style:flex-grow="0"
+  style:box-sizing="border-box"
+  style:background-color="inherit"
+  style:z-index={rowSpan > 1 ? 1 : "auto"}
+  style={style}
   {...restProps}
 >
   {@render children()}

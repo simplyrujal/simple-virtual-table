@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useMemo } from "react";
 import { useTbodyContext } from "./tbody";
 
 interface TrContextValue {
@@ -36,11 +36,14 @@ const Tr = ({ children, style, rowIndex, ...props }: TrProps) => {
     );
   }
 
-  const contextValue: TrContextValue = {
-    columnCount,
-    columnWidths,
-    rowHeight,
-  };
+  const contextValue: TrContextValue = useMemo(
+    () => ({
+      columnCount,
+      columnWidths,
+      rowHeight,
+    }),
+    [columnCount, columnWidths, rowHeight]
+  );
 
   let currentColIndex = 0;
 

@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useLayoutEffect } from "react";
-import { useTableContext } from "./table";
+import React, { createContext, useContext, useLayoutEffect, useMemo } from "react";
+import { useTableStore, useTableActions } from "./table";
 
 interface TheadContextValue {
   columnCount: number;
@@ -22,8 +22,10 @@ interface IProps extends React.HTMLAttributes<HTMLDivElement> {
   headerHeight?: number;
 }
 const Thead = ({ children, style, headerHeight = 50, ...props }: IProps) => {
-  const { contentWidth, setColumnWidths, columnCount, columnWidths } =
-    useTableContext();
+  const contentWidth = useTableStore((s) => s.contentWidth);
+  const columnCount = useTableStore((s) => s.columnCount);
+  const columnWidths = useTableStore((s) => s.columnWidths);
+  const { setColumnWidths } = useTableActions();
 
   // Extract widths from Th children and update table context
   // The setColumnWidths function now handles change detection internally
@@ -47,10 +49,13 @@ const Thead = ({ children, style, headerHeight = 50, ...props }: IProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [children, setColumnWidths]);
 
-  const contextValue: TheadContextValue = {
-    columnCount,
-    columnWidths,
-  };
+  const contextValue: TheadContextValue = useMemo(
+    () => ({
+      columnCount,
+      columnWidths,
+    }),
+    [columnCount, columnWidths]
+  );
 
   let currentColIndex = 0;
 

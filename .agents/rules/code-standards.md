@@ -4,14 +4,16 @@
 **Scope (Svelte):** `**/*.svelte` in `packages/svelte-virtual/`, `apps/svelte-app/`
 
 ## React (.tsx)
+
 **Focus: State Isolation & Minimal Effects**
 
 - **Component Separation:** Extract state-heavy logic into child components. Siblings must not re-render on unrelated state changes.
 - **Minimal `useEffect`:** Only for external subscriptions (DOM, WebSocket). Use render-time computation or event handlers for everything else.
 - **Memoization:** Use `React.memo` for expensive renders and `useMemo`/`useCallback` ONLY for measurable performance gains or stable dependencies.
-- **Deep State:** Use `useSyncExternalStore` or subscription-based stores for drilling >2 levels.
+- **Deep State:** Use context api with `useSyncExternalStore` for subscription-based stores for drilling >2 levels.
 
 ## Svelte (.svelte)
+
 **Focus: Svelte 5 Runes & Granular Reactivity**
 
 - **Runes Only:** Use `$state`, `$derived`, `$props`, and `$bindable`. Avoid legacy Svelte 4 syntax.

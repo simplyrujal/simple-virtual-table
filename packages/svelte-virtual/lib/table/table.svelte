@@ -68,36 +68,6 @@
 
   let scrollElementRef: HTMLDivElement | null = null;
 
-  $effect(() => {
-    const updateWidth = () => {
-      if (scrollElementRef && contentWidth > 0) {
-        // Get the container's current width (which is 100% initially)
-        // We need to get the parent's width or the actual rendered width
-        const container = scrollElementRef;
-        // Temporarily ensure width is 100% to get accurate measurement
-        container.style.width = "100%";
-        // Use requestAnimationFrame to ensure layout has updated
-        requestAnimationFrame(() => {
-          if (scrollElementRef) {
-            const containerWidth = scrollElementRef.clientWidth;
-            if (contentWidth > containerWidth) {
-              scrollElementRef.style.width = "100%";
-            } else {
-              scrollElementRef.style.width = "fit-content";
-            }
-          }
-        });
-      }
-    };
-    updateWidth();
-
-    // Handle window resize
-    window.addEventListener("resize", updateWidth);
-    return () => {
-      window.removeEventListener("resize", updateWidth);
-    };
-  });
-
   const handleScroll = (event: Event) => {
     scrollTop = (event.target as HTMLDivElement).scrollTop;
   };
@@ -108,7 +78,8 @@
   class={containerClassName}
   onscroll={handleScroll}
   style:height="{height}px"
-  style:width="100%"
+  style:width="fit-content"
+  style:max-width="100%"
   style:overflow="auto"
   style:position="relative"
   style:border="1px solid"

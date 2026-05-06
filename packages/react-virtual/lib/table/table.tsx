@@ -14,6 +14,7 @@ export interface TableState {
   rowHeight: number;
   height: number;
   scrollTop: number;
+  headerHeight: number;
   contentWidth: number;
   columnWidths: number[];
   overscan: number;
@@ -29,6 +30,7 @@ export interface TableStore {
     patch: Partial<TableState> | ((state: TableState) => Partial<TableState>)
   ) => void;
   setColumnWidths: (widths: number[]) => void;
+  setHeaderHeight: (height: number) => void;
 }
 
 const TableContext = createContext<TableStore | null>(null);
@@ -41,12 +43,18 @@ export const useTableStore = <T,>(selector: (state: TableState) => T): T => {
   return useSyncExternalStore(store.subscribe, () => selector(store.getSnapshot()));
 };
 
-export const useTableActions = (): Pick<TableStore, "setColumnWidths"> => {
+export const useTableActions = (): Pick<
+  TableStore,
+  "setColumnWidths" | "setHeaderHeight"
+> => {
   const store = useContext(TableContext);
   if (!store) {
     throw new Error("Table components must be used within a Table provider");
   }
-  return { setColumnWidths: store.setColumnWidths };
+  return {
+    setColumnWidths: store.setColumnWidths,
+    setHeaderHeight: store.setHeaderHeight,
+  };
 };
 
 // Deprecated: Use useTableStore for better performance
@@ -94,6 +102,7 @@ const Table = ({
       height,
       overscan,
       scrollTop: 0,
+      headerHeight: 0,
       contentWidth: 0,
       columnWidths: [],
       startIndex: 0,
@@ -104,8 +113,11 @@ const Table = ({
     const listeners = new Set<() => void>();
 
     const calculateIndices = (s: TableState) => {
-      const visibleStart = Math.floor(s.scrollTop / s.rowHeight);
-      const visibleEnd = Math.ceil((s.scrollTop + s.height) / s.rowHeight);
+      const adjustedScrollTop = Math.max(0, s.scrollTop - s.headerHeight);
+      const visibleStart = Math.floor(adjustedScrollTop / s.rowHeight);
+      const visibleEnd = Math.ceil(
+        (adjustedScrollTop + s.height) / s.rowHeight
+      );
       const startIndex = Math.max(0, visibleStart - s.overscan);
       const endIndex = Math.min(s.totalData, visibleEnd + s.overscan);
       return { startIndex, endIndex };
@@ -130,7 +142,8 @@ const Table = ({
           nextPartial.height !== undefined ||
           nextPartial.rowHeight !== undefined ||
           nextPartial.totalData !== undefined ||
-          nextPartial.overscan !== undefined
+          nextPartial.overscan !== undefined ||
+          nextPartial.headerHeight !== undefined
         ) {
           const { startIndex, endIndex } = calculateIndices(nextState);
           nextState.startIndex = startIndex;
@@ -153,6 +166,9 @@ const Table = ({
       setColumnWidths: (widths) => {
         storeRef.current?.setState({ columnWidths: widths });
       },
+      setHeaderHeight: (height) => {
+        storeRef.current?.setState({ headerHeight: height });
+      },
     };
   }
 
@@ -170,41 +186,13 @@ const Table = ({
     [store]
   );
 
-  const contentWidth = useSyncExternalStore(
-    store.subscribe,
-    () => store.getSnapshot().contentWidth
-  );
-
-  // Update container width based on content width comparison
-  useEffect(() => {
-    const updateWidth = () => {
-      if (scrollElementRef.current && contentWidth > 0) {
-        const container = scrollElementRef.current;
-        container.style.width = "100%";
-        requestAnimationFrame(() => {
-          if (scrollElementRef.current) {
-            const containerWidth = scrollElementRef.current.clientWidth;
-            if (contentWidth > containerWidth) {
-              scrollElementRef.current.style.width = "100%";
-            } else {
-              scrollElementRef.current.style.width = "fit-content";
-            }
-          }
-        });
-      }
-    };
-
-    updateWidth();
-    window.addEventListener("resize", updateWidth);
-    return () => window.removeEventListener("resize", updateWidth);
-  }, [contentWidth]);
-
   return (
     <TableContext.Provider value={store}>
       <div
         style={{
           height,
-          width: "100%",
+          width: "fit-content",
+          maxWidth: "100%",
           overflow: "auto",
           position: "relative",
           ...containerStyle,

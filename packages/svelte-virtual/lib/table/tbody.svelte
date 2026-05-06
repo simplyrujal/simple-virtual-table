@@ -52,7 +52,7 @@
 </script>
 
 <div
-  style="position: relative; height: {totalHeight}px; width: {tableContext.contentWidth}px; box-sizing: border-box;"
+  style="position: relative; height: {totalHeight}px; width: 100%; min-width: {tableContext.contentWidth}px; box-sizing: border-box;"
   {...props}
 >
   <div style="height: {tableContext.startIndex * tableContext.rowHeight}px;"></div>

@@ -61,25 +61,29 @@ const Tbody = ({ children, style, ...props }: IProps) => {
         style={{
           position: "relative",
           height: totalHeight,
-          width: contentWidth,
+          width: "100%",
+          minWidth: contentWidth,
           boxSizing: "border-box",
           ...style,
         }}
         {...props}
       >
-        <div style={{ height: startIndex * rowHeight }} />
-
-        {visibleChildren.map((child, index) => {
-          if (React.isValidElement(child)) {
-            // Inject rowIndex as absolute index (startIndex + relative index in visibleChildren)
-            return React.cloneElement(child, {
-              rowIndex: startIndex + index,
-            } as any);
-          }
-          return child;
-        })}
-
-        <div style={{ height: (totalData - endIndex) * rowHeight }} />
+        <div
+          style={{
+            transform: `translateY(${startIndex * rowHeight}px)`,
+            willChange: "transform",
+          }}
+        >
+          {visibleChildren.map((child, index) => {
+            if (React.isValidElement(child)) {
+              // Inject rowIndex as absolute index (startIndex + relative index in visibleChildren)
+              return React.cloneElement(child, {
+                rowIndex: startIndex + index,
+              } as any);
+            }
+            return child;
+          })}
+        </div>
       </div>
     </TbodyContext>
   );

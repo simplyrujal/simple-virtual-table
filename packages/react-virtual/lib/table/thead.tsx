@@ -1,5 +1,10 @@
-import React, { createContext, useContext, useLayoutEffect, useMemo } from "react";
-import { useTableStore, useTableActions } from "./table";
+import React, {
+  createContext,
+  useContext,
+  useLayoutEffect,
+  useMemo,
+} from "react";
+import { useTableActions, useTableStore } from "./table";
 
 interface TheadContextValue {
   columnCount: number;
@@ -54,7 +59,7 @@ const Thead = ({ children, style, headerHeight = 50, ...props }: IProps) => {
       columnCount,
       columnWidths,
     }),
-    [columnCount, columnWidths]
+    [columnCount, columnWidths],
   );
 
   let currentColIndex = 0;
@@ -68,7 +73,8 @@ const Thead = ({ children, style, headerHeight = 50, ...props }: IProps) => {
           zIndex: 10,
           display: "flex",
           height: headerHeight,
-          width: contentWidth,
+          width: "100%",
+          minWidth: contentWidth,
           boxSizing: "border-box",
           ...style,
           backgroundColor: "#f5f5f5",
@@ -86,7 +92,6 @@ const Thead = ({ children, style, headerHeight = 50, ...props }: IProps) => {
           return child;
         })}
         {/* Spacer to fill remaining space when content is smaller than container */}
-...
         {/* {needsFill && spacerWidth > 0 && (
           <div
             style={{

@@ -54,7 +54,8 @@
     bind:this={elementRef}
     style:position="relative"
     style:display="flex"
-    style:width="{tbodyContext.contentWidth}px"
+    style:width="100%"
+    style:min-width="{tbodyContext.contentWidth}px"
     style:height="{tbodyContext.rowHeight}px"
     style:border-bottom="1px solid #e0e0e0"
     style:background-color={rowIndex % 2 === 0 ? "#ffffff" : "#fafafa"}

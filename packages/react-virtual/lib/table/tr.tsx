@@ -52,7 +52,8 @@ const Tr = ({ children, style, rowIndex, ...props }: TrProps) => {
       <div
         style={{
           display: "flex",
-          width: contentWidth,
+          width: "100%",
+          minWidth: contentWidth,
           height: rowHeight,
           ...style,
           borderBottom: "1px solid #e0e0e0",

@@ -4,7 +4,6 @@ import React, {
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useRef,
   useSyncExternalStore,
 } from "react";
@@ -27,7 +26,7 @@ export interface TableStore {
   subscribe: (listener: () => void) => () => void;
   getSnapshot: () => TableState;
   setState: (
-    patch: Partial<TableState> | ((state: TableState) => Partial<TableState>)
+    patch: Partial<TableState> | ((state: TableState) => Partial<TableState>),
   ) => void;
   setColumnWidths: (widths: number[]) => void;
   setHeaderHeight: (height: number) => void;
@@ -40,7 +39,9 @@ export const useTableStore = <T,>(selector: (state: TableState) => T): T => {
   if (!store) {
     throw new Error("Table components must be used within a Table provider");
   }
-  return useSyncExternalStore(store.subscribe, () => selector(store.getSnapshot()));
+  return useSyncExternalStore(store.subscribe, () =>
+    selector(store.getSnapshot()),
+  );
 };
 
 export const useTableActions = (): Pick<
@@ -116,7 +117,7 @@ const Table = ({
       const adjustedScrollTop = Math.max(0, s.scrollTop - s.headerHeight);
       const visibleStart = Math.floor(adjustedScrollTop / s.rowHeight);
       const visibleEnd = Math.ceil(
-        (adjustedScrollTop + s.height) / s.rowHeight
+        (adjustedScrollTop + s.height) / s.rowHeight,
       );
       const startIndex = Math.max(0, visibleStart - s.overscan);
       const endIndex = Math.min(s.totalData, visibleEnd + s.overscan);
@@ -153,7 +154,7 @@ const Table = ({
         if (nextPartial.columnWidths !== undefined) {
           nextState.contentWidth = nextState.columnWidths.reduce(
             (sum, w) => sum + w,
-            0
+            0,
           );
           nextState.columnCount = nextState.columnWidths.length;
         }
@@ -183,7 +184,7 @@ const Table = ({
     (e: React.UIEvent<HTMLDivElement>) => {
       store.setState({ scrollTop: e.currentTarget.scrollTop });
     },
-    [store]
+    [store],
   );
 
   return (

@@ -13,6 +13,9 @@
     "build:svelte": "pnpm --filter simple-virtual-table-svelte build",
     "build:packages": "pnpm run build:react && pnpm run build:svelte",
     "build:apps": "pnpm --filter react-app build && pnpm --filter svelte-app build",
+    "publish:react": "pnpm run build:react && pnpm --filter simple-virtual-table-react publish",
+    "publish:svelte": "pnpm run build:svelte && pnpm --filter simple-virtual-table-svelte publish",
+    "publish:all": "pnpm run publish:react && pnpm run publish:svelte",
     "test": "pnpm recursive run test"
   },
   "keywords": [],
